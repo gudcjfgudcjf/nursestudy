@@ -17,7 +17,7 @@ input,textarea,select{font-family:inherit;}
   --navy:#1B2E4B;--acc:#E8534A;--gold:#D4A853;--grn:#34C759;--pur:#7B61FF;
   --gem:#4285F4;--cla:#D97757;
   --txt:#1C1C1E;--mut:#8E8E93;--bdr:#D1D1D6;
-  --lw:252px;--rw:292px;
+  --lw:264px;--rw:312px;
 }
 
 /* ── SETUP MODAL ── */
@@ -97,8 +97,9 @@ input,textarea,select{font-family:inherit;}
 .s-reset-btn:active{opacity:.8;}
 
 /* ── APP ── */
-#app{display:none;flex-direction:column;height:100vh;background:var(--bg);}
+#app{display:none;flex-direction:column;height:100vh;height:100dvh;background:var(--bg);}
 #topbar{height:50px;background:var(--navy);display:flex;align-items:center;padding:0 10px;gap:7px;flex-shrink:0;box-shadow:0 2px 18px rgba(0,0,0,.22);}
+
 .tb-logo{font-size:15px;font-weight:800;color:#fff;letter-spacing:-.3px;}
 .tb-logo em{color:var(--tl);font-style:normal;}
 
@@ -218,7 +219,7 @@ input[type=range]{width:52px;accent-color:var(--tl);cursor:pointer;}
 .rp.show{display:block;}
 #rp-chat{flex:1;display:none;flex-direction:column;overflow:hidden;}
 #rp-chat.show{display:flex;}
-.abtn-wrap{padding:8px 10px 10px;border-top:1px solid var(--bdr);flex-shrink:0;background:var(--sur);}
+.abtn-wrap{padding:8px 10px calc(env(safe-area-inset-bottom) + 10px);border-top:1px solid var(--bdr);flex-shrink:0;background:var(--sur);}
 #abtn{width:100%;background:linear-gradient(135deg,var(--teal),var(--td));color:#fff;border-radius:14px;padding:12px;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px;}
 #abtn:disabled{opacity:.6;}
 .spin2{width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;}
@@ -734,7 +735,7 @@ async function callClaudeChat(msgs){
 window.addEventListener('load',()=>{
   bgCtx=document.getElementById('bgC').getContext('2d');
   dwCtx=document.getElementById('dwC').getContext('2d');
-  setupDraw();setupPinch();
+  setupDraw();setupPinch();setupDragSelect();
   document.getElementById('fi').addEventListener('change',e=>{handleFiles(e.target.files);e.target.value='';});
   if(CFG.keys.gemini||CFG.keys.claude)loadSessUI();
 });
@@ -755,7 +756,7 @@ function renderList(){
     const pOpen=S.pagesOpen[f.id],thumbs=f.pageThumbs||[];
     let pgH='';
     if(f.type==='pdf'){pgH=`<div class="pg-section"><button class="pg-tog${pOpen?' open':''}" onclick="event.stopPropagation();togPgs('${f.id}')"><em class="pg-arr">▶</em> ${f.pageCount}p 미리보기</button>${pOpen?`<div class="pg-grid">${thumbs.length===0?'<div style="grid-column:1/-1;font-size:9px;color:var(--mut);padding:4px">⏳ 생성 중...</div>':thumbs.map((u,i)=>`<div class="pg-th${isActive&&S.curPage===i+1?' cur':''}" onclick="event.stopPropagation();jumpPg('${f.id}',${i+1})"><img src="${u}" loading="lazy"><span>${i+1}p${S.ai[f.id+'_'+(i+1)]?'✅':''}</span></div>`).join('')}</div>`:''}</div>`;}
-    return`<div class="fitem${isActive?' active':''}"><div class="fitem-row"><div class="ipad-chk" onclick="togChk('${f.id}')"><div class="chk-box${isChk?' on':''}">${isChk?chkSvg:''}</div></div><div class="fitem-info" onclick="selFile('${f.id}')">${th}<div class="fi-data"><div class="fi-name">${f.name}</div><div class="fi-meta">${f.type==='pdf'?`📄${f.pageCount}p · `:''}<span class="${analyzed?'fi-ok':''}">${analyzed?'✅ 완료':'미분석'}</span></div></div></div><button class="fdel" onclick="event.stopPropagation();delFile('${f.id}')">✕</button></div>${pgH}</div>`;
+    return`<div class="fitem${isActive?' active':''}" data-fid="${f.id}"><div class="fitem-row"><div class="ipad-chk" onclick="togChk('${f.id}')"><div class="chk-box${isChk?' on':''}">${isChk?chkSvg:''}</div></div><div class="fitem-info" onclick="selFile('${f.id}')">${th}<div class="fi-data"><div class="fi-name">${f.name}</div><div class="fi-meta">${f.type==='pdf'?`📄${f.pageCount}p · `:''}<span class="${analyzed?'fi-ok':''}">${analyzed?'✅ 완료':'미분석'}</span></div></div></div><button class="fdel" onclick="event.stopPropagation();delFile('${f.id}')">✕</button></div>${pgH}</div>`;
   }).join('');
   updSel();
 }
@@ -763,6 +764,46 @@ function renderList(){
 function updSel(){const n=S.checked.size;const b=document.getElementById('selBadge');const ab=document.getElementById('anaSelBtn');b.style.display=n>0?'block':'none';b.textContent=`☑ ${n}개 파일 선택됨`;ab.disabled=n===0;document.getElementById('selAllBtn').textContent=S.checked.size===S.files.length&&S.files.length>0?'전체해제':'전체선택';}
 function togChk(id){if(S.checked.has(id))S.checked.delete(id);else S.checked.add(id);renderList();}
 function toggleSelAll(){if(S.checked.size===S.files.length&&S.files.length>0)S.checked.clear();else S.files.forEach(f=>S.checked.add(f.id));renderList();}
+
+/* ── 드래그 다중선택 / 해제 ── */
+function setupDragSelect(){
+  const list=document.getElementById('flist');
+  let active=false,mode=null,seen=new Set();
+
+  // 체크박스 위에서 터치 시작 → 드래그 모드 진입
+  list.addEventListener('pointerdown',e=>{
+    if(!e.target.closest('.ipad-chk'))return;
+    const item=e.target.closest('[data-fid]');if(!item)return;
+    const id=item.dataset.fid;
+    active=true;
+    mode=S.checked.has(id)?'off':'on'; // 이미 선택됨 → 해제모드, 아니면 선택모드
+    seen=new Set([id]);
+    if(mode==='on')S.checked.add(id);else S.checked.delete(id);
+    renderList();
+  },{passive:true});
+
+  // 드래그 중 스크롤 방지
+  list.addEventListener('touchmove',e=>{if(active)e.preventDefault();},{passive:false});
+
+  // 드래그하며 지나가는 항목 자동 선택/해제
+  list.addEventListener('pointermove',e=>{
+    if(!active)return;
+    const el=document.elementFromPoint(e.clientX,e.clientY);if(!el)return;
+    const item=el.closest('[data-fid]');if(!item)return;
+    const id=item.dataset.fid;
+    if(!id||seen.has(id))return;
+    seen.add(id);
+    if(mode==='on')S.checked.add(id);else S.checked.delete(id);
+    // 햅틱 피드백 (iOS 지원 시)
+    if(navigator.vibrate)navigator.vibrate(8);
+    renderList();
+  },{passive:true});
+
+  // 드래그 종료
+  ['pointerup','pointercancel','touchend'].forEach(ev=>
+    list.addEventListener(ev,()=>{active=false;mode=null;seen.clear();},{passive:true})
+  );
+}
 function togPgs(id){S.pagesOpen[id]=!S.pagesOpen[id];const f=S.files.find(x=>x.id===id);if(f&&f.type==='pdf'&&(!f.pageThumbs||!f.pageThumbs.length))genThumbs(f);renderList();}
 async function genThumbs(f){if(f._tg)return;f._tg=true;f.pageThumbs=[];for(let i=1;i<=f.pageCount;i++){try{f.pageThumbs.push(await pdfTh(f.pdfDoc,i,140));}catch{f.pageThumbs.push('');}if(i%3===0||i===f.pageCount)renderList();}f._tg=false;}
 
