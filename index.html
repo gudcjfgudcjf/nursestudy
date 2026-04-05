@@ -20,10 +20,10 @@ input,textarea,select{font-family:inherit;}
   --lw:264px;--rw:312px;
 }
 
-/* ── SETUP MODAL ── */
+/* ── SETUP ── */
 #setup{position:fixed;inset:0;background:linear-gradient(160deg,#0d1a2e,#1B2E4B 55%,#115C6A);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px;}
 .setup-box{background:var(--sur);border-radius:24px;padding:28px;width:100%;max-width:440px;box-shadow:0 28px 80px rgba(0,0,0,.4);}
-.su-logo{font-size:26px;font-weight:800;color:var(--navy);letter-spacing:-.5px;}
+.su-logo{font-size:26px;font-weight:800;color:var(--navy);}
 .su-logo em{color:var(--tl);font-style:normal;}
 .su-sub{font-size:12.5px;color:var(--mut);margin:6px 0 20px;line-height:1.65;}
 .su-api-row{display:flex;gap:8px;margin-bottom:18px;}
@@ -35,15 +35,15 @@ input,textarea,select{font-family:inherit;}
 .su-lbl{font-size:11.5px;font-weight:700;color:var(--navy);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
 .su-inp{width:100%;border:1.5px solid var(--bdr);border-radius:12px;padding:11px 14px;font-size:13.5px;outline:none;color:var(--txt);background:var(--sur2);margin-bottom:10px;}
 .su-inp:focus{border-color:var(--tl);}
-.su-sel{width:100%;border:1.5px solid var(--bdr);border-radius:12px;padding:10px 12px;font-size:13px;outline:none;color:var(--txt);background:var(--sur2);margin-bottom:12px;appearance:none;cursor:pointer;}
+.su-sel{width:100%;border:1.5px solid var(--bdr);border-radius:12px;padding:10px 12px;font-size:13px;outline:none;color:var(--txt);background:var(--sur2);margin-bottom:12px;appearance:none;}
 .su-btn{width:100%;margin-top:6px;background:linear-gradient(135deg,var(--tl),var(--td));color:#fff;border-radius:14px;padding:15px;font-size:15px;font-weight:800;}
 .su-note{background:rgba(43,168,187,.09);border:1.5px solid rgba(43,168,187,.22);border-radius:11px;padding:10px 13px;margin-top:14px;font-size:10.5px;color:#0d5f6e;line-height:1.75;}
 .su-note a{color:var(--tl);text-decoration:none;}
 
-/* ── SETTINGS PANEL ── */
+/* ── SETTINGS ── */
 #s-ov{position:fixed;inset:0;background:rgba(0,0,0,.42);backdrop-filter:blur(4px);z-index:700;display:none;}
 #s-ov.open{display:block;}
-#s-panel{position:fixed;top:0;right:-380px;bottom:0;width:380px;background:var(--sur);z-index:800;display:flex;flex-direction:column;transition:right .32s cubic-bezier(.4,0,.2,1);box-shadow:-6px 0 36px rgba(0,0,0,.18);overflow:hidden;}
+#s-panel{position:fixed;top:0;right:-390px;bottom:0;width:390px;background:var(--sur);z-index:800;display:flex;flex-direction:column;transition:right .32s cubic-bezier(.4,0,.2,1);box-shadow:-6px 0 36px rgba(0,0,0,.18);overflow:hidden;}
 #s-panel.open{right:0;}
 .s-head{background:var(--navy);color:#fff;padding:16px 16px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .s-head h2{flex:1;font-size:17px;font-weight:800;}
@@ -52,14 +52,10 @@ input,textarea,select{font-family:inherit;}
 .s-sec{margin-bottom:20px;}
 .s-sec-title{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--td);margin-bottom:10px;display:flex;align-items:center;gap:4px;}
 .s-sec-title::after{content:'';flex:1;height:1px;background:var(--bdr);}
-
-/* API Toggle */
 .api-toggle{display:flex;background:var(--sur2);border-radius:14px;padding:4px;gap:3px;margin-bottom:4px;}
 .api-tog-btn{flex:1;padding:10px 8px;border-radius:11px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;color:var(--mut);transition:all .2s;}
 .api-tog-btn.active-gem{background:#fff;color:var(--gem);box-shadow:0 2px 8px rgba(66,133,244,.2);}
 .api-tog-btn.active-cla{background:#fff;color:var(--cla);box-shadow:0 2px 8px rgba(217,119,87,.2);}
-
-/* Key input rows */
 .key-card{background:var(--sur2);border-radius:14px;padding:13px;margin-bottom:8px;border:1.5px solid var(--bdr);transition:border-color .2s;}
 .key-card.has-key{border-color:rgba(52,199,89,.4);background:rgba(52,199,89,.05);}
 .kc-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
@@ -74,11 +70,8 @@ input,textarea,select{font-family:inherit;}
 .kc-inp{flex:1;border:1.5px solid var(--bdr);border-radius:10px;padding:9px 11px;font-size:12.5px;outline:none;background:var(--sur);color:var(--txt);}
 .kc-inp:focus{border-color:var(--tl);}
 .kc-save{background:var(--teal);color:#fff;border-radius:10px;padding:9px 14px;font-size:12px;font-weight:700;flex-shrink:0;}
-.kc-save:active{opacity:.8;}
 .kc-del{background:rgba(232,83,74,.1);color:var(--acc);border-radius:10px;padding:9px 12px;font-size:12px;font-weight:700;flex-shrink:0;}
-.kc-model{width:100%;border:1.5px solid var(--bdr);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--txt);background:var(--sur);appearance:none;cursor:pointer;outline:none;}
-
-/* Usage Stats */
+.kc-model{width:100%;border:1.5px solid var(--bdr);border-radius:10px;padding:8px 10px;font-size:12px;color:var(--txt);background:var(--sur);appearance:none;outline:none;}
 .usage-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .usage-card{background:var(--sur2);border-radius:14px;padding:12px;border:1.5px solid var(--bdr);}
 .usage-card.active-gem{border-color:rgba(66,133,244,.35);background:rgba(66,133,244,.06);}
@@ -93,29 +86,32 @@ input,textarea,select{font-family:inherit;}
 .uc-cost{margin-top:8px;padding-top:8px;border-top:1px solid var(--bdr);font-size:11px;font-weight:700;text-align:right;}
 .cost-free{color:var(--grn);}
 .cost-paid{color:#FF9500;}
-.s-reset-btn{width:100%;background:rgba(232,83,74,.1);color:var(--acc);border-radius:12px;padding:11px;font-size:13px;font-weight:700;margin-top:4px;}
-.s-reset-btn:active{opacity:.8;}
+
+/* Storage Card */
+.st-card{background:var(--sur2);border-radius:14px;padding:13px;border:1.5px solid var(--bdr);}
+.st-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.st-lbl{font-size:11.5px;color:var(--navy);font-weight:500;}
+.st-val{font-size:11.5px;font-weight:700;color:var(--teal);}
+.st-bar-wrap{background:var(--bdr);border-radius:99px;height:5px;overflow:hidden;margin:8px 0;}
+.st-bar{height:100%;background:linear-gradient(90deg,var(--tl),var(--teal));border-radius:99px;width:0%;transition:width .5s;}
+.st-note{font-size:10px;color:var(--mut);line-height:1.65;margin-top:6px;}
+.s-reset-btn{width:100%;background:rgba(232,83,74,.1);color:var(--acc);border-radius:12px;padding:11px;font-size:13px;font-weight:700;margin-top:8px;}
 
 /* ── APP ── */
 #app{display:none;flex-direction:column;height:100vh;height:100dvh;background:var(--bg);}
 #topbar{height:50px;background:var(--navy);display:flex;align-items:center;padding:0 10px;gap:7px;flex-shrink:0;box-shadow:0 2px 18px rgba(0,0,0,.22);}
-
 .tb-logo{font-size:15px;font-weight:800;color:#fff;letter-spacing:-.3px;}
 .tb-logo em{color:var(--tl);font-style:normal;}
-
-/* API Badge in topbar */
-.api-badge{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.13);border-radius:10px;padding:5px 10px;cursor:pointer;flex-shrink:0;transition:background .15s;}
+.api-badge{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.13);border-radius:10px;padding:5px 10px;cursor:pointer;flex-shrink:0;}
 .api-badge:active{background:rgba(255,255,255,.22);}
 .api-badge-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .api-badge-dot.gem{background:#4FC3F7;}
 .api-badge-dot.cla{background:#FFAB76;}
 .api-badge-name{font-size:11.5px;font-weight:700;color:#fff;white-space:nowrap;}
 .api-badge-usage{font-size:9.5px;color:rgba(255,255,255,.6);white-space:nowrap;}
-
-.tbtn{height:34px;min-width:34px;border-radius:9px;background:rgba(255,255,255,.12);color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:3px;padding:0 8px;flex-shrink:0;transition:opacity .15s;}
+.tbtn{height:34px;min-width:34px;border-radius:9px;background:rgba(255,255,255,.12);color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:3px;padding:0 8px;flex-shrink:0;}
 .tbtn:active{opacity:.65;}
 .tbtn.on{background:var(--teal);}
-
 .main{display:flex;flex:1;overflow:hidden;}
 
 /* ── LEFT ── */
@@ -129,6 +125,7 @@ input,textarea,select{font-family:inherit;}
 .la-all{background:var(--pur);color:#fff;}
 .la-btn:disabled{opacity:.38;}
 .sel-badge{text-align:center;font-size:10px;color:var(--teal);font-weight:700;padding:2px 4px 6px;display:none;}
+.drag-hint{text-align:center;font-size:9.5px;color:var(--mut);padding:0 4px 5px;opacity:.7;}
 #bprog{background:rgba(27,46,75,.96);padding:8px 12px;display:none;align-items:center;gap:7px;flex-shrink:0;}
 #bprog.show{display:flex;}
 #bp-txt{font-size:10px;color:#fff;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -138,10 +135,11 @@ input,textarea,select{font-family:inherit;}
 .flist{flex:1;overflow-y:auto;padding:4px;}
 .fitem{border-radius:13px;border:1.5px solid transparent;margin-bottom:5px;overflow:hidden;transition:all .15s;}
 .fitem.active{border-color:var(--tl);background:rgba(43,168,187,.07);}
+.fitem.drag-hi{background:rgba(43,168,187,.18);border-color:var(--tl);}
 .fitem-row{display:flex;align-items:center;}
 .ipad-chk{width:44px;height:52px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;}
 .chk-box{width:22px;height:22px;border-radius:7px;border:2px solid var(--bdr);background:var(--sur);display:flex;align-items:center;justify-content:center;transition:all .18s cubic-bezier(.34,1.56,.64,1);}
-.chk-box.on{background:var(--teal);border-color:var(--teal);transform:scale(1.05);}
+.chk-box.on{background:var(--teal);border-color:var(--teal);transform:scale(1.08);}
 .fitem-info{flex:1;display:flex;align-items:center;gap:7px;padding:8px 6px 8px 0;min-width:0;cursor:pointer;}
 .fth{width:40px;height:40px;border-radius:9px;object-fit:cover;background:var(--bg);flex-shrink:0;}
 .fth-pdf{width:40px;height:40px;border-radius:9px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
@@ -199,10 +197,11 @@ input[type=range]{width:52px;accent-color:var(--tl);cursor:pointer;}
 .hi{font-size:58px;opacity:.18;}
 #hint h2{font-size:15px;font-weight:700;color:var(--navy);opacity:.4;}
 #hint p{font-size:12px;color:var(--mut);line-height:1.8;opacity:.65;}
-#loading{position:absolute;inset:0;background:rgba(240,244,248,.9);display:none;align-items:center;justify-content:center;flex-direction:column;gap:9px;z-index:50;}
+#loading{position:absolute;inset:0;background:rgba(240,244,248,.92);display:none;align-items:center;justify-content:center;flex-direction:column;gap:9px;z-index:50;}
 #loading.show{display:flex;}
 .spin{width:28px;height:28px;border:3px solid var(--bdr);border-top-color:var(--tl);border-radius:50%;animation:sp .8s linear infinite;}
 @keyframes sp{to{transform:rotate(360deg);}}
+.load-txt{font-size:12px;color:var(--mut);text-align:center;max-width:200px;line-height:1.6;}
 #zhud{position:absolute;bottom:12px;right:12px;background:rgba(27,46,75,.88);backdrop-filter:blur(8px);border-radius:99px;padding:5px 10px;color:#fff;display:none;gap:5px;align-items:center;font-size:11px;font-weight:700;z-index:30;}
 #zhud.show{display:flex;}
 .zhb{background:rgba(255,255,255,.18);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;}
@@ -280,13 +279,12 @@ input[type=range]{width:52px;accent-color:var(--tl);cursor:pointer;}
 </head>
 <body>
 
-<!-- ── SETUP MODAL ── -->
+<!-- SETUP -->
 <div id="setup">
   <div class="setup-box">
     <div class="su-logo">Nurse<em>Study</em> AI</div>
-    <div class="su-sub">AI API 키를 설정해 시작하세요.<br>Gemini와 Claude 중 하나 이상 등록 후 사용할 API를 선택하세요.</div>
-
-    <div class="su-api-row" id="su-api-row">
+    <div class="su-sub">AI API 키를 설정해 시작하세요.<br>파일·필기·분석결과가 자동으로 저장됩니다.</div>
+    <div class="su-api-row">
       <div class="su-api-card sel" id="sc-gem" onclick="selectSetupAPI('gemini')">
         <div class="su-api-icon">🔮</div>
         <div class="su-api-name">Gemini</div>
@@ -298,46 +296,42 @@ input[type=range]{width:52px;accent-color:var(--tl);cursor:pointer;}
         <div class="su-api-desc">Anthropic · 유료<br>높은 정확도</div>
       </div>
     </div>
-
     <div id="su-gem-section">
       <label class="su-lbl">🔮 Gemini API Key</label>
       <input class="su-inp" type="password" id="su-gk" placeholder="AIzaSy...">
-      <label class="su-lbl">모델 선택</label>
+      <label class="su-lbl">모델</label>
       <select class="su-sel" id="su-gm">
-        <option value="gemini-2.0-flash">gemini-2.0-flash (권장 · 빠름)</option>
-        <option value="gemini-1.5-flash">gemini-1.5-flash (안정)</option>
-        <option value="gemini-1.5-pro">gemini-1.5-pro (고품질)</option>
+        <option value="gemini-2.0-flash">gemini-2.0-flash (권장)</option>
+        <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+        <option value="gemini-1.5-pro">gemini-1.5-pro</option>
       </select>
     </div>
     <div id="su-cla-section" style="display:none">
       <label class="su-lbl">🤖 Claude API Key</label>
       <input class="su-inp" type="password" id="su-ck" placeholder="sk-ant-...">
-      <label class="su-lbl">모델 선택</label>
+      <label class="su-lbl">모델</label>
       <select class="su-sel" id="su-cm">
-        <option value="claude-sonnet-4-20250514">Claude Sonnet 4.5 (스마트)</option>
-        <option value="claude-haiku-4-5-20251001">Claude Haiku 4.5 (빠름·저렴)</option>
+        <option value="claude-sonnet-4-20250514">Claude Sonnet 4.5</option>
+        <option value="claude-haiku-4-5-20251001">Claude Haiku 4.5 (저렴)</option>
       </select>
     </div>
-
     <button class="su-btn" onclick="setupStart()">시작하기 →</button>
     <div class="su-note">
-      🔮 Gemini: <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a> · 무료 티어 1500req/일<br>
-      🤖 Claude: <a href="https://console.anthropic.com" target="_blank">Anthropic Console</a> · 유료 사용량 기반<br>
-      📱 Safari → 홈 화면에 추가 → 앱으로 사용 가능
+      🔮 <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a> · 무료 1500req/일<br>
+      🤖 <a href="https://console.anthropic.com" target="_blank">Anthropic Console</a> · 유료 사용량 기반<br>
+      💾 파일·필기 IndexedDB 자동저장 · 앱 재시작 시 복원
     </div>
   </div>
 </div>
 
-<!-- ── SETTINGS PANEL ── -->
+<!-- SETTINGS -->
 <div id="s-ov" onclick="closeSettings()"></div>
 <div id="s-panel">
   <div class="s-head">
-    <h2>⚙️ API 설정 &amp; 사용량</h2>
+    <h2>⚙️ API 설정 &amp; 저장</h2>
     <button class="s-close" onclick="closeSettings()">✕</button>
   </div>
   <div class="s-body">
-
-    <!-- Active API Toggle -->
     <div class="s-sec">
       <div class="s-sec-title">현재 사용 API</div>
       <div class="api-toggle">
@@ -345,21 +339,11 @@ input[type=range]{width:52px;accent-color:var(--tl);cursor:pointer;}
         <button class="api-tog-btn" id="tog-cla" onclick="setActiveAPI('claude')">🤖 Claude</button>
       </div>
     </div>
-
-    <!-- Gemini Key -->
     <div class="s-sec">
       <div class="s-sec-title">🔮 Gemini 설정</div>
       <div class="key-card" id="kc-gem">
-        <div class="kc-top">
-          <div class="kc-icon gem">🔮</div>
-          <div class="kc-name">Google Gemini</div>
-          <div class="kc-status" id="gs-status">미등록</div>
-        </div>
-        <div class="kc-inp-row">
-          <input class="kc-inp" type="password" id="gs-key" placeholder="AIzaSy...">
-          <button class="kc-save" onclick="saveGKey()">저장</button>
-          <button class="kc-del" onclick="delKey('gemini')">삭제</button>
-        </div>
+        <div class="kc-top"><div class="kc-icon gem">🔮</div><div class="kc-name">Google Gemini</div><div class="kc-status" id="gs-status">미등록</div></div>
+        <div class="kc-inp-row"><input class="kc-inp" type="password" id="gs-key" placeholder="AIzaSy..."><button class="kc-save" onclick="saveGKey()">저장</button><button class="kc-del" onclick="delKey('gemini')">삭제</button></div>
         <select class="kc-model" id="gs-model" onchange="saveModel('gemini',this.value)">
           <option value="gemini-2.0-flash">gemini-2.0-flash (권장)</option>
           <option value="gemini-1.5-flash">gemini-1.5-flash</option>
@@ -367,68 +351,60 @@ input[type=range]{width:52px;accent-color:var(--tl);cursor:pointer;}
         </select>
       </div>
     </div>
-
-    <!-- Claude Key -->
     <div class="s-sec">
       <div class="s-sec-title">🤖 Claude 설정</div>
       <div class="key-card" id="kc-cla">
-        <div class="kc-top">
-          <div class="kc-icon cla">🤖</div>
-          <div class="kc-name">Anthropic Claude</div>
-          <div class="kc-status" id="cs-status">미등록</div>
-        </div>
-        <div class="kc-inp-row">
-          <input class="kc-inp" type="password" id="cs-key" placeholder="sk-ant-...">
-          <button class="kc-save" onclick="saveCKey()">저장</button>
-          <button class="kc-del" onclick="delKey('claude')">삭제</button>
-        </div>
+        <div class="kc-top"><div class="kc-icon cla">🤖</div><div class="kc-name">Anthropic Claude</div><div class="kc-status" id="cs-status">미등록</div></div>
+        <div class="kc-inp-row"><input class="kc-inp" type="password" id="cs-key" placeholder="sk-ant-..."><button class="kc-save" onclick="saveCKey()">저장</button><button class="kc-del" onclick="delKey('claude')">삭제</button></div>
         <select class="kc-model" id="cs-model" onchange="saveModel('claude',this.value)">
           <option value="claude-sonnet-4-20250514">Claude Sonnet 4.5</option>
           <option value="claude-haiku-4-5-20251001">Claude Haiku 4.5 (저렴)</option>
         </select>
       </div>
     </div>
-
-    <!-- Usage Stats -->
     <div class="s-sec">
       <div class="s-sec-title">📊 오늘 사용량</div>
       <div class="usage-grid">
         <div class="usage-card" id="uc-gem">
-          <div class="uc-head">
-            <span class="uc-icon">🔮</span>
-            <span class="uc-name">Gemini</span>
-            <span class="uc-active" id="ua-gem" style="display:none">사용중</span>
-          </div>
+          <div class="uc-head"><span class="uc-icon">🔮</span><span class="uc-name">Gemini</span><span class="uc-active" id="ua-gem" style="display:none">사용중</span></div>
           <div class="uc-stat"><span class="uc-lbl">요청</span><span class="uc-val" id="u-g-req">0</span></div>
           <div class="uc-stat"><span class="uc-lbl">입력 토큰</span><span class="uc-val" id="u-g-in">0</span></div>
           <div class="uc-stat"><span class="uc-lbl">출력 토큰</span><span class="uc-val" id="u-g-out">0</span></div>
-          <div class="uc-stat"><span class="uc-lbl">합계</span><span class="uc-val" id="u-g-tot">0</span></div>
           <div class="uc-cost cost-free" id="u-g-cost">무료 티어</div>
         </div>
         <div class="usage-card" id="uc-cla">
-          <div class="uc-head">
-            <span class="uc-icon">🤖</span>
-            <span class="uc-name">Claude</span>
-            <span class="uc-active" id="ua-cla" style="display:none">사용중</span>
-          </div>
+          <div class="uc-head"><span class="uc-icon">🤖</span><span class="uc-name">Claude</span><span class="uc-active" id="ua-cla" style="display:none">사용중</span></div>
           <div class="uc-stat"><span class="uc-lbl">요청</span><span class="uc-val" id="u-c-req">0</span></div>
           <div class="uc-stat"><span class="uc-lbl">입력 토큰</span><span class="uc-val" id="u-c-in">0</span></div>
           <div class="uc-stat"><span class="uc-lbl">출력 토큰</span><span class="uc-val" id="u-c-out">0</span></div>
-          <div class="uc-stat"><span class="uc-lbl">합계</span><span class="uc-val" id="u-c-tot">0</span></div>
           <div class="uc-cost" id="u-c-cost">≈ $0.0000</div>
         </div>
       </div>
-      <button class="s-reset-btn" onclick="resetUsage()">🗑 오늘 사용량 초기화</button>
+      <button class="s-reset-btn" onclick="resetUsage()">🗑 사용량 초기화</button>
     </div>
 
+    <!-- 💾 저장 데이터 관리 -->
+    <div class="s-sec">
+      <div class="s-sec-title">💾 저장 데이터</div>
+      <div class="st-card">
+        <div class="st-row"><span class="st-lbl">📁 저장된 파일</span><span class="st-val" id="db-files">--</span></div>
+        <div class="st-row"><span class="st-lbl">✏️ 저장된 필기</span><span class="st-val" id="db-anns">--</span></div>
+        <div class="st-row"><span class="st-lbl">💿 사용 용량</span><span class="st-val" id="db-size">계산 중...</span></div>
+        <div class="st-bar-wrap"><div class="st-bar" id="db-bar"></div></div>
+        <div class="st-note">
+          📱 IndexedDB에 자동저장 · 앱 종료 후 재시작해도 복원<br>
+          ⚠️ 홈 화면 추가(PWA) 시 더 안정적으로 유지됩니다
+        </div>
+      </div>
+      <button class="s-reset-btn" onclick="clearAllData()">🗑 전체 데이터 초기화</button>
+    </div>
   </div>
 </div>
 
-<!-- ── APP ── -->
+<!-- APP -->
 <div id="app">
   <div id="topbar">
     <div class="tb-logo">Nurse<em>Study</em></div>
-    <!-- API Badge (opens settings) -->
     <div class="api-badge" id="api-badge" onclick="openSettings()">
       <div class="api-badge-dot" id="badge-dot"></div>
       <span class="api-badge-name" id="badge-name">API</span>
@@ -439,7 +415,6 @@ input[type=range]{width:52px;accent-color:var(--tl);cursor:pointer;}
     <button class="tbtn" onclick="saveDrawing()">💾</button>
     <button class="tbtn" onclick="openSettings()">⚙️</button>
   </div>
-
   <div class="main">
     <!-- LEFT -->
     <div class="left">
@@ -452,11 +427,11 @@ input[type=range]{width:52px;accent-color:var(--tl);cursor:pointer;}
           <button class="la-btn la-all" onclick="analyzeAll()">⚡ 전체</button>
         </div>
         <div class="sel-badge" id="selBadge"></div>
+        <div class="drag-hint">☑ 체크박스를 드래그하면 다중선택</div>
       </div>
       <div id="bprog"><span id="bp-txt">분석 중...</span><div id="bpbar"><div id="bpfill"></div></div><button id="bp-cn" onclick="S.batchCancel=true">중단</button></div>
       <div class="flist" id="flist"><div class="no-files">📋<br>이미지 또는 PDF를<br>추가해보세요</div></div>
     </div>
-
     <!-- CENTER -->
     <div class="center">
       <div class="dtb">
@@ -498,13 +473,12 @@ input[type=range]{width:52px;accent-color:var(--tl);cursor:pointer;}
       <div class="carea">
         <div id="cvp">
           <div id="cvstage"><div class="ccon"><canvas id="bgC"></canvas><canvas id="dwC"></canvas></div></div>
-          <div id="hint"><div class="hi">🏥</div><h2>강의자료를 추가하세요</h2><p>왼쪽에서 파일을 추가하고<br>☑ 체크 후 분석 시작</p></div>
+          <div id="hint"><div class="hi">🏥</div><h2>강의자료를 추가하세요</h2><p>왼쪽에서 파일 추가 후<br>☑ 체크 → 분석 시작</p></div>
         </div>
         <div id="zhud"><button class="zhb" onclick="zStep(.25)">+</button><span id="zpct2">100%</span><button class="zhb" onclick="zStep(-.25)">-</button><button class="zhr" onclick="resetZ()">리셋</button></div>
-        <div id="loading"><div class="spin"></div><div style="font-size:12px;color:var(--mut)" id="ltxt">로딩...</div></div>
+        <div id="loading"><div class="spin"></div><div class="load-txt" id="ltxt">로딩...</div></div>
       </div>
     </div>
-
     <!-- RIGHT -->
     <div class="right">
       <div class="rtabs">
@@ -542,145 +516,160 @@ pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/p
 pdfjsLib.verbosity=0;
 
 // ── CONFIG ──
-const CFG = {
-  keys:{claude:localStorage.getItem('ns_ck')||'',gemini:localStorage.getItem('ns_gk')||''},
-  models:{claude:localStorage.getItem('ns_cm')||'claude-sonnet-4-20250514',gemini:localStorage.getItem('ns_gm')||'gemini-2.0-flash'},
-  active:localStorage.getItem('ns_active')||''
-};
+const CFG={keys:{claude:localStorage.getItem('ns_ck')||'',gemini:localStorage.getItem('ns_gk')||''},models:{claude:localStorage.getItem('ns_cm')||'claude-sonnet-4-20250514',gemini:localStorage.getItem('ns_gm')||'gemini-2.0-flash'},active:localStorage.getItem('ns_active')||''};
 
-// ── USAGE (daily) ──
-function initUsage(){
-  const today=new Date().toDateString();
-  try{const s=JSON.parse(localStorage.getItem('ns_usage')||'null');if(s&&s.date===today)return s;}catch{}
-  return{date:new Date().toDateString(),gemini:{req:0,inTok:0,outTok:0},claude:{req:0,inTok:0,outTok:0}};
-}
-let U=initUsage();
+// ── USAGE ──
+function initU(){const t=new Date().toDateString();try{const s=JSON.parse(localStorage.getItem('ns_usage')||'null');if(s&&s.date===t)return s;}catch{}return{date:t,gemini:{req:0,inTok:0,outTok:0},claude:{req:0,inTok:0,outTok:0}};}
+let U=initU();
 function saveU(){localStorage.setItem('ns_usage',JSON.stringify(U));}
 function trackU(api,inT,outT){U[api].req++;U[api].inTok+=inT||0;U[api].outTok+=outT||0;saveU();updateUsageUI();updateBadge();}
-
 function fmtTok(n){if(n>=1000000)return(n/1000000).toFixed(1)+'M';if(n>=1000)return(n/1000).toFixed(1)+'K';return n.toString();}
+function calcCost(api){if(api==='gemini'){if(U.gemini.req<=1500&&(U.gemini.inTok+U.gemini.outTok)<=1000000)return{label:'무료 티어',cls:'cost-free'};const c=(U.gemini.inTok/1e6*0.075)+(U.gemini.outTok/1e6*0.30);return{label:`≈ $${c.toFixed(4)}`,cls:'cost-paid'};}else{const isH=CFG.models.claude.includes('haiku');const c=(U.claude.inTok/1e6*(isH?0.80:3.00))+(U.claude.outTok/1e6*(isH?4.00:15.00));return{label:`≈ $${c.toFixed(4)}`,cls:c>0?'cost-paid':''};}}
+function updateUsageUI(){const g=U.gemini,c=U.claude;document.getElementById('u-g-req').textContent=g.req;document.getElementById('u-g-in').textContent=fmtTok(g.inTok);document.getElementById('u-g-out').textContent=fmtTok(g.outTok);const gc=calcCost('gemini');const gcEl=document.getElementById('u-g-cost');gcEl.textContent=gc.label;gcEl.className='uc-cost '+gc.cls;document.getElementById('u-c-req').textContent=c.req;document.getElementById('u-c-in').textContent=fmtTok(c.inTok);document.getElementById('u-c-out').textContent=fmtTok(c.outTok);const cc=calcCost('claude');const ccEl=document.getElementById('u-c-cost');ccEl.textContent=cc.label;ccEl.className='uc-cost '+cc.cls;const isG=CFG.active==='gemini';document.getElementById('ua-gem').style.display=isG?'':'none';document.getElementById('ua-cla').style.display=!isG&&CFG.active?'':'none';document.getElementById('uc-gem').className='usage-card'+(isG?' active-gem':'');document.getElementById('uc-cla').className='usage-card'+(!isG&&CFG.active?' active-cla':'');}
+function updateBadge(){const isG=CFG.active==='gemini',isCl=CFG.active==='claude';const dot=document.getElementById('badge-dot'),name=document.getElementById('badge-name'),usage=document.getElementById('badge-usage');if(isG){dot.className='api-badge-dot gem';name.textContent='Gemini';const u=U.gemini;usage.textContent=u.req>0?`· ${u.req}req · ${fmtTok(u.inTok+u.outTok)}`:'· Free';}else if(isCl){dot.className='api-badge-dot cla';name.textContent='Claude';const u=U.claude;usage.textContent=u.req>0?`· ${u.req}req · ${fmtTok(u.inTok+u.outTok)}`:'· 유료';}else{dot.className='api-badge-dot';name.textContent='API 미설정';usage.textContent='';}}
+function resetUsage(){if(!confirm('사용량 초기화?'))return;U={date:new Date().toDateString(),gemini:{req:0,inTok:0,outTok:0},claude:{req:0,inTok:0,outTok:0}};saveU();updateUsageUI();updateBadge();toast('🗑 초기화');}
 
-function calcCost(api){
-  if(api==='gemini'){
-    if(U.gemini.req<=1500&&(U.gemini.inTok+U.gemini.outTok)<=1000000)return{label:'무료 티어',cls:'cost-free'};
-    const c=(U.gemini.inTok/1e6*0.075)+(U.gemini.outTok/1e6*0.30);
-    return{label:`≈ $${c.toFixed(4)}`,cls:'cost-paid'};
-  }else{
-    const isH=CFG.models.claude.includes('haiku');
-    const c=(U.claude.inTok/1e6*(isH?0.80:3.00))+(U.claude.outTok/1e6*(isH?4.00:15.00));
-    return{label:`≈ $${c.toFixed(4)}`,cls:c>0?'cost-paid':''};
-  }
+// ══════════════════════════════
+// ── INDEXEDDB 영구 저장 ──
+// ══════════════════════════════
+const DB_N='NurseStudyDB_v2',DB_V=1;
+let IDB=null;
+
+function openDB(){
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open(DB_N,DB_V);
+    r.onupgradeneeded=e=>{
+      const d=e.target.result;
+      if(!d.objectStoreNames.contains('files'))d.createObjectStore('files',{keyPath:'id'});
+      if(!d.objectStoreNames.contains('ann'))d.createObjectStore('ann',{keyPath:'k'});
+    };
+    r.onsuccess=e=>{IDB=e.target.result;res(IDB);};
+    r.onerror=()=>rej(r.error);
+  });
+}
+function idbStore(name,mode='readonly'){return IDB.transaction(name,mode).objectStore(name);}
+function idbPut(store,data){return new Promise((res,rej)=>{const r=idbStore(store,'readwrite').put(data);r.onsuccess=res;r.onerror=rej;});}
+function idbGetAll(store){return new Promise((res,rej)=>{const r=idbStore(store).getAll();r.onsuccess=()=>res(r.result);r.onerror=rej;});}
+function idbDel(store,key){return new Promise((res,rej)=>{const r=idbStore(store,'readwrite').delete(key);r.onsuccess=res;r.onerror=rej;});}
+function idbClear(store){return new Promise((res,rej)=>{const r=idbStore(store,'readwrite').clear();r.onsuccess=res;r.onerror=rej;});}
+
+async function dbSaveFile(f){
+  if(!IDB)return;
+  try{
+    const rec={id:f.id,name:f.name,type:f.type,thumbUrl:f.thumbUrl,pageCount:f.pageCount,ts:f._ts||Date.now()};
+    if(f.type==='img')rec.dataUrl=f.dataUrl;
+    else if(f._buf)rec.buf=f._buf;
+    await idbPut('files',rec);
+  }catch(e){console.warn('DB save:',e);}
+}
+let annTimers={};
+function dbSaveAnn(key,dataUrl){
+  if(!IDB)return;
+  clearTimeout(annTimers[key]);
+  annTimers[key]=setTimeout(()=>idbPut('ann',{k:key,v:dataUrl}).catch(()=>{}),600);
+}
+async function dbDelFile(id){
+  if(!IDB)return;
+  try{
+    await idbDel('files',id);
+    const anns=await idbGetAll('ann');
+    for(const a of anns)if(a.k.startsWith(id+'_'))await idbDel('ann',a.k);
+  }catch(e){}
+}
+async function updateStorageInfo(){
+  if(!IDB)return;
+  try{
+    const files=await idbGetAll('files');
+    const anns=await idbGetAll('ann');
+    document.getElementById('db-files').textContent=files.length+'개';
+    document.getElementById('db-anns').textContent=anns.length+'장';
+    if(navigator.storage&&navigator.storage.estimate){
+      const e=await navigator.storage.estimate();
+      const usedMB=(e.usage/1024/1024).toFixed(1);
+      const totalGB=(e.quota/1024/1024/1024).toFixed(1);
+      const pct=Math.round(e.usage/e.quota*100);
+      document.getElementById('db-size').textContent=`${usedMB}MB / ${totalGB}GB (${pct}%)`;
+      document.getElementById('db-bar').style.width=Math.min(pct,100)+'%';
+    }
+  }catch(e){}
 }
 
-function updateUsageUI(){
-  const g=U.gemini,c=U.claude;
-  document.getElementById('u-g-req').textContent=g.req;
-  document.getElementById('u-g-in').textContent=fmtTok(g.inTok);
-  document.getElementById('u-g-out').textContent=fmtTok(g.outTok);
-  document.getElementById('u-g-tot').textContent=fmtTok(g.inTok+g.outTok);
-  const gc=calcCost('gemini');
-  const gcEl=document.getElementById('u-g-cost');gcEl.textContent=gc.label;gcEl.className='uc-cost '+gc.cls;
-  document.getElementById('u-c-req').textContent=c.req;
-  document.getElementById('u-c-in').textContent=fmtTok(c.inTok);
-  document.getElementById('u-c-out').textContent=fmtTok(c.outTok);
-  document.getElementById('u-c-tot').textContent=fmtTok(c.inTok+c.outTok);
-  const cc=calcCost('claude');
-  const ccEl=document.getElementById('u-c-cost');ccEl.textContent=cc.label;ccEl.className='uc-cost '+cc.cls;
-  // Active indicators
-  const isG=CFG.active==='gemini';
-  document.getElementById('ua-gem').style.display=isG?'':'none';
-  document.getElementById('ua-cla').style.display=!isG&&CFG.active?'':'none';
-  document.getElementById('uc-gem').className='usage-card'+(isG?' active-gem':'');
-  document.getElementById('uc-cla').className='usage-card'+(!isG&&CFG.active?' active-cla':'');
+async function restoreDB(){
+  if(!IDB)return;
+  try{
+    const files=await idbGetAll('files');
+    if(!files.length)return;
+    // Restore annotations to memory
+    const anns=await idbGetAll('ann');
+    anns.forEach(a=>S.ann[a.k]=a.v);
+    // Restore files
+    files.sort((a,b)=>a.ts-b.ts);
+    let done=0;
+    for(const f of files){
+      document.getElementById('ltxt').textContent=`복원 중... (${++done}/${files.length})\n${f.name}`;
+      if(f.type==='img'){
+        S.files.push({id:f.id,name:f.name,type:'img',dataUrl:f.dataUrl,pageCount:1,thumbUrl:f.thumbUrl,_ts:f.ts});
+      }else if(f.buf){
+        try{
+          class SC{async fetch(){return{cMapData:new Uint8Array(0),compressionType:0};}}
+          const pdfDoc=await pdfjsLib.getDocument({data:f.buf.slice(),useSystemFonts:true,CMapReaderFactory:SC,verbosity:0}).promise;
+          S.files.push({id:f.id,name:f.name,type:'pdf',pdfDoc,pageCount:f.pageCount||pdfDoc.numPages,thumbUrl:f.thumbUrl,_buf:f.buf,_ts:f.ts});
+        }catch(e){console.warn('PDF restore:',f.name,e);}
+      }
+    }
+    if(!S.files.length)return;
+    renderList();
+    // Restore last position
+    const lid=localStorage.getItem('ns_lid');
+    const lp=parseInt(localStorage.getItem('ns_lp')||'1');
+    const lf=S.files.find(f=>f.id===lid)||S.files[S.files.length-1];
+    if(lf){
+      if(lf.type==='pdf'){S.pagesOpen[lf.id]=true;genThumbs(lf);}
+      S.activeId=lf.id;S.curPage=Math.min(lp,lf.pageCount||1);
+      renderList();
+      document.getElementById('memo-ta').value=lsGetMemo(lf.name);
+      await loadPage(lf,S.curPage);
+      restoreAI();
+    }
+    toast(`📂 ${S.files.length}개 파일 복원 완료`);
+  }catch(e){console.error('Restore error:',e);}
 }
 
-function updateBadge(){
-  const isG=CFG.active==='gemini';const isCl=CFG.active==='claude';
-  const dot=document.getElementById('badge-dot');
-  const name=document.getElementById('badge-name');
-  const usage=document.getElementById('badge-usage');
-  if(isG){dot.className='api-badge-dot gem';name.textContent='Gemini';const u=U.gemini;usage.textContent=u.req>0?`· ${u.req}req · ${fmtTok(u.inTok+u.outTok)}`:'· Free';}
-  else if(isCl){dot.className='api-badge-dot cla';name.textContent='Claude';const u=U.claude;usage.textContent=u.req>0?`· ${u.req}req · ${fmtTok(u.inTok+u.outTok)}`:'· 유료';}
-  else{dot.className='api-badge-dot';name.textContent='API 미설정';usage.textContent='';}
-}
+function savePos(){if(S.activeId){localStorage.setItem('ns_lid',S.activeId);localStorage.setItem('ns_lp',S.curPage.toString());}}
 
-function resetUsage(){if(!confirm('오늘 사용량을 초기화할까요?'))return;U={date:new Date().toDateString(),gemini:{req:0,inTok:0,outTok:0},claude:{req:0,inTok:0,outTok:0}};saveU();updateUsageUI();updateBadge();toast('🗑 사용량 초기화');}
+async function clearAllData(){
+  if(!confirm('모든 저장 데이터를 삭제할까요?\n(파일, 필기, 분석결과 전부 삭제)'))return;
+  try{
+    if(IDB){await idbClear('files');await idbClear('ann');}
+    localStorage.removeItem('ns_lid');localStorage.removeItem('ns_lp');
+    const toRemove=Object.keys(localStorage).filter(k=>k.startsWith('ns-ai')||k.startsWith('ns-mo')||k.startsWith('ns-sess'));
+    toRemove.forEach(k=>localStorage.removeItem(k));
+    toast('🗑 전체 초기화 완료');setTimeout(()=>location.reload(),1200);
+  }catch(e){toast('❌ 초기화 실패');}
+}
 
 // ── SETUP ──
 let setupAPI='gemini';
-function selectSetupAPI(api){
-  setupAPI=api;
-  document.getElementById('sc-gem').classList.toggle('sel',api==='gemini');
-  document.getElementById('sc-cla').classList.toggle('sel',api==='claude');
-  document.getElementById('su-gem-section').style.display=api==='gemini'?'block':'none';
-  document.getElementById('su-cla-section').style.display=api==='claude'?'block':'none';
-}
-function setupStart(){
-  const gk=document.getElementById('su-gk').value.trim();
-  const ck=document.getElementById('su-ck').value.trim();
-  const gm=document.getElementById('su-gm').value;
-  const cm=document.getElementById('su-cm').value;
-  if(setupAPI==='gemini'&&!gk){alert('Gemini API 키를 입력하세요');return;}
-  if(setupAPI==='claude'&&!ck){alert('Claude API 키를 입력하세요');return;}
-  if(gk){CFG.keys.gemini=gk;localStorage.setItem('ns_gk',gk);}
-  if(ck){CFG.keys.claude=ck;localStorage.setItem('ns_ck',ck);}
-  CFG.models.gemini=gm;CFG.models.claude=cm;
-  localStorage.setItem('ns_gm',gm);localStorage.setItem('ns_cm',cm);
-  CFG.active=setupAPI;localStorage.setItem('ns_active',setupAPI);
-  document.getElementById('setup').style.display='none';
-  document.getElementById('app').style.display='flex';
-  initSettingsUI();updateBadge();loadSessUI();
-}
+function selectSetupAPI(api){setupAPI=api;document.getElementById('sc-gem').classList.toggle('sel',api==='gemini');document.getElementById('sc-cla').classList.toggle('sel',api==='claude');document.getElementById('su-gem-section').style.display=api==='gemini'?'block':'none';document.getElementById('su-cla-section').style.display=api==='claude'?'block':'none';}
+function setupStart(){const gk=document.getElementById('su-gk').value.trim();const ck=document.getElementById('su-ck').value.trim();const gm=document.getElementById('su-gm').value;const cm=document.getElementById('su-cm').value;if(setupAPI==='gemini'&&!gk){alert('Gemini API 키를 입력하세요');return;}if(setupAPI==='claude'&&!ck){alert('Claude API 키를 입력하세요');return;}if(gk){CFG.keys.gemini=gk;localStorage.setItem('ns_gk',gk);}if(ck){CFG.keys.claude=ck;localStorage.setItem('ns_ck',ck);}CFG.models.gemini=gm;CFG.models.claude=cm;localStorage.setItem('ns_gm',gm);localStorage.setItem('ns_cm',cm);CFG.active=setupAPI;localStorage.setItem('ns_active',setupAPI);document.getElementById('setup').style.display='none';document.getElementById('app').style.display='flex';initSettingsUI();updateBadge();loadSessUI();}
 
 // ── SETTINGS ──
-function openSettings(){
-  initSettingsUI();updateUsageUI();
-  document.getElementById('s-ov').classList.add('open');
-  document.getElementById('s-panel').classList.add('open');
-}
-function closeSettings(){
-  document.getElementById('s-ov').classList.remove('open');
-  document.getElementById('s-panel').classList.remove('open');
-}
-function initSettingsUI(){
-  document.getElementById('gs-key').value=CFG.keys.gemini?'●'.repeat(12):'';
-  document.getElementById('cs-key').value=CFG.keys.claude?'●'.repeat(12):'';
-  document.getElementById('gs-model').value=CFG.models.gemini;
-  document.getElementById('cs-model').value=CFG.models.claude;
-  const gOk=!!CFG.keys.gemini,cOk=!!CFG.keys.claude;
-  const gSt=document.getElementById('gs-status');gSt.textContent=gOk?'✓ 등록됨':'미등록';gSt.className='kc-status '+(gOk?'ok':'no');
-  const cSt=document.getElementById('cs-status');cSt.textContent=cOk?'✓ 등록됨':'미등록';cSt.className='kc-status '+(cOk?'ok':'no');
-  document.getElementById('kc-gem').classList.toggle('has-key',gOk);
-  document.getElementById('kc-cla').classList.toggle('has-key',cOk);
-  const isG=CFG.active==='gemini';
-  document.getElementById('tog-gem').className='api-tog-btn'+(isG?' active-gem':'');
-  document.getElementById('tog-cla').className='api-tog-btn'+(!isG&&CFG.active?' active-cla':'');
-}
-function setActiveAPI(api){
-  if(api==='gemini'&&!CFG.keys.gemini){toast('⚠️ Gemini 키 먼저 등록');return;}
-  if(api==='claude'&&!CFG.keys.claude){toast('⚠️ Claude 키 먼저 등록');return;}
-  CFG.active=api;localStorage.setItem('ns_active',api);
-  initSettingsUI();updateUsageUI();updateBadge();toast(api==='gemini'?'🔮 Gemini로 전환':'🤖 Claude로 전환');
-}
+function openSettings(){initSettingsUI();updateUsageUI();updateStorageInfo();document.getElementById('s-ov').classList.add('open');document.getElementById('s-panel').classList.add('open');}
+function closeSettings(){document.getElementById('s-ov').classList.remove('open');document.getElementById('s-panel').classList.remove('open');}
+function initSettingsUI(){document.getElementById('gs-key').value=CFG.keys.gemini?'●'.repeat(12):'';document.getElementById('cs-key').value=CFG.keys.claude?'●'.repeat(12):'';document.getElementById('gs-model').value=CFG.models.gemini;document.getElementById('cs-model').value=CFG.models.claude;const gOk=!!CFG.keys.gemini,cOk=!!CFG.keys.claude;const gSt=document.getElementById('gs-status');gSt.textContent=gOk?'✓ 등록됨':'미등록';gSt.className='kc-status '+(gOk?'ok':'no');const cSt=document.getElementById('cs-status');cSt.textContent=cOk?'✓ 등록됨':'미등록';cSt.className='kc-status '+(cOk?'ok':'no');document.getElementById('kc-gem').classList.toggle('has-key',gOk);document.getElementById('kc-cla').classList.toggle('has-key',cOk);const isG=CFG.active==='gemini';document.getElementById('tog-gem').className='api-tog-btn'+(isG?' active-gem':'');document.getElementById('tog-cla').className='api-tog-btn'+(!isG&&CFG.active?' active-cla':'');}
+function setActiveAPI(api){if(api==='gemini'&&!CFG.keys.gemini){toast('⚠️ Gemini 키 먼저 등록');return;}if(api==='claude'&&!CFG.keys.claude){toast('⚠️ Claude 키 먼저 등록');return;}CFG.active=api;localStorage.setItem('ns_active',api);initSettingsUI();updateUsageUI();updateBadge();toast(api==='gemini'?'🔮 Gemini로 전환':'🤖 Claude로 전환');}
 function saveGKey(){const k=document.getElementById('gs-key').value.trim();if(!k||k.includes('●'))return;CFG.keys.gemini=k;localStorage.setItem('ns_gk',k);initSettingsUI();toast('✅ Gemini 키 저장');}
 function saveCKey(){const k=document.getElementById('cs-key').value.trim();if(!k||k.includes('●'))return;CFG.keys.claude=k;localStorage.setItem('ns_ck',k);initSettingsUI();toast('✅ Claude 키 저장');}
-function delKey(api){if(!confirm(`${api} API 키를 삭제할까요?`))return;CFG.keys[api]='';localStorage.removeItem(api==='gemini'?'ns_gk':'ns_ck');if(CFG.active===api){CFG.active='';localStorage.removeItem('ns_active');}initSettingsUI();updateBadge();toast('🗑 키 삭제됨');}
+function delKey(api){if(!confirm(`${api} 키 삭제?`))return;CFG.keys[api]='';localStorage.removeItem(api==='gemini'?'ns_gk':'ns_ck');if(CFG.active===api){CFG.active='';localStorage.removeItem('ns_active');}initSettingsUI();updateBadge();toast('🗑 삭제');}
 function saveModel(api,val){CFG.models[api]=val;localStorage.setItem(api==='gemini'?'ns_gm':'ns_cm',val);}
 
-// Check existing keys on load
-(()=>{
-  if(CFG.keys.gemini||CFG.keys.claude){
-    document.getElementById('setup').style.display='none';
-    document.getElementById('app').style.display='flex';
-    updateBadge();
-  }
-})();
+(()=>{if(CFG.keys.gemini||CFG.keys.claude){document.getElementById('setup').style.display='none';document.getElementById('app').style.display='flex';updateBadge();}})();
 
 // ── STATE ──
 const S={files:[],activeId:null,curPage:1,checked:new Set(),tool:'pen',col:'#1B2E4B',bs:3,op:1,palmOnly:false,isDrawing:false,ann:{},ai:{},chatHist:[],zoom:1,panX:0,panY:0,isPinching:false,isGesturing:false,batchCancel:false,pagesOpen:{}};
 let bgCtx,dwCtx,curImg=null;
 
-// ── LOCALSTORAGE ──
+// ── LOCALSTORAGE (AI·Memo·Sessions) ──
 const fk=(n,p)=>'ns-ai-'+n.replace(/[^a-zA-Z0-9]/g,'').slice(0,24)+'-p'+p;
 const mk=(n)=>'ns-mo-'+n.replace(/[^a-zA-Z0-9]/g,'').slice(0,30);
 function lsAI(n,p,r){try{localStorage.setItem(fk(n,p),JSON.stringify(r));}catch{}}
@@ -693,57 +682,42 @@ function lsGetSess(){try{return JSON.parse(localStorage.getItem('ns-sess')||'[]'
 // ── API CALLS ──
 const AP=`당신은 간호학과 교수이자 의료 교육 전문가입니다. 이미지를 분석해 순수 JSON만 응답(마크다운 없이):\n{"topic":"주요주제(20자이내)","summary":"요약(200자이내)","keyPoints":["핵심1","핵심2","핵심3","핵심4","핵심5"],"mnemonic":"암기팁","clinicalNote":"임상포인트","quiz":[{"q":"Q1","a":"A1"},{"q":"Q2","a":"A2"},{"q":"Q3","a":"A3"},{"q":"Q4","a":"A4"},{"q":"Q5","a":"A5"}]}`;
 
-async function callGemini(du,prompt){
-  const b64=du.split(',')[1],mime=du.match(/data:([^;]+);/)[1];
-  const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${CFG.models.gemini}:generateContent?key=${CFG.keys.gemini}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{inline_data:{mime_type:mime,data:b64}},{text:prompt}]}]})});
-  const d=await res.json();
-  if(!res.ok)throw new Error(d.error?.message||`HTTP ${res.status}`);
-  const um=d.usageMetadata||{};trackU('gemini',um.promptTokenCount||0,um.candidatesTokenCount||0);
-  return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
-}
-
-async function callClaude(du,prompt){
-  const b64=du.split(',')[1],mime=du.match(/data:([^;]+);/)[1];
-  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':CFG.keys.claude,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:CFG.models.claude,max_tokens:2048,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mime,data:b64}},{type:'text',text:prompt}]}]})});
-  const d=await res.json();
-  if(!res.ok)throw new Error(d.error?.message||`HTTP ${res.status}`);
-  const u=d.usage||{};trackU('claude',u.input_tokens||0,u.output_tokens||0);
-  return d.content?.[0]?.text||'';
-}
-
-async function callActiveAI(du,prompt){
-  if(!CFG.active)throw new Error('API를 선택해주세요 (⚙️ 설정)');
-  if(CFG.active==='gemini'){if(!CFG.keys.gemini)throw new Error('Gemini 키 없음');return callGemini(du,prompt);}
-  else{if(!CFG.keys.claude)throw new Error('Claude 키 없음');return callClaude(du,prompt);}
-}
-
-async function callGeminiChat(contents){
-  const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${CFG.models.gemini}:generateContent?key=${CFG.keys.gemini}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system_instruction:{parts:[{text:'간호학과 학생을 돕는 AI 튜터. 친절하고 명확하게 한국어로 답변.'}]},contents})});
-  const d=await res.json();if(!res.ok)throw new Error(d.error?.message||`HTTP ${res.status}`);
-  const um=d.usageMetadata||{};trackU('gemini',um.promptTokenCount||0,um.candidatesTokenCount||0);
-  return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
-}
-
-async function callClaudeChat(msgs){
-  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':CFG.keys.claude,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:CFG.models.claude,max_tokens:1500,system:'간호학과 학생을 돕는 AI 튜터. 친절하고 명확하게 한국어로 답변.',messages:msgs})});
-  const d=await res.json();if(!res.ok)throw new Error(d.error?.message||`HTTP ${res.status}`);
-  const u=d.usage||{};trackU('claude',u.input_tokens||0,u.output_tokens||0);
-  return d.content?.[0]?.text||'';
-}
+async function callGemini(du,prompt){const b64=du.split(',')[1],mime=du.match(/data:([^;]+);/)[1];const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${CFG.models.gemini}:generateContent?key=${CFG.keys.gemini}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{inline_data:{mime_type:mime,data:b64}},{text:prompt}]}]})});const d=await res.json();if(!res.ok)throw new Error(d.error?.message||`HTTP ${res.status}`);const um=d.usageMetadata||{};trackU('gemini',um.promptTokenCount||0,um.candidatesTokenCount||0);return d.candidates?.[0]?.content?.parts?.[0]?.text||'';}
+async function callClaude(du,prompt){const b64=du.split(',')[1],mime=du.match(/data:([^;]+);/)[1];const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':CFG.keys.claude,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:CFG.models.claude,max_tokens:2048,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mime,data:b64}},{type:'text',text:prompt}]}]})});const d=await res.json();if(!res.ok)throw new Error(d.error?.message||`HTTP ${res.status}`);const u=d.usage||{};trackU('claude',u.input_tokens||0,u.output_tokens||0);return d.content?.[0]?.text||'';}
+async function callActiveAI(du,prompt){if(!CFG.active)throw new Error('API를 선택해주세요 (⚙️)');if(CFG.active==='gemini'){if(!CFG.keys.gemini)throw new Error('Gemini 키 없음');return callGemini(du,prompt);}else{if(!CFG.keys.claude)throw new Error('Claude 키 없음');return callClaude(du,prompt);}}
 
 // ── INIT ──
-window.addEventListener('load',()=>{
+window.addEventListener('load',async()=>{
   bgCtx=document.getElementById('bgC').getContext('2d');
   dwCtx=document.getElementById('dwC').getContext('2d');
   setupDraw();setupPinch();setupDragSelect();
   document.getElementById('fi').addEventListener('change',e=>{handleFiles(e.target.files);e.target.value='';});
-  if(CFG.keys.gemini||CFG.keys.claude)loadSessUI();
+  if(CFG.keys.gemini||CFG.keys.claude){
+    showLoad('저장된 데이터 확인 중...');
+    try{await openDB();await restoreDB();}catch(e){console.warn('DB init:',e);}
+    hideLoad();loadSessUI();
+  }
 });
 
 // ── FILES ──
 async function handleFiles(fl){for(const f of Array.from(fl)){const id='f'+Date.now()+Math.random().toString(36).slice(2);if(f.type==='application/pdf'||f.name.toLowerCase().endsWith('.pdf'))await loadPDF(f,id);else if(f.type.startsWith('image/'))await loadImg(f,id);}}
-function loadImg(file,id){return new Promise(res=>{const r=new FileReader();r.onload=async e=>{S.files.push({id,name:file.name,type:'img',dataUrl:e.target.result,pageCount:1,thumbUrl:e.target.result});renderList();await selFile(id);res();};r.readAsDataURL(file);});}
-async function loadPDF(file,id){showLoad('PDF 로딩 중...');try{const ab=await file.arrayBuffer();class SC{async fetch(){return{cMapData:new Uint8Array(0),compressionType:0};}}const pdfDoc=await pdfjsLib.getDocument({data:ab,useSystemFonts:true,CMapReaderFactory:SC,verbosity:0}).promise;S.files.push({id,name:file.name,type:'pdf',pdfDoc,pageCount:pdfDoc.numPages,thumbUrl:await pdfTh(pdfDoc,1,80)});renderList();await selFile(id);}catch{toast('❌ PDF 실패');}finally{hideLoad();}}
+
+function loadImg(file,id){return new Promise(res=>{const r=new FileReader();r.onload=async e=>{const ts=Date.now();const fo={id,name:file.name,type:'img',dataUrl:e.target.result,pageCount:1,thumbUrl:e.target.result,_ts:ts};S.files.push(fo);await dbSaveFile(fo);renderList();await selFile(id);res();};r.readAsDataURL(file);});}
+
+async function loadPDF(file,id){
+  showLoad('PDF 로딩 중...');
+  try{
+    const ab=await file.arrayBuffer();
+    class SC{async fetch(){return{cMapData:new Uint8Array(0),compressionType:0};}}
+    const pdfDoc=await pdfjsLib.getDocument({data:ab,useSystemFonts:true,CMapReaderFactory:SC,verbosity:0}).promise;
+    const thumbUrl=await pdfTh(pdfDoc,1,80);
+    const ts=Date.now();
+    const fo={id,name:file.name,type:'pdf',pdfDoc,pageCount:pdfDoc.numPages,thumbUrl,_buf:ab,_ts:ts};
+    S.files.push(fo);
+    await dbSaveFile(fo);
+    renderList();await selFile(id);
+  }catch{toast('❌ PDF 실패');}finally{hideLoad();}
+}
 async function pdfTh(doc,n,w){const p=await doc.getPage(n);const vp=p.getViewport({scale:w/p.getViewport({scale:1}).width});const oc=document.createElement('canvas');oc.width=vp.width;oc.height=vp.height;await p.render({canvasContext:oc.getContext('2d'),viewport:vp}).promise;return oc.toDataURL();}
 
 function renderList(){
@@ -765,56 +739,52 @@ function updSel(){const n=S.checked.size;const b=document.getElementById('selBad
 function togChk(id){if(S.checked.has(id))S.checked.delete(id);else S.checked.add(id);renderList();}
 function toggleSelAll(){if(S.checked.size===S.files.length&&S.files.length>0)S.checked.clear();else S.files.forEach(f=>S.checked.add(f.id));renderList();}
 
-/* ── 드래그 다중선택 / 해제 ── */
+// ── 드래그 다중선택 ──
 function setupDragSelect(){
   const list=document.getElementById('flist');
   let active=false,mode=null,seen=new Set();
-
-  // 체크박스 위에서 터치 시작 → 드래그 모드 진입
   list.addEventListener('pointerdown',e=>{
     if(!e.target.closest('.ipad-chk'))return;
     const item=e.target.closest('[data-fid]');if(!item)return;
     const id=item.dataset.fid;
-    active=true;
-    mode=S.checked.has(id)?'off':'on'; // 이미 선택됨 → 해제모드, 아니면 선택모드
-    seen=new Set([id]);
+    active=true;mode=S.checked.has(id)?'off':'on';seen=new Set([id]);
     if(mode==='on')S.checked.add(id);else S.checked.delete(id);
     renderList();
   },{passive:true});
-
-  // 드래그 중 스크롤 방지
   list.addEventListener('touchmove',e=>{if(active)e.preventDefault();},{passive:false});
-
-  // 드래그하며 지나가는 항목 자동 선택/해제
   list.addEventListener('pointermove',e=>{
     if(!active)return;
     const el=document.elementFromPoint(e.clientX,e.clientY);if(!el)return;
     const item=el.closest('[data-fid]');if(!item)return;
-    const id=item.dataset.fid;
-    if(!id||seen.has(id))return;
+    const id=item.dataset.fid;if(!id||seen.has(id))return;
     seen.add(id);
     if(mode==='on')S.checked.add(id);else S.checked.delete(id);
-    // 햅틱 피드백 (iOS 지원 시)
     if(navigator.vibrate)navigator.vibrate(8);
     renderList();
   },{passive:true});
-
-  // 드래그 종료
-  ['pointerup','pointercancel','touchend'].forEach(ev=>
-    list.addEventListener(ev,()=>{active=false;mode=null;seen.clear();},{passive:true})
-  );
+  ['pointerup','pointercancel','touchend'].forEach(ev=>list.addEventListener(ev,()=>{active=false;mode=null;seen.clear();},{passive:true}));
 }
+
 function togPgs(id){S.pagesOpen[id]=!S.pagesOpen[id];const f=S.files.find(x=>x.id===id);if(f&&f.type==='pdf'&&(!f.pageThumbs||!f.pageThumbs.length))genThumbs(f);renderList();}
 async function genThumbs(f){if(f._tg)return;f._tg=true;f.pageThumbs=[];for(let i=1;i<=f.pageCount;i++){try{f.pageThumbs.push(await pdfTh(f.pdfDoc,i,140));}catch{f.pageThumbs.push('');}if(i%3===0||i===f.pageCount)renderList();}f._tg=false;}
 
-async function selFile(id){if(S.activeId)saveAnn();S.activeId=id;S.curPage=1;const f=S.files.find(x=>x.id===id);if(!f)return;if(f.type==='pdf'){S.pagesOpen[id]=true;if(!f.pageThumbs||!f.pageThumbs.length)genThumbs(f);}renderList();document.getElementById('memo-ta').value=lsGetMemo(f.name);resetZ(false);await loadPage(f,1);restoreAI();}
-async function jumpPg(id,n){if(S.activeId!==id){if(S.activeId)saveAnn();S.activeId=id;}else saveAnn();S.curPage=n;const f=S.files.find(x=>x.id===id);if(!f)return;renderList();resetZ(false);await loadPage(f,n);restoreAI();}
+async function selFile(id){if(S.activeId)saveAnn();S.activeId=id;S.curPage=1;const f=S.files.find(x=>x.id===id);if(!f)return;if(f.type==='pdf'){S.pagesOpen[id]=true;if(!f.pageThumbs||!f.pageThumbs.length)genThumbs(f);}renderList();document.getElementById('memo-ta').value=lsGetMemo(f.name);resetZ(false);await loadPage(f,1);restoreAI();savePos();}
+async function jumpPg(id,n){if(S.activeId!==id){if(S.activeId)saveAnn();S.activeId=id;}else saveAnn();S.curPage=n;const f=S.files.find(x=>x.id===id);if(!f)return;renderList();resetZ(false);await loadPage(f,n);restoreAI();savePos();}
 
-async function loadPage(f,n){showLoad('렌더링 중...');document.getElementById('hint').style.display='none';document.getElementById('cvstage').style.display='inline-flex';const ca=document.querySelector('.carea');const mW=ca.clientWidth-24,mH=ca.clientHeight-24;try{if(f.type==='img'){document.getElementById('pnav').classList.remove('show');const img=new Image();await new Promise((r,j)=>{img.onload=r;img.onerror=j;img.src=f.dataUrl;});const sc=Math.min(mW/img.width,mH/img.height,2);setCS(Math.round(img.width*sc),Math.round(img.height*sc));bgCtx.drawImage(img,0,0,Math.round(img.width*sc),Math.round(img.height*sc));curImg=img;}else{document.getElementById('pnav').classList.add('show');document.getElementById('pinfo').textContent=`${n} / ${f.pageCount}`;document.getElementById('prevBtn').disabled=n<=1;document.getElementById('nextBtn').disabled=n>=f.pageCount;const page=await f.pdfDoc.getPage(n);const bvp=page.getViewport({scale:1});const sc=Math.min(mW/bvp.width,mH/bvp.height,2);const vp=page.getViewport({scale:sc});setCS(Math.round(vp.width),Math.round(vp.height));await page.render({canvasContext:bgCtx,viewport:vp}).promise;curImg=true;f._lpd=document.getElementById('bgC').toDataURL('image/jpeg',0.85);}const ak=S.activeId+'_'+n;dwCtx.clearRect(0,0,document.getElementById('dwC').width,document.getElementById('dwC').height);if(S.ann[ak]){const a=new Image();a.onload=()=>dwCtx.drawImage(a,0,0);a.src=S.ann[ak];}}catch(e){console.error(e);}finally{hideLoad();}}
+async function loadPage(f,n){
+  showLoad('렌더링 중...');document.getElementById('hint').style.display='none';document.getElementById('cvstage').style.display='inline-flex';
+  const ca=document.querySelector('.carea');const mW=ca.clientWidth-24,mH=ca.clientHeight-24;
+  try{
+    if(f.type==='img'){document.getElementById('pnav').classList.remove('show');const img=new Image();await new Promise((r,j)=>{img.onload=r;img.onerror=j;img.src=f.dataUrl;});const sc=Math.min(mW/img.width,mH/img.height,2);setCS(Math.round(img.width*sc),Math.round(img.height*sc));bgCtx.drawImage(img,0,0,Math.round(img.width*sc),Math.round(img.height*sc));curImg=img;}
+    else{document.getElementById('pnav').classList.add('show');document.getElementById('pinfo').textContent=`${n} / ${f.pageCount}`;document.getElementById('prevBtn').disabled=n<=1;document.getElementById('nextBtn').disabled=n>=f.pageCount;const page=await f.pdfDoc.getPage(n);const bvp=page.getViewport({scale:1});const sc=Math.min(mW/bvp.width,mH/bvp.height,2);const vp=page.getViewport({scale:sc});setCS(Math.round(vp.width),Math.round(vp.height));await page.render({canvasContext:bgCtx,viewport:vp}).promise;curImg=true;f._lpd=document.getElementById('bgC').toDataURL('image/jpeg',0.85);}
+    const ak=S.activeId+'_'+n;dwCtx.clearRect(0,0,document.getElementById('dwC').width,document.getElementById('dwC').height);
+    if(S.ann[ak]){const a=new Image();a.onload=()=>dwCtx.drawImage(a,0,0);a.src=S.ann[ak];}
+  }catch(e){console.error(e);}finally{hideLoad();}
+}
 function setCS(W,H){const bg=document.getElementById('bgC'),dw=document.getElementById('dwC');bg.width=dw.width=W;bg.height=dw.height=H;bgCtx.clearRect(0,0,W,H);dwCtx.clearRect(0,0,W,H);}
-async function changePage(d){if(!S.activeId)return;const f=S.files.find(x=>x.id===S.activeId);if(!f||f.type!=='pdf')return;saveAnn();const n=S.curPage+d;if(n<1||n>f.pageCount)return;S.curPage=n;resetZ(false);renderList();await loadPage(f,n);restoreAI();}
-function saveAnn(){if(S.activeId)S.ann[S.activeId+'_'+S.curPage]=document.getElementById('dwC').toDataURL();}
-function delFile(id){if(!confirm('삭제?'))return;S.files=S.files.filter(f=>f.id!==id);S.checked.delete(id);Object.keys(S.ann).filter(k=>k.startsWith(id)).forEach(k=>delete S.ann[k]);Object.keys(S.ai).filter(k=>k.startsWith(id)).forEach(k=>delete S.ai[k]);delete S.pagesOpen[id];if(S.activeId===id){S.activeId=null;curImg=null;document.getElementById('hint').style.display='flex';document.getElementById('cvstage').style.display='none';document.getElementById('pnav').classList.remove('show');}renderList();}
+async function changePage(d){if(!S.activeId)return;const f=S.files.find(x=>x.id===S.activeId);if(!f||f.type!=='pdf')return;saveAnn();const n=S.curPage+d;if(n<1||n>f.pageCount)return;S.curPage=n;resetZ(false);renderList();await loadPage(f,n);restoreAI();savePos();}
+function saveAnn(){if(S.activeId){const key=S.activeId+'_'+S.curPage;const du=document.getElementById('dwC').toDataURL();S.ann[key]=du;dbSaveAnn(key,du);}}
+async function delFile(id){if(!confirm('삭제?'))return;S.files=S.files.filter(f=>f.id!==id);S.checked.delete(id);Object.keys(S.ann).filter(k=>k.startsWith(id)).forEach(k=>delete S.ann[k]);Object.keys(S.ai).filter(k=>k.startsWith(id)).forEach(k=>delete S.ai[k]);delete S.pagesOpen[id];dbDelFile(id);if(S.activeId===id){S.activeId=null;curImg=null;document.getElementById('hint').style.display='flex';document.getElementById('cvstage').style.display='none';document.getElementById('pnav').classList.remove('show');}renderList();}
 
 // ── DRAW ──
 function setupDraw(){const cv=document.getElementById('dwC');cv.addEventListener('pointerdown',onDown,{passive:false});cv.addEventListener('pointermove',onMove,{passive:false});cv.addEventListener('pointerup',onUp,{passive:false});cv.addEventListener('pointercancel',onUp,{passive:false});cv.addEventListener('touchstart',e=>e.preventDefault(),{passive:false});cv.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});}
@@ -830,7 +800,7 @@ function showP(p){const b=document.getElementById('pbar'),fi=document.getElement
 function hideP(){document.getElementById('pbar').classList.remove('show');}
 function setTool(t){S.tool=t;['Pen','Hl','Er','Tx'].forEach(n=>document.getElementById('t'+n).classList.toggle('active',n.toLowerCase()===t));}
 function setCol(c,el){S.col=c;document.querySelectorAll('.csw').forEach(s=>s.classList.remove('active'));if(el)el.classList.add('active');document.getElementById('cc').value=c;if(S.tool==='er')setTool('pen');}
-function clearDraw(){if(!confirm('필기 초기화?'))return;dwCtx.clearRect(0,0,document.getElementById('dwC').width,document.getElementById('dwC').height);delete S.ann[S.activeId+'_'+S.curPage];}
+function clearDraw(){if(!confirm('필기 초기화?'))return;dwCtx.clearRect(0,0,document.getElementById('dwC').width,document.getElementById('dwC').height);const key=S.activeId+'_'+S.curPage;delete S.ann[key];if(IDB)idbDel('ann',key).catch(()=>{});}
 function togglePalm(){S.palmOnly=!S.palmOnly;document.getElementById('palmBtn').classList.toggle('on',S.palmOnly);toast(S.palmOnly?'🍎 펜슬만':'✋ 터치+펜슬');}
 async function saveDrawing(){if(!curImg||!S.activeId){toast('저장할 이미지 없음');return;}saveAnn();const off=document.createElement('canvas'),bg=document.getElementById('bgC');off.width=bg.width;off.height=bg.height;const c=off.getContext('2d');c.drawImage(bg,0,0);c.drawImage(document.getElementById('dwC'),0,0);const a=document.createElement('a');a.download=`NurseStudy_p${S.curPage}.png`;a.href=off.toDataURL();a.click();toast('💾 저장!');}
 
@@ -841,84 +811,30 @@ function apTF(a=false){const st=document.getElementById('cvstage');st.style.tran
 function resetZ(a=true){S.zoom=1;S.panX=0;S.panY=0;const st=document.getElementById('cvstage');st.style.transition=a?'transform .25s ease-out':'none';st.style.transform='translate(0,0) scale(1)';document.getElementById('zhud').classList.remove('show');setTimeout(()=>st.style.transition='none',300);}
 function setupPinch(){const cvp=document.getElementById('cvp');let pts=new Map(),sD=0,sZ=1,sPX=0,sPY=0,sMX=0,sMY=0;const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y),mid=(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2});cvp.addEventListener('pointerdown',e=>{pts.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pts.size===2){S.isPinching=true;S.isGesturing=true;S.isDrawing=false;const[a,b]=[...pts.values()];sD=dist(a,b);sZ=S.zoom;sPX=S.panX;sPY=S.panY;const m=mid(a,b);sMX=m.x;sMY=m.y;}},{passive:true});cvp.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pts.size===2&&S.isPinching){const[a,b]=[...pts.values()];S.zoom=Math.min(6,Math.max(0.3,sZ*(dist(a,b)/sD)));const m=mid(a,b);S.panX=sPX+(m.x-sMX);S.panY=sPY+(m.y-sMY);apTF();}},{passive:true});function eP(e){pts.delete(e.pointerId);if(pts.size<2&&S.isPinching){S.isPinching=false;setTimeout(()=>S.isGesturing=false,200);}}['pointerup','pointercancel'].forEach(ev=>cvp.addEventListener(ev,eP,{passive:true}));let lT=0;cvp.addEventListener('touchend',e=>{if(e.touches.length===0&&e.changedTouches.length===1){const n=Date.now();if(n-lT<300)resetZ();lT=n;}},{passive:true});cvp.addEventListener('wheel',e=>{e.preventDefault();zStep(e.deltaY>0?-.15:.15);},{passive:false});}
 
-// ── AI ANALYSIS ──
+// ── AI ──
 async function getPageDU(){const f=S.files.find(x=>x.id===S.activeId);if(!f)return null;if(f.type==='img')return f.dataUrl;return f._lpd||document.getElementById('bgC').toDataURL('image/jpeg',0.85);}
 async function getFileDU(fid,pn){const f=S.files.find(x=>x.id===fid);if(!f)return null;if(f.type==='img')return f.dataUrl;try{const page=await f.pdfDoc.getPage(pn);const vp=page.getViewport({scale:1.5});const oc=document.createElement('canvas');oc.width=vp.width;oc.height=vp.height;await page.render({canvasContext:oc.getContext('2d'),viewport:vp}).promise;return oc.toDataURL('image/jpeg',0.85);}catch{return null;}}
 
-async function analyzeCurrent(){
-  if(!S.activeId){toast('⚠️ 파일 선택');return;}
-  if(!CFG.active){toast('⚠️ API 설정 필요 (⚙️)');openSettings();return;}
-  const f=S.files.find(x=>x.id===S.activeId);
-  const btn=document.getElementById('abtn');btn.disabled=true;btn.innerHTML='<div class="spin2"></div> 분석 중...';
-  try{
-    const du=await getPageDU();if(!du)throw new Error('이미지 없음');
-    const text=await callActiveAI(du,AP);
-    const result=JSON.parse(text.replace(/```json|```/g,'').trim());
-    const k=S.activeId+'_'+S.curPage;S.ai[k]=result;
-    lsAI(f.name,S.curPage,result);lsAddSess(f.name,result.topic,f.type);
-    renderAI(result);renderList();toast('✅ 분석 완료!');loadSessUI();setTab(0);
-  }catch(e){toast('❌ '+e.message.slice(0,45));}
-  finally{btn.disabled=false;btn.innerHTML='🔬 현재 페이지 분석';}
-}
-async function analyzeSelected(){const ids=[...S.checked];if(!ids.length){toast('⚠️ 파일 체크');return;}if(!CFG.active){toast('⚠️ API 설정 필요 (⚙️)');openSettings();return;}await runBatch(ids);}
-async function analyzeAll(){if(!S.files.length){toast('⚠️ 파일 없음');return;}if(!CFG.active){toast('⚠️ API 설정 필요 (⚙️)');openSettings();return;}await runBatch(S.files.map(f=>f.id));}
-
-async function runBatch(ids){
-  S.batchCancel=false;const bp=document.getElementById('bprog');bp.classList.add('show');document.getElementById('abtn').disabled=true;
-  const tasks=[];for(const id of ids){const f=S.files.find(x=>x.id===id);if(!f)continue;if(f.type==='img')tasks.push({fid:id,p:1,name:f.name,ft:'img'});else for(let p=1;p<=f.pageCount;p++)tasks.push({fid:id,p,name:f.name,ft:'pdf'});}
-  const total=tasks.length;let done=0,failed=0;
-  for(const t of tasks){
-    if(S.batchCancel)break;
-    document.getElementById('bp-txt').textContent=`${t.name}${t.ft==='pdf'?' '+t.p+'p':''} (${done+1}/${total})`;
-    document.getElementById('bpfill').style.width=`${(done/total)*100}%`;
-    try{const du=await getFileDU(t.fid,t.p);if(!du)throw 0;const text=await callActiveAI(du,AP);const result=JSON.parse(text.replace(/```json|```/g,'').trim());S.ai[t.fid+'_'+t.p]=result;lsAI(t.name,t.p,result);lsAddSess(t.name,result.topic,t.ft);renderList();if(S.activeId===t.fid&&S.curPage===t.p)renderAI(result);}catch{failed++;}
-    done++;await new Promise(r=>setTimeout(r,400));
-  }
-  document.getElementById('bpfill').style.width='100%';
-  document.getElementById('bp-txt').textContent=`완료 ${done-failed}/${total}`;
-  setTimeout(()=>bp.classList.remove('show'),2500);
-  document.getElementById('abtn').disabled=false;loadSessUI();renderList();toast(`✅ ${done-failed}/${total} 완료`);
-}
+async function analyzeCurrent(){if(!S.activeId){toast('⚠️ 파일 선택');return;}if(!CFG.active){toast('⚠️ API 설정 필요');openSettings();return;}const f=S.files.find(x=>x.id===S.activeId);const btn=document.getElementById('abtn');btn.disabled=true;btn.innerHTML='<div class="spin2"></div> 분석 중...';try{const du=await getPageDU();if(!du)throw new Error('이미지 없음');const text=await callActiveAI(du,AP);const result=JSON.parse(text.replace(/```json|```/g,'').trim());const k=S.activeId+'_'+S.curPage;S.ai[k]=result;lsAI(f.name,S.curPage,result);lsAddSess(f.name,result.topic,f.type);renderAI(result);renderList();toast('✅ 분석 완료!');loadSessUI();setTab(0);}catch(e){toast('❌ '+e.message.slice(0,45));}finally{btn.disabled=false;btn.innerHTML='🔬 현재 페이지 분석';}}
+async function analyzeSelected(){const ids=[...S.checked];if(!ids.length){toast('⚠️ 파일 체크');return;}if(!CFG.active){toast('⚠️ API 설정 필요');openSettings();return;}await runBatch(ids);}
+async function analyzeAll(){if(!S.files.length){toast('⚠️ 파일 없음');return;}if(!CFG.active){toast('⚠️ API 설정 필요');openSettings();return;}await runBatch(S.files.map(f=>f.id));}
+async function runBatch(ids){S.batchCancel=false;const bp=document.getElementById('bprog');bp.classList.add('show');document.getElementById('abtn').disabled=true;const tasks=[];for(const id of ids){const f=S.files.find(x=>x.id===id);if(!f)continue;if(f.type==='img')tasks.push({fid:id,p:1,name:f.name,ft:'img'});else for(let p=1;p<=f.pageCount;p++)tasks.push({fid:id,p,name:f.name,ft:'pdf'});}const total=tasks.length;let done=0,failed=0;for(const t of tasks){if(S.batchCancel)break;document.getElementById('bp-txt').textContent=`${t.name}${t.ft==='pdf'?' '+t.p+'p':''} (${done+1}/${total})`;document.getElementById('bpfill').style.width=`${(done/total)*100}%`;try{const du=await getFileDU(t.fid,t.p);if(!du)throw 0;const text=await callActiveAI(du,AP);const result=JSON.parse(text.replace(/```json|```/g,'').trim());S.ai[t.fid+'_'+t.p]=result;lsAI(t.name,t.p,result);lsAddSess(t.name,result.topic,t.ft);renderList();if(S.activeId===t.fid&&S.curPage===t.p)renderAI(result);}catch{failed++;}done++;await new Promise(r=>setTimeout(r,400));}document.getElementById('bpfill').style.width='100%';document.getElementById('bp-txt').textContent=`완료 ${done-failed}/${total}`;setTimeout(()=>bp.classList.remove('show'),2500);document.getElementById('abtn').disabled=false;loadSessUI();renderList();toast(`✅ ${done-failed}/${total} 완료`);}
 
 function restoreAI(){const k=S.activeId+'_'+S.curPage;if(S.ai[k]){renderAI(S.ai[k]);return;}const f=S.files.find(x=>x.id===S.activeId);if(!f)return;const stored=lsGetAI(f.name,S.curPage);if(stored){S.ai[k]=stored;renderAI(stored);renderList();}else resetAI();}
-function renderAI(r){
-  document.getElementById('rp-0').innerHTML=`<div class="sec"><div class="shdr">📌 주제</div><div class="card">${r.topic||''}</div></div><div class="sec"><div class="shdr">📝 요약</div><div class="card">${r.summary||''}</div></div><div class="sec"><div class="shdr">⭐ 핵심 포인트</div>${(r.keyPoints||[]).map((p,i)=>`<div class="kp"><div class="kpn">${i+1}</div><div class="kpt">${p}</div></div>`).join('')}</div>${r.mnemonic?`<div class="sec"><div class="shdr">💡 암기팁</div><div class="card g">${r.mnemonic}</div></div>`:''}${r.clinicalNote?`<div class="sec"><div class="shdr">🏥 임상 포인트</div><div class="card r">${r.clinicalNote}</div></div>`:''}`;
-  document.getElementById('rp-1').innerHTML=`<div style="font-size:10px;color:var(--mut);margin-bottom:9px">💡 탭하면 정답 표시</div>${(r.quiz||[]).map((q,i)=>`<div class="fc" onclick="this.classList.toggle('open')"><div class="fcq">Q${i+1}. ${q.q}</div><div class="fch">▾ 탭하여 정답</div><div class="fca">💬 ${q.a}</div></div>`).join('')}`;
-}
+function renderAI(r){document.getElementById('rp-0').innerHTML=`<div class="sec"><div class="shdr">📌 주제</div><div class="card">${r.topic||''}</div></div><div class="sec"><div class="shdr">📝 요약</div><div class="card">${r.summary||''}</div></div><div class="sec"><div class="shdr">⭐ 핵심 포인트</div>${(r.keyPoints||[]).map((p,i)=>`<div class="kp"><div class="kpn">${i+1}</div><div class="kpt">${p}</div></div>`).join('')}</div>${r.mnemonic?`<div class="sec"><div class="shdr">💡 암기팁</div><div class="card g">${r.mnemonic}</div></div>`:''}${r.clinicalNote?`<div class="sec"><div class="shdr">🏥 임상 포인트</div><div class="card r">${r.clinicalNote}</div></div>`:''}`;document.getElementById('rp-1').innerHTML=`<div style="font-size:10px;color:var(--mut);margin-bottom:9px">💡 탭하면 정답 표시</div>${(r.quiz||[]).map((q,i)=>`<div class="fc" onclick="this.classList.toggle('open')"><div class="fcq">Q${i+1}. ${q.q}</div><div class="fch">▾ 탭하여 정답</div><div class="fca">💬 ${q.a}</div></div>`).join('')}`;}
 function resetAI(){document.getElementById('rp-0').innerHTML='<div class="empt"><div class="empt-i">🔬</div>파일 ☑ 선택 후<br><strong>분석을 시작하세요</strong></div>';document.getElementById('rp-1').innerHTML='<div class="empt"><div class="empt-i">🧠</div>AI 분석 후 퀴즈 생성</div>';}
 
 // ── TABS ──
 function setTab(idx){document.querySelectorAll('.rtab').forEach((t,i)=>t.classList.toggle('active',i===idx));[0,1,3,4].forEach(i=>{const el=document.getElementById('rp-'+i);if(el)el.classList.toggle('show',i===idx);});const chat=document.getElementById('rp-chat');chat.style.display=idx===2?'flex':'none';chat.classList.toggle('show',idx===2);document.getElementById('abtn-wrap').style.display=idx===2?'none':'block';}
 
 // ── MEMO ──
-let mT;
-function saveMemoH(){const f=S.files.find(x=>x.id===S.activeId);if(!f)return;clearTimeout(mT);mT=setTimeout(()=>{lsMemo(f.name,document.getElementById('memo-ta').value);const el=document.getElementById('msaved');el.textContent='✅ 자동저장';setTimeout(()=>el.textContent='',2000);},800);}
+let mT;function saveMemoH(){const f=S.files.find(x=>x.id===S.activeId);if(!f)return;clearTimeout(mT);mT=setTimeout(()=>{lsMemo(f.name,document.getElementById('memo-ta').value);const el=document.getElementById('msaved');el.textContent='✅ 자동저장';setTimeout(()=>el.textContent='',2000);},800);}
 
 // ── SESSIONS ──
 function loadSessUI(){const list=lsGetSess();const el=document.getElementById('sess-list');if(!list.length){el.innerHTML='<div class="empt"><div class="empt-i">📚</div>분석된 세션이<br>저장됩니다</div>';return;}el.innerHTML=list.map(s=>`<div class="sc"><div class="sc-t">${s.type==='pdf'?'📄':'🖼'} ${s.n}</div><div class="sc-m">${s.topic||''} · ${s.d} · ${s.api==='gemini'?'🔮':'🤖'}</div></div>`).join('');}
 
 // ── CHAT ──
-async function sendChat(){
-  const inp=document.getElementById('chat-ta');const text=inp.value.trim();if(!text)return;
-  if(!CFG.active){toast('⚠️ API 설정 필요');openSettings();return;}
-  inp.value='';inp.style.height='auto';document.getElementById('chat-send').disabled=true;
-  const withImg=document.getElementById('ctxChk').checked&&!!S.activeId&&!!curImg;
-  let pdu=null;if(withImg)pdu=await getPageDU();
-  appendMsg('u',text,withImg?'📎 현재페이지':null);S.chatHist.push({role:'user',text,pdu});
-  const tid='t'+Date.now();appendTyping(tid);scrollChat();
-  try{
-    let reply='';
-    if(CFG.active==='gemini'){
-      const contents=S.chatHist.slice(-8).map(h=>{const parts=[];if(h.pdu){const b=h.pdu.split(',')[1],m=h.pdu.match(/data:([^;]+);/)[1];parts.push({inline_data:{mime_type:m,data:b}});}parts.push({text:h.text});return{role:h.role==='user'?'user':'model',parts};});
-      reply=await callGeminiChat(contents);
-    }else{
-      const msgs=S.chatHist.slice(-8).map(h=>({role:h.role==='user'?'user':'assistant',content:h.pdu?[{type:'image',source:{type:'base64',media_type:h.pdu.match(/data:([^;]+);/)[1],data:h.pdu.split(',')[1]}},{type:'text',text:h.text}]:h.text}));
-      reply=await callClaudeChat(msgs);
-    }
-    S.chatHist.push({role:'model',text:reply});removeTyping(tid);appendMsg('a',reply);
-  }catch(e){removeTyping(tid);appendMsg('a','❌ '+e.message);}
-  finally{document.getElementById('chat-send').disabled=false;scrollChat();}
-}
+async function sendChat(){const inp=document.getElementById('chat-ta');const text=inp.value.trim();if(!text)return;if(!CFG.active){toast('⚠️ API 설정 필요');openSettings();return;}inp.value='';inp.style.height='auto';document.getElementById('chat-send').disabled=true;const withImg=document.getElementById('ctxChk').checked&&!!S.activeId&&!!curImg;let pdu=null;if(withImg)pdu=await getPageDU();appendMsg('u',text,withImg?'📎 현재페이지':null);S.chatHist.push({role:'user',text,pdu});const tid='t'+Date.now();appendTyping(tid);scrollChat();try{let reply='';if(CFG.active==='gemini'){const contents=S.chatHist.slice(-8).map(h=>{const parts=[];if(h.pdu){const b=h.pdu.split(',')[1],m=h.pdu.match(/data:([^;]+);/)[1];parts.push({inline_data:{mime_type:m,data:b}});}parts.push({text:h.text});return{role:h.role==='user'?'user':'model',parts};});const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${CFG.models.gemini}:generateContent?key=${CFG.keys.gemini}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system_instruction:{parts:[{text:'간호학과 학생을 돕는 AI 튜터. 친절하고 명확하게 한국어로 답변.'}]},contents})});const d=await res.json();if(!res.ok)throw new Error(d.error?.message||`HTTP ${res.status}`);const um=d.usageMetadata||{};trackU('gemini',um.promptTokenCount||0,um.candidatesTokenCount||0);reply=d.candidates?.[0]?.content?.parts?.[0]?.text||'응답 없음';}else{const msgs=S.chatHist.slice(-8).map(h=>({role:h.role==='user'?'user':'assistant',content:h.pdu?[{type:'image',source:{type:'base64',media_type:h.pdu.match(/data:([^;]+);/)[1],data:h.pdu.split(',')[1]}},{type:'text',text:h.text}]:h.text}));const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':CFG.keys.claude,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:CFG.models.claude,max_tokens:1500,system:'간호학과 학생을 돕는 AI 튜터. 친절하고 명확하게 한국어로 답변.',messages:msgs})});const d=await res.json();if(!res.ok)throw new Error(d.error?.message||`HTTP ${res.status}`);const u=d.usage||{};trackU('claude',u.input_tokens||0,u.output_tokens||0);reply=d.content?.[0]?.text||'응답 없음';}S.chatHist.push({role:'model',text:reply});removeTyping(tid);appendMsg('a',reply);}catch(e){removeTyping(tid);appendMsg('a','❌ '+e.message);}finally{document.getElementById('chat-send').disabled=false;scrollChat();}}
 function appendMsg(role,text,ctx){const msgs=document.getElementById('chat-msgs');const em=msgs.querySelector('.empt');if(em)em.remove();const now=new Date(),time=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');const div=document.createElement('div');div.className='cm '+role;div.innerHTML=`${ctx?`<div style="font-size:8px;color:var(--tl);padding:1px 3px">${ctx}</div>`:''}<div class="cb">${text.replace(/\n/g,'<br>')}</div><div class="cmt">${time}</div>`;msgs.appendChild(div);scrollChat();}
 function appendTyping(id){const msgs=document.getElementById('chat-msgs');const div=document.createElement('div');div.className='cm a';div.id=id;div.innerHTML='<div class="cb"><div class="tdots"><span></span><span></span><span></span></div></div>';msgs.appendChild(div);}
 function removeTyping(id){const el=document.getElementById(id);if(el)el.remove();}
@@ -929,8 +845,7 @@ function autoR(ta){ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeig
 // ── UTILS ──
 function showLoad(m){document.getElementById('ltxt').textContent=m;document.getElementById('loading').classList.add('show');}
 function hideLoad(){document.getElementById('loading').classList.remove('show');}
-let _tt;
-function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),2800);}
+let _tt;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),2800);}
 </script>
 </body>
 </html>
