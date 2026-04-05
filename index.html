@@ -55,6 +55,19 @@ html,body{height:100%;overflow:hidden;background:var(--navy);font-family:'Noto S
 .fdel:active{color:var(--acc);}
 .no-f{text-align:center;padding:22px 10px;color:var(--mut);font-size:12px;line-height:1.9;}
 .no-fi{font-size:30px;margin-bottom:8px;opacity:.4;}
+/* PDF PAGE THUMBNAILS */
+.pdf-pages{padding:0 6px 8px 10px;display:none;}
+.pdf-pages.open{display:block;}
+.pdf-pages-inner{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.pthumb-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;touch-action:manipulation;}
+.pthumb-wrap:active{opacity:.7;}
+.pthumb-img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:7px;border:2px solid var(--bdr);background:var(--bg);transition:border-color .15s;}
+.pthumb-wrap.active .pthumb-img{border-color:var(--teal);box-shadow:0 0 0 2px var(--tl);}
+.pthumb-num{font-size:10px;font-weight:600;color:var(--mut);}
+.pthumb-wrap.active .pthumb-num{color:var(--teal);}
+.pdf-toggle{display:flex;align-items:center;gap:5px;padding:3px 4px 5px;font-size:11px;color:var(--teal);font-weight:700;cursor:pointer;touch-action:manipulation;border:none;background:none;font-family:inherit;width:100%;}
+.pdf-toggle:active{opacity:.7;}
+.pdf-thumb-loading{text-align:center;padding:10px;font-size:11px;color:var(--mut);}
 
 /* CENTER */
 .center{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;}
@@ -225,6 +238,11 @@ input[type=range]{width:70px;accent-color:var(--teal);cursor:pointer;height:20px
 .cpbtn:active{opacity:.8;}
 .cpbtn.ok{background:var(--grn);}
 .eempty{text-align:center;padding:36px 18px;color:var(--mut);font-size:13px;line-height:1.8;}
+/* COPY BOX */
+.copy-box{margin-top:10px;border-radius:10px;overflow:hidden;}
+.copy-box-hint{background:var(--navy);color:#fff;font-size:11px;padding:7px 12px;font-weight:600;}
+.copy-textarea{width:100%;min-height:110px;padding:10px 12px;font-size:12px;font-family:monospace;line-height:1.6;border:none;background:#f8f9fb;color:var(--txt);resize:none;outline:none;-webkit-user-select:text;user-select:text;touch-action:auto;}
+.all-copy-box{width:100%;min-height:120px;margin-top:10px;padding:10px 12px;font-size:12px;font-family:monospace;border:2px solid var(--teal);border-radius:10px;background:#f0fafc;color:var(--txt);resize:none;outline:none;-webkit-user-select:text;user-select:text;touch-action:auto;display:none;}
 
 /* SETTINGS */
 .mbg{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);z-index:999;display:none;align-items:center;justify-content:center;padding:20px;}
@@ -379,6 +397,7 @@ input[type=range]{width:70px;accent-color:var(--teal);cursor:pointer;height:20px
       <button class="eclose" onclick="closeErrLog()">✕</button>
     </div>
     <div class="elist" id="errList"><div class="eempty">✅ 오류가 없습니다</div></div>
+    <textarea class="all-copy-box" id="allCopyBox" readonly onclick="this.select()" onfocus="this.select()" placeholder="전체 복사 텍스트가 여기에 표시됩니다..."></textarea>
   </div>
 </div>
 
@@ -428,22 +447,61 @@ function renderErrList(){
   const el=document.getElementById('errList');const ct=document.getElementById('errCount');
   if(ct)ct.textContent=EL.logs.length;
   if(!EL.logs.length){el.innerHTML='<div class="eempty">✅ 오류가 없습니다</div>';return;}
-  el.innerHTML=EL.logs.map(log=>{
+  el.innerHTML=EL.logs.map((log,idx)=>{
     const lc=log.level==='warn'?'warn':log.level==='info'?'info':'';
     const tag=log.level==='warn'?'WARN':log.level==='info'?'INFO':'ERROR';
     const full=`[${tag}] ${log.time}\n${log.msg}${log.detail?'\n\n'+log.detail:''}`;
-    return`<div class="eitem ${lc}"><div class="etop"><span class="etag ${lc}">${tag}</span><span class="etime">${log.time}</span></div><div class="emsg">${eh(log.msg)}</div>${log.detail?`<div class="edetail">${eh(log.detail)}</div>`:''}<div class="eact"><button class="cpbtn" onclick="cp(this,${JSON.stringify(full)})">📋 복사</button></div></div>`;
+    return`
+    <div class="eitem ${lc}">
+      <div class="etop">
+        <span class="etag ${lc}">${tag}</span>
+        <span class="etime">${log.time}</span>
+      </div>
+      <div class="emsg">${eh(log.msg)}</div>
+      ${log.detail?`<div class="edetail">${eh(log.detail)}</div>`:''}
+      <div class="eact">
+        <button class="cpbtn" onclick="showCopyBox(${idx})">📋 복사용 텍스트 보기</button>
+      </div>
+      <div class="copy-box" id="cbox_${idx}" style="display:none">
+        <div class="copy-box-hint">👆 텍스트를 길게 눌러 전체선택 → 복사하세요</div>
+        <textarea class="copy-textarea" readonly onclick="this.select()" onfocus="this.select()">${full}</textarea>
+      </div>
+    </div>`;
   }).join('');
 }
-function eh(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function cp(btn,text){
-  navigator.clipboard.writeText(text).catch(()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.focus();ta.select();document.execCommand('copy');document.body.removeChild(ta);});
-  const o=btn.innerHTML;btn.innerHTML='✅ 복사됨';btn.classList.add('ok');setTimeout(()=>{btn.innerHTML=o;btn.classList.remove('ok');},1800);
+function showCopyBox(idx){
+  const box=document.getElementById('cbox_'+idx);
+  if(!box)return;
+  const isOpen=box.style.display!=='none';
+  box.style.display=isOpen?'none':'block';
+  if(!isOpen){
+    const ta=box.querySelector('textarea');
+    if(ta){
+      setTimeout(()=>{ta.focus();ta.select();},100);
+      // Try clipboard API first
+      navigator.clipboard.writeText(ta.value).then(()=>{
+        showToast('✅ 클립보드에 복사됨!');
+      }).catch(()=>{
+        // iOS fallback — show textarea for manual copy
+        showToast('👆 텍스트 길게 눌러 복사하세요');
+      });
+    }
+  }
 }
-function copyAllErrors(){const text=EL.logs.map(l=>`[${l.level.toUpperCase()}] ${l.time}\n${l.msg}${l.detail?'\n'+l.detail:''}`).join('\n\n---\n\n');navigator.clipboard.writeText(text).then(()=>showToast('📋 전체 오류 복사 완료'));}
+function eh(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function copyAllErrors(){
+  const text=EL.logs.map(l=>`[${l.level.toUpperCase()}] ${l.time}\n${l.msg}${l.detail?'\n'+l.detail:''}`).join('\n\n---\n\n');
+  navigator.clipboard.writeText(text).then(()=>showToast('📋 전체 복사 완료!')).catch(()=>{
+    // Show a popup textarea for manual copy
+    const box=document.getElementById('allCopyBox');
+    box.value=text;box.style.display='block';
+    box.focus();box.select();
+    showToast('👆 아래 텍스트 전체 선택 후 복사하세요');
+  });
+}
 function clearErrors(){EL.logs=[];updateErrBadge();renderErrList();}
 function openErrLog(){document.getElementById('errModal').classList.add('open');renderErrList();}
-function closeErrLog(){document.getElementById('errModal').classList.remove('open');}
+function closeErrLog(){document.getElementById('errModal').classList.remove('open');document.getElementById('allCopyBox').style.display='none';}
 document.getElementById('errModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeErrLog();});
 
 // ══════════════════════════════
@@ -608,14 +666,96 @@ function renderList(){
   if(!S.files.length){el.innerHTML='<div class="no-f"><div class="no-fi">📋</div>이미지 또는 PDF를<br>추가해보세요</div>';return;}
   el.innerHTML=S.files.map(f=>{
     const analyzed=!!S.ai[f.id+'_1'];
+    const isActive=f.id===S.activeId;
     const th=f.type==='pdf'?`<div class="pdft fthumb">📄</div>`:`<img class="fthumb" src="${f.thumbUrl}">`;
-    return`<div class="fitem ${f.id===S.activeId?'active':''}" onclick="selectFile('${f.id}')">${th}<div class="finfo"><div class="fname">${f.name}</div><div class="fbadge ${analyzed?'':'p'}">${f.type==='pdf'?`📄${f.pageCount}p `:''}${analyzed?'✅ 분석완료':'미분석'}</div></div><button class="fdel" onclick="event.stopPropagation();delFile('${f.id}')">✕</button></div>`;
+    const pagesOpen=S.pagesOpen&&S.pagesOpen[f.id];
+    let pagesHtml='';
+    if(f.type==='pdf'){
+      const thumbs=f.pageThumbs||[];
+      pagesHtml=`
+        <button class="pdf-toggle" onclick="event.stopPropagation();togglePages('${f.id}')">
+          ${pagesOpen?'▾':'▸'} 페이지 미리보기 (${f.pageCount}p)
+        </button>
+        <div class="pdf-pages ${pagesOpen?'open':''}">
+          ${thumbs.length===0
+            ?'<div class="pdf-thumb-loading">⏳ 생성 중...</div>'
+            :`<div class="pdf-pages-inner">${thumbs.map((url,i)=>`
+              <div class="pthumb-wrap ${isActive&&S.curPage===i+1?'active':''}" onclick="event.stopPropagation();jumpToPage('${f.id}',${i+1})">
+                <img class="pthumb-img" src="${url}" loading="lazy">
+                <span class="pthumb-num">${i+1}p</span>
+              </div>`).join('')}</div>`}
+        </div>`;
+    }
+    return`<div>
+      <div class="fitem ${isActive&&f.type!=='pdf'?'active':isActive?'active':''}" onclick="selectFile('${f.id}')">
+        ${th}
+        <div class="finfo">
+          <div class="fname">${f.name}</div>
+          <div class="fbadge ${analyzed?'':'p'}">${f.type==='pdf'?`📄${f.pageCount}p `:''}${analyzed?'✅ 분석완료':'미분석'}</div>
+        </div>
+        <button class="fdel" onclick="event.stopPropagation();delFile('${f.id}')">✕</button>
+      </div>
+      ${pagesHtml}
+    </div>`;
   }).join('');
 }
+
+function togglePages(id){
+  if(!S.pagesOpen)S.pagesOpen={};
+  S.pagesOpen[id]=!S.pagesOpen[id];
+  // Start generating thumbs if not done yet
+  const f=S.files.find(x=>x.id===id);
+  if(f&&f.type==='pdf'&&(!f.pageThumbs||f.pageThumbs.length===0)){
+    generateAllThumbs(f);
+  }
+  renderList();
+}
+
+async function generateAllThumbs(f){
+  if(f._thumbGenRunning)return;
+  f._thumbGenRunning=true;
+  f.pageThumbs=[];
+  for(let i=1;i<=f.pageCount;i++){
+    try{
+      const url=await renderPDFThumb(f.pdfDoc,i,160);
+      f.pageThumbs.push(url);
+      // Re-render list every 3 pages for progressive display
+      if(i%3===0||i===f.pageCount)renderList();
+    }catch(e){
+      f.pageThumbs.push('');
+    }
+  }
+  f._thumbGenRunning=false;
+  renderList();
+}
+
+async function jumpToPage(id,n){
+  if(S.activeId!==id){
+    // select file first
+    if(S.activeId){saveAnn();S.memos[S.activeId]=document.getElementById('ma').value;}
+    S.activeId=id;
+    document.getElementById('ma').value=S.memos[id]||'';
+    resetZoom(false);
+  }else{
+    saveAnn();
+  }
+  S.curPage=n;
+  const f=S.files.find(x=>x.id===id);if(!f)return;
+  renderList();
+  await loadPage(f,n);
+  restoreAIForPage();
+}
+
 async function selectFile(id){
   if(S.activeId){saveAnn();S.memos[S.activeId]=document.getElementById('ma').value;}
   S.activeId=id;S.curPage=1;
   const f=S.files.find(x=>x.id===id);if(!f)return;
+  // Auto-open pages panel for PDF
+  if(f.type==='pdf'){
+    if(!S.pagesOpen)S.pagesOpen={};
+    S.pagesOpen[id]=true;
+    if(!f.pageThumbs||f.pageThumbs.length===0)generateAllThumbs(f);
+  }
   renderList();
   document.getElementById('ma').value=S.memos[id]||'';
   resetZoom(false);
@@ -671,7 +811,9 @@ async function changePage(d){
   const n=S.curPage+d;
   if(n<1||n>f.pageCount)return;
   S.curPage=n;resetZoom(false);
+  renderList();
   await loadPage(f,n);restoreAIForPage();
+  setTimeout(()=>{const el=document.querySelector('.pthumb-wrap.active');if(el)el.scrollIntoView({behavior:'smooth',block:'nearest'});},150);
 }
 function saveAnn(){if(S.activeId)S.ann[S.activeId+'_'+S.curPage]=document.getElementById('drawCanvas').toDataURL();}
 function showHint(){document.getElementById('dhint').style.display='flex';document.getElementById('cstage').style.display='none';document.getElementById('pageNav').classList.remove('show');curImg=null;}
