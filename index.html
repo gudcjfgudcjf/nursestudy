@@ -405,10 +405,10 @@ input[type=range]{width:70px;accent-color:var(--teal);cursor:pointer;height:20px
 <div class="mbg" id="modal">
   <div class="modal">
     <h2>⚙️ 설정</h2>
-    <label>OpenAI API Key</label>
-    <input type="password" id="ak" placeholder="sk-...로 시작하는 키 입력" autocomplete="off">
+    <label>Claude API Key</label>
+    <input type="password" id="ak" placeholder="sk-ant-...로 시작하는 키 입력" autocomplete="off">
     <label>모델</label>
-    <input type="text" id="mk" value="gpt-4o">
+    <input type="text" id="mk" value="claude-sonnet-4-6">
     <div class="mrow">
       <button class="bg2" onclick="closeSettings()">취소</button>
       <button class="bp" onclick="saveSettings()">저장</button>
@@ -512,7 +512,7 @@ const S={
   tool:'pen',color:'#1B2E4B',bs:3,op:1,
   palmOnly:false,isDrawing:false,
   apiKey:localStorage.getItem('ns_key')||'',
-  model:localStorage.getItem('ns_model')||'gpt-4o',
+  model:localStorage.getItem('ns_model')||'claude-sonnet-4-6',
   ann:{},memos:{},ai:{},
   chat:[],   // {role:'user'|'model', text, pageDataUrl?}
   // zoom/pan
@@ -930,7 +930,7 @@ function switchTab(tab,el){
 function restoreAIForPage(){const k=S.activeId+'_'+S.curPage;if(S.ai[k])renderAI(S.ai[k]);else resetPanel();}
 
 // ══════════════════════════════
-//  OPENAI ANALYSIS
+//  CLAUDE API ANALYSIS
 // ══════════════════════════════
 async function getPageDataUrl(){
   const f=S.files.find(x=>x.id===S.activeId);
@@ -950,22 +950,29 @@ async function analyze(){
     if(!dataUrl)throw new Error('이미지 데이터 없음');
   }catch(e){logError('이미지 변환 실패',e.message);showToast('❌ 이미지 변환 실패');btn.disabled=false;btn.innerHTML='🔬 AI 분석 시작';return;}
 
+  const b64=dataUrl.split(',')[1];
+  const mime=dataUrl.match(/data:([^;]+);/)[1];
   const pl=f.type==='pdf'?` (${S.curPage}/${f.pageCount}페이지)`:'';
   const prompt=`당신은 간호학과 교수이자 의료 교육 전문가입니다. 이 강의 자료${pl}를 분석하여 아래 JSON 형식으로만 응답하세요. 마크다운 없이 순수 JSON만:
 {"topic":"주요주제(20자이내)","summary":"전체요약(200자이내,간호학생관점)","keyPoints":["핵심1","핵심2","핵심3","핵심4","핵심5"],"mnemonic":"암기팁/두문자어(있으면)","clinicalNote":"임상적용또는시험출제포인트","quiz":[{"q":"질문1","a":"정답1"},{"q":"질문2","a":"정답2"},{"q":"질문3","a":"정답3"},{"q":"질문4","a":"정답4"},{"q":"질문5","a":"정답5"}]}`;
 
   logInfo('AI 분석 요청',`모델:${S.model} / ${f.name}${pl}`);
   try{
-    const res=await fetch('https://api.openai.com/v1/chat/completions',{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.apiKey},
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':S.apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
       body:JSON.stringify({
         model:S.model,
         max_tokens:2048,
         messages:[{
           role:'user',
           content:[
-            {type:'image_url',image_url:{url:dataUrl,detail:'high'}},
+            {type:'image',source:{type:'base64',media_type:mime,data:b64}},
             {type:'text',text:prompt}
           ]
         }]
@@ -979,7 +986,7 @@ async function analyze(){
       showToast(`❌ API 오류 ${res.status} — 🪲 확인`);openErrLog();return;
     }
     const data=JSON.parse(raw);
-    const text=data.choices?.[0]?.message?.content||'';
+    const text=data.content?.[0]?.text||'';
     if(!text){logError('AI 응답 비어있음',JSON.stringify(data,null,2));showToast('❌ AI 응답 없음 — 🪲 확인');return;}
     let result;
     try{result=JSON.parse(text.replace(/```json|```/g,'').trim());}
@@ -1030,34 +1037,46 @@ async function sendChat(){
   const typingId='typing_'+Date.now();
   appendTyping(typingId);scrollChat();
 
-  // Build OpenAI messages
-  const systemMsg={role:'system',content:'당신은 간호학과 학생을 돕는 의료 교육 AI 튜터입니다. 친절하고 명확하게 한국어로 답변하세요. 강의 내용에 대한 질문에 상세히 답하고, 임상 적용, 시험 포인트, 암기 팁도 함께 제공하세요.'};
-  const messages=[systemMsg];
-
-  // Add recent history (last 6 turns)
+  // Build Claude messages
+  const messages=[];
   const history=S.chat.slice(-7,-1);
   for(const h of history){
     if(h.role==='user'){
       const content=[];
-      if(h.pageDataUrl)content.push({type:'image_url',image_url:{url:h.pageDataUrl,detail:'low'}});
+      if(h.pageDataUrl){
+        const b=h.pageDataUrl.split(',')[1],m=h.pageDataUrl.match(/data:([^;]+);/)[1];
+        content.push({type:'image',source:{type:'base64',media_type:m,data:b}});
+      }
       content.push({type:'text',text:h.text});
       messages.push({role:'user',content});
     }else{
       messages.push({role:'assistant',content:h.text});
     }
   }
-
   // Current message
   const curContent=[];
-  if(pageDataUrl)curContent.push({type:'image_url',image_url:{url:pageDataUrl,detail:'high'}});
+  if(pageDataUrl){
+    const b=pageDataUrl.split(',')[1],m=pageDataUrl.match(/data:([^;]+);/)[1];
+    curContent.push({type:'image',source:{type:'base64',media_type:m,data:b}});
+  }
   curContent.push({type:'text',text});
   messages.push({role:'user',content:curContent});
 
   try{
-    const res=await fetch('https://api.openai.com/v1/chat/completions',{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.apiKey},
-      body:JSON.stringify({model:S.model,max_tokens:1500,messages})
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':S.apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:S.model,
+        max_tokens:1500,
+        system:'당신은 간호학과 학생을 돕는 의료 교육 AI 튜터입니다. 친절하고 명확하게 한국어로 답변하세요. 강의 내용에 대한 질문에 상세히 답하고, 임상 적용, 시험 포인트, 암기 팁도 함께 제공하세요.',
+        messages
+      })
     });
     const raw=await res.text();
     if(!res.ok){
@@ -1068,7 +1087,7 @@ async function sendChat(){
       return;
     }
     const data=JSON.parse(raw);
-    const reply=data.choices?.[0]?.message?.content||'응답을 받지 못했습니다.';
+    const reply=data.content?.[0]?.text||'응답을 받지 못했습니다.';
     S.chat.push({role:'assistant',text:reply});
     removeTyping(typingId);
     appendChatMsg('ai',reply);scrollChat();
@@ -1118,7 +1137,7 @@ function clearChat(){if(!confirm('대화 기록을 초기화할까요?'))return;
 function openSettings(){document.getElementById('ak').value=S.apiKey;document.getElementById('mk').value=S.model;document.getElementById('modal').classList.add('open');}
 function closeSettings(){document.getElementById('modal').classList.remove('open');}
 function saveSettings(){
-  S.apiKey=document.getElementById('ak').value.trim();S.model=document.getElementById('mk').value.trim()||'gpt-4o';
+  S.apiKey=document.getElementById('ak').value.trim();S.model=document.getElementById('mk').value.trim()||'claude-sonnet-4-6';
   localStorage.setItem('ns_key',S.apiKey);localStorage.setItem('ns_model',S.model);
   closeSettings();showToast('✅ 저장 완료');
   logInfo('설정 저장',`모델:${S.model}`);
