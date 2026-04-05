@@ -6,1152 +6,667 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="NurseStudy AI">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1B2E4B">
+<meta name="description" content="간호학과 AI 학습 도우미">
 <title>NurseStudy AI</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
-:root{
-  --bg:#EEF3F8;--sur:#fff;--sur2:#E8EFF6;
-  --teal:#1A7F8E;--tl:#2BA8BB;--td:#115C6A;
-  --navy:#1B2E4B;--acc:#E8534A;--gold:#D4A853;--grn:#27AE60;
-  --txt:#1B2E4B;--mut:#6B7C93;--bdr:#D0DCE8;
-  --r:20px;--rs:12px;
-  --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);
-}
+:root{--bg:#EEF3F8;--sur:#fff;--sur2:#E8EFF6;--teal:#1A7F8E;--tl:#2BA8BB;--td:#115C6A;--navy:#1B2E4B;--acc:#E8534A;--gold:#D4A853;--grn:#27AE60;--purple:#7B61FF;--txt:#1B2E4B;--mut:#6B7C93;--bdr:#D0DCE8;--r:20px;--rs:12px;--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;}
-html,body{height:100%;overflow:hidden;background:var(--navy);font-family:'Noto Sans KR',sans-serif;color:var(--txt);touch-action:none;}
+html,body{height:100%;overflow:hidden;background:var(--navy);font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif;color:var(--txt);touch-action:none;}
 .shell{display:flex;flex-direction:column;height:100dvh;padding-top:var(--st);padding-bottom:var(--sb);background:var(--bg);}
-
-/* TOPBAR */
-.topbar{background:var(--navy);color:#fff;display:flex;align-items:center;padding:0 14px;height:56px;flex-shrink:0;gap:7px;z-index:200;}
-.logo{font-family:'Playfair Display',serif;font-size:19px;flex:1;}
-.logo span{color:var(--tl);font-style:italic;}
-.tb{background:rgba(255,255,255,.12);border:none;color:#fff;width:44px;height:44px;border-radius:12px;font-size:19px;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;flex-shrink:0;position:relative;}
+.topbar{background:var(--navy);color:#fff;display:flex;align-items:center;padding:0 14px;height:54px;flex-shrink:0;gap:7px;z-index:200;}
+.logo{font-size:18px;font-weight:800;flex:1;letter-spacing:-.5px;}
+.logo span{color:var(--tl);}
+.api-ok{font-size:9px;font-weight:700;background:rgba(39,174,96,.25);border:1px solid rgba(39,174,96,.4);color:#7EFFA8;padding:3px 8px;border-radius:6px;white-space:nowrap;flex-shrink:0;}
+.pwa-badge{font-size:9px;font-weight:700;background:rgba(123,97,255,.3);border:1px solid rgba(123,97,255,.5);color:#C4B5FD;padding:3px 8px;border-radius:6px;white-space:nowrap;flex-shrink:0;display:none;}
+.pwa-badge.show{display:block;}
+.tb{background:rgba(255,255,255,.12);border:none;color:#fff;min-width:44px;height:44px;border-radius:12px;font-size:17px;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;flex-shrink:0;position:relative;padding:0 8px;gap:4px;}
 .tb:active{background:rgba(255,255,255,.28);}
-.badge{position:absolute;top:5px;right:5px;background:var(--acc);color:#fff;font-size:9px;font-weight:800;min-width:16px;height:16px;border-radius:99px;display:none;align-items:center;justify-content:center;padding:0 3px;}
+.badge{position:absolute;top:5px;right:5px;background:var(--acc);color:#fff;font-size:9px;font-weight:800;min-width:15px;height:15px;border-radius:99px;display:none;align-items:center;justify-content:center;padding:0 2px;}
 .badge.show{display:flex;}
-.palm-btn{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.12);border:none;color:#fff;padding:0 11px;height:44px;border-radius:12px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;touch-action:manipulation;white-space:nowrap;flex-shrink:0;}
+.palm-btn{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.12);border:none;color:#fff;padding:0 10px;height:44px;border-radius:12px;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;touch-action:manipulation;white-space:nowrap;flex-shrink:0;}
 .palm-btn.on{background:var(--teal);}
-
-/* LAYOUT */
 .layout{display:flex;flex:1;overflow:hidden;}
-
-/* LEFT */
-.left{width:206px;background:var(--sur);border-right:1px solid var(--bdr);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;}
-.ph{padding:11px 13px 7px;border-bottom:1px solid var(--bdr);flex-shrink:0;}
-.plbl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);}
-.up-btn{margin:9px;background:linear-gradient(135deg,var(--tl),var(--td));color:#fff;border:none;border-radius:var(--rs);padding:14px 10px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 4px 14px rgba(26,127,142,.3);touch-action:manipulation;flex-shrink:0;}
-.up-btn:active{opacity:.85;transform:scale(.97);}
-.flist{flex:1;overflow-y:auto;padding:6px;-webkit-overflow-scrolling:touch;}
-.fitem{display:flex;align-items:center;gap:7px;padding:8px;border-radius:var(--rs);border:1.5px solid transparent;cursor:pointer;margin-bottom:5px;touch-action:manipulation;}
-.fitem:active{opacity:.7;} .fitem.active{background:rgba(26,127,142,.1);border-color:var(--tl);}
-.fthumb{width:40px;height:40px;object-fit:cover;border-radius:8px;background:var(--bg);flex-shrink:0;}
-.pdft{background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:18px;border-radius:8px;width:40px;height:40px;}
+.left{width:214px;background:var(--sur);border-right:1px solid var(--bdr);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;transition:transform .3s ease;}
+.left-tabs{display:flex;background:var(--sur2);border-bottom:1px solid var(--bdr);flex-shrink:0;}
+.ltab{flex:1;padding:10px 4px;text-align:center;font-size:10px;font-weight:700;color:var(--mut);cursor:pointer;border-bottom:2px solid transparent;touch-action:manipulation;}
+.ltab.active{color:var(--teal);border-bottom-color:var(--teal);background:var(--sur);}
+.left-panel{flex:1;overflow:hidden;display:none;flex-direction:column;}
+.left-panel.show{display:flex;}
+.up-btn{margin:8px;background:linear-gradient(135deg,var(--tl),var(--td));color:#fff;border:none;border-radius:var(--rs);padding:12px 10px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;touch-action:manipulation;flex-shrink:0;}
+.up-btn:active{opacity:.85;}
+.batch-bar{display:flex;align-items:center;gap:5px;padding:6px 8px;border-bottom:1px solid var(--bdr);flex-shrink:0;background:var(--sur2);}
+.batch-btn{flex:1;background:var(--teal);color:#fff;border:none;border-radius:8px;padding:7px 4px;font-size:10.5px;font-weight:700;font-family:inherit;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:center;gap:3px;}
+.batch-btn.purple{background:var(--purple);}
+.sel-all-btn{background:none;border:1.5px solid var(--bdr);border-radius:7px;padding:5px 7px;font-size:10px;color:var(--mut);font-family:inherit;cursor:pointer;touch-action:manipulation;white-space:nowrap;}
+.flist{flex:1;overflow-y:auto;padding:5px;-webkit-overflow-scrolling:touch;}
+.fitem{display:flex;align-items:center;gap:6px;padding:7px 6px;border-radius:var(--rs);border:1.5px solid transparent;cursor:pointer;margin-bottom:4px;touch-action:manipulation;}
+.fitem.active{background:rgba(26,127,142,.1);border-color:var(--tl);}
+.fitem.checked{background:rgba(123,97,255,.08);border-color:var(--purple);}
+.fcheck{width:18px;height:18px;border-radius:5px;border:2px solid var(--bdr);background:var(--sur);flex-shrink:0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;}
+.fcheck.on{background:var(--purple);border-color:var(--purple);color:#fff;}
+.fthumb{width:36px;height:36px;object-fit:cover;border-radius:7px;background:var(--bg);flex-shrink:0;}
+.pdft{background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:16px;border-radius:7px;width:36px;height:36px;}
 .finfo{flex:1;min-width:0;}
-.fname{font-size:11.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.fbadge{font-size:10px;margin-top:2px;color:var(--grn);font-weight:600;}
+.fname{font-size:11px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fbadge{font-size:9.5px;margin-top:2px;color:var(--grn);font-weight:600;}
 .fbadge.p{color:var(--mut);font-weight:400;}
-.fdel{background:none;border:none;color:var(--mut);font-size:15px;padding:5px;cursor:pointer;touch-action:manipulation;flex-shrink:0;}
+.fdel{background:none;border:none;color:var(--mut);font-size:14px;padding:4px;cursor:pointer;touch-action:manipulation;flex-shrink:0;}
 .fdel:active{color:var(--acc);}
-.no-f{text-align:center;padding:22px 10px;color:var(--mut);font-size:12px;line-height:1.9;}
-.no-fi{font-size:30px;margin-bottom:8px;opacity:.4;}
-/* PDF PAGE THUMBNAILS */
-.pdf-pages{padding:0 6px 8px 10px;display:none;}
+.no-f{text-align:center;padding:20px 10px;color:var(--mut);font-size:12px;line-height:1.9;}
+.pdf-pages{padding:0 5px 6px 8px;display:none;}
 .pdf-pages.open{display:block;}
-.pdf-pages-inner{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
-.pthumb-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;touch-action:manipulation;}
-.pthumb-wrap:active{opacity:.7;}
-.pthumb-img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:7px;border:2px solid var(--bdr);background:var(--bg);transition:border-color .15s;}
+.pdf-pages-inner{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.pthumb-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;touch-action:manipulation;}
+.pthumb-img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:6px;border:2px solid var(--bdr);}
 .pthumb-wrap.active .pthumb-img{border-color:var(--teal);box-shadow:0 0 0 2px var(--tl);}
-.pthumb-num{font-size:10px;font-weight:600;color:var(--mut);}
+.pthumb-num{font-size:9px;font-weight:600;color:var(--mut);}
 .pthumb-wrap.active .pthumb-num{color:var(--teal);}
-.pdf-toggle{display:flex;align-items:center;gap:5px;padding:3px 4px 5px;font-size:11px;color:var(--teal);font-weight:700;cursor:pointer;touch-action:manipulation;border:none;background:none;font-family:inherit;width:100%;}
-.pdf-toggle:active{opacity:.7;}
-.pdf-thumb-loading{text-align:center;padding:10px;font-size:11px;color:var(--mut);}
-
-/* CENTER */
+.pdf-toggle{display:flex;align-items:center;gap:4px;padding:3px 3px 4px;font-size:10.5px;color:var(--teal);font-weight:700;cursor:pointer;touch-action:manipulation;border:none;background:none;font-family:inherit;width:100%;}
+.session-panel{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px;}
+.session-empty{text-align:center;padding:30px 12px;color:var(--mut);font-size:12px;line-height:1.8;}
+.session-card{background:var(--sur2);border-radius:var(--rs);padding:11px;margin-bottom:8px;border-left:3px solid var(--teal);cursor:pointer;touch-action:manipulation;}
+.session-title{font-size:11.5px;font-weight:700;color:var(--navy);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.session-meta{font-size:10px;color:var(--mut);}
 .center{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;}
-
-/* TOOLBAR */
-.dtbar{background:var(--sur);border-bottom:1px solid var(--bdr);padding:6px 10px;display:flex;align-items:center;gap:7px;flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.dtbar{background:var(--sur);border-bottom:1px solid var(--bdr);padding:5px 8px;display:flex;align-items:center;gap:6px;flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .dtbar::-webkit-scrollbar{display:none;}
 .tgrp{display:flex;gap:4px;align-items:center;flex-shrink:0;}
-.tdiv{width:1px;height:26px;background:var(--bdr);flex-shrink:0;}
-.tbtn{width:44px;height:44px;border:2px solid var(--bdr);border-radius:var(--rs);background:var(--sur2);font-size:17px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;flex-shrink:0;gap:1px;}
+.tdiv{width:1px;height:24px;background:var(--bdr);flex-shrink:0;}
+.tbtn{width:42px;height:42px;border:2px solid var(--bdr);border-radius:var(--rs);background:var(--sur2);font-size:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;flex-shrink:0;}
 .tbtn:active{transform:scale(.9);}
 .tbtn.active{background:var(--teal);border-color:var(--td);}
-.tbtn .tl2{font-size:8px;font-weight:700;color:var(--mut);}
+.tbtn .tl2{font-size:7.5px;font-weight:700;color:var(--mut);}
 .tbtn.active .tl2{color:rgba(255,255,255,.8);}
-/* zoom mode indicator */
-.zoom-indicator{background:rgba(26,127,142,.12);border:1.5px solid var(--tl);border-radius:10px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--teal);flex-shrink:0;display:none;align-items:center;gap:6px;white-space:nowrap;}
-.zoom-indicator.show{display:flex;}
-.swrap{display:flex;gap:5px;align-items:center;flex-shrink:0;}
-.sw{width:29px;height:29px;border-radius:50%;border:3px solid transparent;cursor:pointer;touch-action:manipulation;flex-shrink:0;outline:2px solid transparent;}
-.sw:active{transform:scale(.85);}
+/* ZOOM BUTTONS */
+.zoom-btns{display:flex;gap:3px;align-items:center;flex-shrink:0;}
+.zbtn{width:36px;height:36px;border:2px solid var(--bdr);border-radius:10px;background:var(--sur2);font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;flex-shrink:0;color:var(--navy);}
+.zbtn:active{transform:scale(.88);background:var(--teal);color:#fff;border-color:var(--td);}
+.zoom-pct-btn{padding:0 10px;height:36px;border:2px solid var(--bdr);border-radius:10px;background:var(--sur2);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;flex-shrink:0;color:var(--teal);min-width:52px;}
+.zoom-pct-btn:active{background:var(--teal);color:#fff;}
+.swrap{display:flex;gap:4px;align-items:center;flex-shrink:0;}
+.sw{width:27px;height:27px;border-radius:50%;border:3px solid transparent;cursor:pointer;touch-action:manipulation;flex-shrink:0;outline:2px solid transparent;}
 .sw.active{outline:2.5px solid var(--navy);outline-offset:2px;}
-.scol{display:flex;flex-direction:column;gap:3px;flex-shrink:0;}
+.scol{display:flex;flex-direction:column;gap:2px;flex-shrink:0;}
 .srow{display:flex;align-items:center;gap:4px;}
-.slbl{font-size:10px;color:var(--mut);width:30px;}
-input[type=range]{width:70px;accent-color:var(--teal);cursor:pointer;height:20px;}
-.sval{font-size:11px;color:var(--mut);width:22px;}
-.clr-btn{margin-left:auto;background:none;border:1.5px solid var(--bdr);border-radius:10px;padding:6px 10px;font-size:11px;color:var(--mut);font-family:inherit;cursor:pointer;flex-shrink:0;touch-action:manipulation;white-space:nowrap;}
-.clr-btn:active{border-color:var(--acc);color:var(--acc);}
-
-/* PAGE NAV */
-.page-nav{background:var(--sur2);border-bottom:1px solid var(--bdr);padding:5px 16px;display:none;align-items:center;justify-content:center;gap:12px;flex-shrink:0;}
+.slbl{font-size:9.5px;color:var(--mut);width:28px;}
+input[type=range]{width:65px;accent-color:var(--teal);cursor:pointer;height:18px;}
+.sval{font-size:10px;color:var(--mut);width:20px;}
+.clr-btn{background:none;border:1.5px solid var(--bdr);border-radius:9px;padding:5px 9px;font-size:10.5px;color:var(--mut);font-family:inherit;cursor:pointer;flex-shrink:0;touch-action:manipulation;white-space:nowrap;}
+.page-nav{background:var(--sur2);border-bottom:1px solid var(--bdr);padding:4px 14px;display:none;align-items:center;justify-content:center;gap:10px;flex-shrink:0;}
 .page-nav.show{display:flex;}
-.pnav-btn{background:var(--sur);border:1.5px solid var(--bdr);border-radius:8px;width:38px;height:34px;font-size:17px;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;}
-.pnav-btn:active{background:var(--sur2);}
+.pnav-btn{background:var(--sur);border:1.5px solid var(--bdr);border-radius:8px;width:36px;height:32px;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;}
 .pnav-btn:disabled{opacity:.35;}
-.page-info{font-size:13px;font-weight:600;min-width:80px;text-align:center;}
-
-/* CANVAS AREA — overflow hidden, transform applied inside */
+.page-info{font-size:12px;font-weight:600;min-width:70px;text-align:center;}
 .carea{flex:1;overflow:hidden;background:#B8CCE0;position:relative;display:flex;align-items:center;justify-content:center;}
-/* The viewport wrapper clips and centers */
+/* FULLSCREEN mode */
+.carea.fullscreen-mode{position:fixed;inset:0;z-index:500;background:#0d1a2e;}
 .cvp{width:100%;height:100%;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;touch-action:none;}
-/* Transform container — zoom/pan applied here */
-.cstage{
-  position:relative;
-  transform-origin:center center;
-  will-change:transform;
-  display:inline-flex;
-  transition:none;
-}
+.cstage{position:relative;transform-origin:center center;will-change:transform;display:inline-flex;transition:none;}
 .ccon{position:relative;display:inline-flex;box-shadow:0 8px 40px rgba(0,0,0,.22);border-radius:4px;overflow:hidden;}
 #bgCanvas{display:block;}
 #drawCanvas{position:absolute;top:0;left:0;display:block;touch-action:none;}
-
-.dhint{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:40px;text-align:center;color:var(--mut);width:100%;height:100%;position:absolute;}
-.dhi{font-size:64px;opacity:.28;}
-.dhint h2{font-size:20px;font-weight:600;color:var(--navy);opacity:.5;}
-.dhint p{font-size:14px;max-width:280px;line-height:1.7;}
-
-/* Zoom HUD */
-.zoom-hud{position:absolute;bottom:14px;right:14px;background:rgba(27,46,75,.7);backdrop-filter:blur(8px);color:#fff;font-size:12px;font-weight:700;padding:7px 14px;border-radius:99px;display:none;gap:10px;align-items:center;z-index:50;pointer-events:none;}
+.dhint{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:40px;text-align:center;color:var(--mut);width:100%;height:100%;position:absolute;}
+.dhi{font-size:60px;opacity:.28;}
+.dhint h2{font-size:18px;font-weight:600;color:var(--navy);opacity:.5;}
+.dhint p{font-size:13px;max-width:270px;line-height:1.7;}
+/* FLOATING ZOOM HUD — enhanced */
+.zoom-hud{position:absolute;bottom:14px;right:14px;background:rgba(27,46,75,.82);backdrop-filter:blur(12px);color:#fff;font-size:13px;font-weight:700;padding:8px 14px;border-radius:99px;display:none;gap:10px;align-items:center;z-index:50;}
 .zoom-hud.show{display:flex;}
-.zoom-reset-btn{background:rgba(255,255,255,.2);border:none;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;cursor:pointer;font-family:inherit;touch-action:manipulation;pointer-events:all;}
-.zoom-reset-btn:active{opacity:.7;}
-
-/* pressure */
-.pbar{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(27,46,75,.8);backdrop-filter:blur(8px);color:#fff;font-size:11px;padding:6px 14px;border-radius:99px;display:flex;gap:8px;align-items:center;white-space:nowrap;z-index:500;transition:transform .3s;}
+.zoom-hud-btns{display:flex;gap:4px;}
+.zhb{background:rgba(255,255,255,.18);border:none;color:#fff;font-size:16px;font-weight:700;width:30px;height:30px;border-radius:50%;cursor:pointer;font-family:inherit;touch-action:manipulation;display:flex;align-items:center;justify-content:center;}
+.zhb:active{background:rgba(255,255,255,.38);}
+.zoom-reset-btn{background:rgba(255,255,255,.18);border:none;color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;cursor:pointer;font-family:inherit;touch-action:manipulation;}
+/* FULLSCREEN OVERLAY CONTROLS */
+.fs-controls{position:absolute;top:14px;right:14px;display:none;gap:8px;z-index:600;}
+.carea.fullscreen-mode .fs-controls{display:flex;}
+.fs-ctrl-btn{background:rgba(27,46,75,.8);backdrop-filter:blur(10px);border:1.5px solid rgba(255,255,255,.2);color:#fff;font-size:13px;padding:8px 14px;border-radius:12px;cursor:pointer;touch-action:manipulation;font-family:inherit;font-weight:700;display:flex;align-items:center;gap:6px;}
+.fs-ctrl-btn:active{background:rgba(255,255,255,.2);}
+.fs-page-nav{position:absolute;bottom:70px;left:50%;transform:translateX(-50%);display:none;gap:10px;align-items:center;z-index:600;background:rgba(27,46,75,.8);backdrop-filter:blur(10px);padding:8px 16px;border-radius:99px;}
+.carea.fullscreen-mode .fs-page-nav{display:flex;}
+.fs-pnav-btn{background:rgba(255,255,255,.18);border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;}
+.fs-pnav-btn:disabled{opacity:.3;}
+.fs-page-info{font-size:13px;font-weight:700;color:#fff;min-width:70px;text-align:center;}
+.pbar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(27,46,75,.8);backdrop-filter:blur(8px);color:#fff;font-size:11px;padding:5px 12px;border-radius:99px;display:flex;gap:7px;align-items:center;white-space:nowrap;z-index:9990;transition:transform .3s;}
 .pbar.show{transform:translateX(-50%) translateY(0);}
-.pf{width:60px;height:5px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;}
+.pf{width:55px;height:4px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;}
 .pfi{height:100%;background:var(--tl);border-radius:99px;transition:width .05s;width:0%;}
-
-.loading{position:absolute;inset:0;background:rgba(238,243,248,.85);display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:100;backdrop-filter:blur(4px);}
+.loading{position:absolute;inset:0;background:rgba(238,243,248,.85);display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;z-index:100;backdrop-filter:blur(4px);}
 .loading.show{display:flex;}
-.load-spin{width:38px;height:38px;border:3px solid var(--bdr);border-top-color:var(--teal);border-radius:50%;animation:sp .8s linear infinite;}
-.load-txt{font-size:14px;font-weight:500;color:var(--mut);}
+.load-spin{width:36px;height:36px;border:3px solid var(--bdr);border-top-color:var(--teal);border-radius:50%;animation:sp .8s linear infinite;}
+.load-txt{font-size:13px;font-weight:500;color:var(--mut);}
 @keyframes sp{to{transform:rotate(360deg);}}
-
-/* RIGHT PANEL */
-.right{width:318px;background:var(--sur);border-left:1px solid var(--bdr);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;}
-.aitabs{display:flex;background:var(--sur2);border-bottom:1px solid var(--bdr);flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.right{width:320px;background:var(--sur);border-left:1px solid var(--bdr);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;}
+.aitabs{display:flex;background:var(--sur2);border-bottom:1px solid var(--bdr);flex-shrink:0;overflow-x:auto;scrollbar-width:none;}
 .aitabs::-webkit-scrollbar{display:none;}
-.aitab{flex:1;padding:11px 3px;text-align:center;font-size:10.5px;font-weight:700;color:var(--mut);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .15s;touch-action:manipulation;white-space:nowrap;min-width:60px;}
-.aitab:active{opacity:.7;}
+.aitab{flex:1;padding:10px 3px;text-align:center;font-size:10px;font-weight:700;color:var(--mut);cursor:pointer;border-bottom:2.5px solid transparent;touch-action:manipulation;white-space:nowrap;min-width:56px;}
 .aitab.active{color:var(--teal);border-bottom-color:var(--teal);background:var(--sur);}
-.abtn{margin:10px;background:linear-gradient(135deg,var(--teal),var(--td));color:#fff;border:none;border-radius:var(--rs);padding:14px;font-size:13.5px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(26,127,142,.35);flex-shrink:0;touch-action:manipulation;}
+.abtn{margin:9px;background:linear-gradient(135deg,var(--teal),var(--td));color:#fff;border:none;border-radius:var(--rs);padding:13px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;flex-shrink:0;touch-action:manipulation;}
 .abtn:active{transform:scale(.97);}
 .abtn:disabled{opacity:.6;}
-.spin2{width:15px;height:15px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;}
-.ascroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:13px;}
-.sec{margin-bottom:17px;}
-.shdr{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--td);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.spin2{width:14px;height:14px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;}
+.ascroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px;}
+.sec{margin-bottom:16px;}
+.shdr{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--td);margin-bottom:7px;display:flex;align-items:center;gap:5px;}
 .shdr::after{content:'';flex:1;height:1px;background:var(--bdr);}
 .card{background:var(--sur2);border-radius:var(--rs);padding:12px;font-size:13px;line-height:1.75;border-left:3px solid var(--tl);}
 .card.g{border-left-color:var(--gold);}
 .card.r{border-left-color:var(--acc);}
-.kp{display:flex;gap:9px;align-items:flex-start;background:var(--sur2);border-radius:10px;padding:9px 11px;margin-bottom:6px;font-size:12.5px;line-height:1.6;}
-.kpn{background:var(--teal);color:#fff;width:21px;height:21px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-.fc{background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rs);padding:14px;margin-bottom:9px;cursor:pointer;touch-action:manipulation;}
-.fc:active{opacity:.8;}
+.card.p{border-left-color:var(--purple);}
+.kp{display:flex;gap:8px;align-items:flex-start;background:var(--sur2);border-radius:9px;padding:9px 11px;margin-bottom:6px;font-size:12.5px;line-height:1.6;}
+.kpn{background:var(--teal);color:#fff;width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.fc{background:#fff;border:1.5px solid var(--bdr);border-radius:var(--rs);padding:13px;margin-bottom:8px;cursor:pointer;touch-action:manipulation;}
 .fc.open{border-color:var(--tl);background:#f0fafc;}
-.fcq{font-size:13px;font-weight:600;color:var(--navy);line-height:1.5;}
-.fch{font-size:10px;color:var(--teal);font-weight:600;margin-top:4px;}
-.fca{font-size:12.5px;color:var(--txt);margin-top:9px;padding-top:9px;border-top:1px dashed var(--bdr);line-height:1.65;display:none;}
+.fcq{font-size:12.5px;font-weight:600;color:var(--navy);line-height:1.5;}
+.fch{font-size:9.5px;color:var(--teal);font-weight:600;margin-top:4px;}
+.fca{font-size:12px;color:var(--txt);margin-top:8px;padding-top:8px;border-top:1px dashed var(--bdr);line-height:1.65;display:none;}
 .fc.open .fca{display:block;}
-
-/* ── AI CHAT TAB ── */
+.ts-header{background:linear-gradient(135deg,var(--purple),#5B41CC);border-radius:var(--rs);padding:14px;margin-bottom:12px;color:#fff;}
+.ts-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+.ts-meta{font-size:11px;opacity:.8;}
+.ts-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.ts-stat{background:var(--sur2);border-radius:var(--rs);padding:11px;text-align:center;}
+.ts-stat-num{font-size:20px;font-weight:800;color:var(--teal);}
+.ts-stat-lbl{font-size:10px;color:var(--mut);margin-top:2px;}
+.ts-file-item{display:flex;align-items:center;gap:8px;padding:9px 10px;background:var(--sur2);border-radius:10px;margin-bottom:6px;cursor:pointer;touch-action:manipulation;}
+.ts-file-icon{font-size:16px;flex-shrink:0;}
+.ts-file-info{flex:1;min-width:0;}
+.ts-file-name{font-size:11.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ts-file-sum{font-size:10.5px;color:var(--mut);margin-top:1px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.ts-empty{text-align:center;padding:30px 12px;color:var(--mut);font-size:12px;line-height:1.8;}
+.ts-empty-i{font-size:36px;margin-bottom:10px;opacity:.35;}
+.batch-progress{margin:9px;background:var(--sur2);border-radius:var(--rs);padding:12px;display:none;flex-shrink:0;}
+.batch-progress.show{display:block;}
+.bp-title{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;}
+.bp-bar-wrap{background:var(--bdr);border-radius:99px;height:6px;overflow:hidden;margin-bottom:6px;}
+.bp-bar{height:100%;background:linear-gradient(90deg,var(--tl),var(--teal));border-radius:99px;transition:width .3s;width:0%;}
+.bp-status{font-size:11px;color:var(--mut);}
+.bp-cancel{background:none;border:none;color:var(--acc);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;}
 .chat-wrap{display:flex;flex-direction:column;height:100%;overflow:hidden;}
-.chat-msgs{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px;display:flex;flex-direction:column;gap:10px;}
-.chat-msg{display:flex;flex-direction:column;gap:4px;max-width:92%;}
+.chat-msgs{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:11px;display:flex;flex-direction:column;gap:9px;}
+.chat-msg{display:flex;flex-direction:column;gap:3px;max-width:92%;}
 .chat-msg.user{align-self:flex-end;align-items:flex-end;}
 .chat-msg.ai{align-self:flex-start;align-items:flex-start;}
-.chat-bubble{padding:11px 14px;border-radius:18px;font-size:13px;line-height:1.65;word-break:break-word;-webkit-user-select:text;user-select:text;touch-action:auto;}
+.chat-bubble{padding:10px 13px;border-radius:17px;font-size:12.5px;line-height:1.65;word-break:break-word;-webkit-user-select:text;user-select:text;touch-action:auto;}
 .chat-msg.user .chat-bubble{background:var(--teal);color:#fff;border-bottom-right-radius:4px;}
 .chat-msg.ai .chat-bubble{background:var(--sur2);color:var(--txt);border-bottom-left-radius:4px;border:1px solid var(--bdr);}
-.chat-bubble.typing{background:var(--sur2);border:1px solid var(--bdr);}
 .typing-dots{display:flex;gap:4px;padding:4px 2px;}
-.typing-dots span{width:7px;height:7px;background:var(--mut);border-radius:50%;animation:td 1.2s infinite;}
+.typing-dots span{width:6px;height:6px;background:var(--mut);border-radius:50%;animation:td 1.2s infinite;}
 .typing-dots span:nth-child(2){animation-delay:.2s;}
 .typing-dots span:nth-child(3){animation-delay:.4s;}
 @keyframes td{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
-.chat-time{font-size:10px;color:var(--mut);padding:0 4px;}
-.chat-ctx{font-size:10px;color:var(--tl);padding:2px 4px 0;display:flex;align-items:center;gap:4px;}
-/* chat input area */
-.chat-input-wrap{flex-shrink:0;border-top:1px solid var(--bdr);padding:10px 10px calc(10px + var(--sb));background:var(--sur);}
-.chat-ctx-toggle{display:flex;align-items:center;gap:6px;padding:0 2px 8px;font-size:11px;color:var(--mut);}
-.chat-ctx-toggle label{display:flex;align-items:center;gap:5px;cursor:pointer;touch-action:manipulation;}
-.chat-ctx-toggle input[type=checkbox]{width:16px;height:16px;accent-color:var(--teal);touch-action:manipulation;}
-.chat-row{display:flex;gap:7px;align-items:flex-end;}
-.chat-textarea{flex:1;border:1.5px solid var(--bdr);border-radius:14px;padding:10px 13px;font-size:13.5px;line-height:1.5;font-family:inherit;color:var(--txt);outline:none;resize:none;background:var(--sur2);-webkit-user-select:text;user-select:text;touch-action:auto;max-height:100px;overflow-y:auto;}
-.chat-textarea:focus{border-color:var(--teal);}
-.chat-send-btn{background:var(--teal);border:none;color:#fff;width:42px;height:42px;border-radius:50%;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;flex-shrink:0;}
-.chat-send-btn:active{opacity:.8;transform:scale(.92);}
-.chat-send-btn:disabled{opacity:.4;}
-.chat-empty{text-align:center;padding:30px 16px;color:var(--mut);font-size:13px;line-height:1.8;}
-.chat-empty-i{font-size:36px;margin-bottom:10px;opacity:.35;}
-.chat-clear-btn{background:none;border:none;color:var(--mut);font-size:11px;cursor:pointer;touch-action:manipulation;padding:2px 6px;}
-.chat-clear-btn:active{color:var(--acc);}
-
-/* MEMO */
-.mhint{font-size:12px;color:var(--mut);margin-bottom:10px;}
-.marea{width:100%;min-height:240px;border:1.5px solid var(--bdr);border-radius:var(--rs);padding:12px;font-size:14px;line-height:1.8;font-family:inherit;color:var(--txt);outline:none;resize:none;background:var(--sur2);-webkit-user-select:text;user-select:text;touch-action:auto;}
+.chat-time{font-size:9.5px;color:var(--mut);padding:0 3px;}
+.chat-ctx{font-size:9.5px;color:var(--tl);padding:1px 3px 0;}
+.chat-input-wrap{flex-shrink:0;border-top:1px solid var(--bdr);padding:8px 9px calc(8px + var(--sb));background:var(--sur);}
+.chat-ctx-toggle{display:flex;align-items:center;gap:5px;padding:0 1px 7px;font-size:10.5px;color:var(--mut);}
+.chat-ctx-toggle label{display:flex;align-items:center;gap:4px;cursor:pointer;}
+.chat-ctx-toggle input[type=checkbox]{width:15px;height:15px;accent-color:var(--teal);}
+.chat-row{display:flex;gap:6px;align-items:flex-end;}
+.chat-ta{flex:1;border:1.5px solid var(--bdr);border-radius:13px;padding:9px 12px;font-size:13px;line-height:1.5;font-family:inherit;color:var(--txt);outline:none;resize:none;background:var(--sur2);-webkit-user-select:text;user-select:text;touch-action:auto;max-height:90px;overflow-y:auto;}
+.chat-ta:focus{border-color:var(--teal);}
+.chat-send{background:var(--teal);border:none;color:#fff;width:40px;height:40px;border-radius:50%;font-size:17px;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;flex-shrink:0;}
+.chat-send:disabled{opacity:.4;}
+.chat-clear{background:none;border:none;color:var(--mut);font-size:10px;cursor:pointer;padding:1px 5px;margin-left:auto;}
+.chat-empty{text-align:center;padding:28px 14px;color:var(--mut);font-size:12.5px;line-height:1.8;}
+.mhint{font-size:11.5px;color:var(--mut);margin-bottom:9px;}
+.marea{width:100%;min-height:230px;border:1.5px solid var(--bdr);border-radius:var(--rs);padding:11px;font-size:13.5px;line-height:1.8;font-family:inherit;color:var(--txt);outline:none;resize:none;background:var(--sur2);-webkit-user-select:text;user-select:text;touch-action:auto;}
 .marea:focus{border-color:var(--teal);}
-.empty{text-align:center;padding:32px 14px;color:var(--mut);font-size:13px;line-height:1.8;}
-.ei{font-size:36px;margin-bottom:10px;opacity:.35;}
-
-/* ERROR LOG */
-.err-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:flex-end;justify-content:center;padding:16px;}
+.empty{text-align:center;padding:30px 12px;color:var(--mut);font-size:12.5px;line-height:1.8;}
+.ei{font-size:34px;margin-bottom:9px;opacity:.35;}
+.err-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:flex-end;justify-content:center;padding:14px;}
 .err-modal-bg.open{display:flex;}
-.err-modal{background:var(--sur);border-radius:var(--r) var(--r) var(--rs) var(--rs);width:100%;max-width:680px;max-height:80dvh;display:flex;flex-direction:column;box-shadow:0 -10px 50px rgba(0,0,0,.3);}
-.err-hdr{display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid var(--bdr);flex-shrink:0;gap:9px;}
-.err-hdr h2{font-size:15px;font-weight:700;flex:1;color:var(--navy);}
-.err-cnt{background:var(--acc);color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:99px;}
-.ecb{background:none;border:1.5px solid var(--bdr);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--mut);font-family:inherit;cursor:pointer;touch-action:manipulation;white-space:nowrap;}
-.ecb:active{border-color:var(--acc);color:var(--acc);}
-.eclose{background:none;border:none;font-size:22px;cursor:pointer;color:var(--mut);padding:4px;touch-action:manipulation;}
-.elist{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px;}
-.eitem{background:var(--sur2);border-radius:var(--rs);padding:12px;margin-bottom:9px;border-left:4px solid var(--acc);}
+.err-modal{background:var(--sur);border-radius:var(--r) var(--r) var(--rs) var(--rs);width:100%;max-width:680px;max-height:80dvh;display:flex;flex-direction:column;}
+.err-hdr{display:flex;align-items:center;padding:13px 15px;border-bottom:1px solid var(--bdr);flex-shrink:0;gap:8px;}
+.err-hdr h2{font-size:14px;font-weight:700;flex:1;color:var(--navy);}
+.err-cnt{background:var(--acc);color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:99px;}
+.ecb{background:none;border:1.5px solid var(--bdr);border-radius:7px;padding:5px 10px;font-size:11px;color:var(--mut);font-family:inherit;cursor:pointer;}
+.eclose{background:none;border:none;font-size:20px;cursor:pointer;color:var(--mut);padding:3px;}
+.elist{flex:1;overflow-y:auto;padding:9px;}
+.eitem{background:var(--sur2);border-radius:var(--rs);padding:11px;margin-bottom:8px;border-left:4px solid var(--acc);}
 .eitem.warn{border-left-color:var(--gold);}
 .eitem.info{border-left-color:var(--tl);}
-.etop{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px;}
-.etag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;background:var(--acc);color:#fff;flex-shrink:0;}
+.etop{display:flex;align-items:flex-start;gap:7px;margin-bottom:6px;}
+.etag{font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:5px;background:var(--acc);color:#fff;flex-shrink:0;}
 .etag.warn{background:var(--gold);}
 .etag.info{background:var(--tl);}
-.etime{font-size:10px;color:var(--mut);margin-left:auto;white-space:nowrap;}
-.emsg{font-size:12px;font-weight:600;color:var(--navy);line-height:1.5;word-break:break-all;-webkit-user-select:text;user-select:text;touch-action:auto;}
-.edetail{font-size:11px;color:var(--mut);line-height:1.6;word-break:break-all;margin-top:5px;-webkit-user-select:text;user-select:text;touch-action:auto;}
-.eact{display:flex;gap:6px;margin-top:9px;}
-.cpbtn{background:var(--teal);color:#fff;border:none;border-radius:7px;padding:7px 13px;font-size:11.5px;font-weight:700;font-family:inherit;cursor:pointer;touch-action:manipulation;}
-.cpbtn:active{opacity:.8;}
-.cpbtn.ok{background:var(--grn);}
-.eempty{text-align:center;padding:36px 18px;color:var(--mut);font-size:13px;line-height:1.8;}
-/* COPY BOX */
-.copy-box{margin-top:10px;border-radius:10px;overflow:hidden;}
-.copy-box-hint{background:var(--navy);color:#fff;font-size:11px;padding:7px 12px;font-weight:600;}
-.copy-textarea{width:100%;min-height:110px;padding:10px 12px;font-size:12px;font-family:monospace;line-height:1.6;border:none;background:#f8f9fb;color:var(--txt);resize:none;outline:none;-webkit-user-select:text;user-select:text;touch-action:auto;}
-.all-copy-box{width:100%;min-height:120px;margin-top:10px;padding:10px 12px;font-size:12px;font-family:monospace;border:2px solid var(--teal);border-radius:10px;background:#f0fafc;color:var(--txt);resize:none;outline:none;-webkit-user-select:text;user-select:text;touch-action:auto;display:none;}
-
-/* SETTINGS */
-.mbg{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);z-index:999;display:none;align-items:center;justify-content:center;padding:20px;}
+.etime{font-size:9.5px;color:var(--mut);margin-left:auto;}
+.emsg{font-size:11.5px;font-weight:600;color:var(--navy);line-height:1.5;word-break:break-all;-webkit-user-select:text;user-select:text;touch-action:auto;}
+.edetail{font-size:11px;color:var(--mut);line-height:1.6;word-break:break-all;margin-top:4px;-webkit-user-select:text;user-select:text;touch-action:auto;}
+.eact{display:flex;gap:5px;margin-top:8px;}
+.cpbtn{background:var(--teal);color:#fff;border:none;border-radius:6px;padding:6px 11px;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;}
+.eempty{text-align:center;padding:32px 16px;color:var(--mut);font-size:12.5px;line-height:1.8;}
+.copy-box{margin-top:9px;border-radius:9px;overflow:hidden;}
+.copy-box-hint{background:var(--navy);color:#fff;font-size:10.5px;padding:6px 11px;font-weight:600;}
+.copy-textarea{width:100%;min-height:100px;padding:9px 11px;font-size:11.5px;font-family:monospace;line-height:1.6;border:none;background:#f8f9fb;color:var(--txt);resize:none;outline:none;-webkit-user-select:text;user-select:text;touch-action:auto;}
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);z-index:999;display:none;align-items:center;justify-content:center;padding:18px;}
 .mbg.open{display:flex;}
-.modal{background:var(--sur);border-radius:var(--r);padding:24px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.3);}
-.modal h2{font-size:18px;margin-bottom:18px;color:var(--navy);}
-.modal label{display:block;font-size:11px;font-weight:700;color:var(--mut);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em;}
-.modal input{width:100%;border:1.5px solid var(--bdr);border-radius:10px;padding:12px 13px;font-size:15px;font-family:inherit;outline:none;margin-bottom:15px;color:var(--txt);-webkit-user-select:text;user-select:text;touch-action:auto;}
-.modal input:focus{border-color:var(--teal);}
-.mrow{display:flex;gap:9px;justify-content:flex-end;}
-.bp{background:var(--teal);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;touch-action:manipulation;}
-.bp:active{opacity:.8;}
-.bg2{background:none;border:1.5px solid var(--bdr);border-radius:10px;padding:12px 16px;font-size:14px;font-family:inherit;color:var(--mut);cursor:pointer;touch-action:manipulation;}
-.bg2:active{opacity:.7;}
-
-.toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:#fff;padding:11px 20px;border-radius:99px;font-size:13.5px;font-weight:500;z-index:9999;transition:transform .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;}
+.modal{background:var(--sur);border-radius:var(--r);padding:24px;width:100%;max-width:400px;}
+.modal h2{font-size:17px;margin-bottom:18px;color:var(--navy);}
+.info-box{background:rgba(39,174,96,.1);border:1.5px solid rgba(39,174,96,.3);border-radius:12px;padding:12px 14px;margin-bottom:16px;}
+.info-box p{font-size:13px;color:#1a6b3a;line-height:1.7;}
+.mrow{display:flex;justify-content:flex-end;}
+.bp2{background:var(--teal);color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;}
+/* PWA INSTALL BANNER */
+.pwa-install-banner{position:fixed;bottom:0;left:0;right:0;background:var(--navy);color:#fff;padding:12px 16px calc(12px + var(--sb));display:none;align-items:center;gap:12px;z-index:9000;box-shadow:0 -4px 20px rgba(0,0,0,.3);}
+.pwa-install-banner.show{display:flex;}
+.pwa-banner-icon{font-size:28px;flex-shrink:0;}
+.pwa-banner-text{flex:1;}
+.pwa-banner-title{font-size:13px;font-weight:700;}
+.pwa-banner-sub{font-size:11px;opacity:.7;margin-top:2px;}
+.pwa-install-btn{background:var(--tl);border:none;color:#fff;padding:9px 16px;border-radius:10px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;touch-action:manipulation;flex-shrink:0;}
+.pwa-dismiss-btn{background:none;border:none;color:rgba(255,255,255,.5);font-size:20px;cursor:pointer;flex-shrink:0;padding:4px;}
+.toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;font-weight:500;z-index:9999;transition:transform .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none;}
 .toast.show{transform:translateX(-50%) translateY(0);}
-::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar{width:3px;}
 ::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:99px;}
 </style>
 </head>
 <body>
 <div class="shell">
-
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="logo">Nurse<span>Study</span> AI</div>
-  <button class="palm-btn" id="palmBtn" onclick="togglePalm()">✏️ 팜리젝션 OFF</button>
+  <span class="api-ok">✓ API키 불필요</span>
+  <span class="pwa-badge" id="pwaBadge">📱 앱모드</span>
+  <button class="palm-btn" id="palmBtn" onclick="togglePalm()">✏️ 팜리젝션</button>
+  <button class="tb" id="fsBtn" onclick="toggleFullscreen()" title="전체화면">⛶</button>
   <button class="tb" onclick="saveDrawing()">💾</button>
-  <button class="tb" onclick="openErrLog()" id="errBtn">🪲<span class="badge" id="errBadge">0</span></button>
-  <button class="tb" onclick="openSettings()">⚙️</button>
+  <button class="tb" onclick="openErrLog()" id="errBtn">🪲<span class="badge" id="errBadge"></span></button>
+  <button class="tb" onclick="openSettings()">ℹ️</button>
 </div>
-
 <div class="layout">
-
-  <!-- LEFT -->
-  <div class="left">
-    <div class="ph"><div class="plbl">강의자료 <span id="fc2">0</span>개</div></div>
+<div class="left">
+  <div class="left-tabs">
+    <div class="ltab active" onclick="switchLeftTab('files',this)">📁 파일</div>
+    <div class="ltab" onclick="switchLeftTab('sessions',this)">📚 세션</div>
+  </div>
+  <div class="left-panel show" id="lp-files">
     <button class="up-btn" onclick="document.getElementById('fi').click()">📁 이미지 / PDF 추가</button>
     <input type="file" id="fi" accept="image/*,.pdf,application/pdf" multiple style="display:none">
-    <div class="flist" id="flist"><div class="no-f"><div class="no-fi">📋</div>이미지 또는 PDF를<br>추가해보세요</div></div>
+    <div class="batch-bar">
+      <button class="sel-all-btn" onclick="toggleSelectAll()" id="selAllBtn">전체선택</button>
+      <button class="batch-btn purple" onclick="batchAnalyze()">🔬 선택분석</button>
+      <button class="batch-btn" onclick="batchAnalyzeAll()">⚡ 전체분석</button>
+    </div>
+    <div class="flist" id="flist"><div class="no-f"><div style="font-size:28px;opacity:.4;margin-bottom:8px;">📋</div>이미지 또는 PDF를<br>추가해보세요</div></div>
   </div>
-
-  <!-- CENTER -->
-  <div class="center">
-    <div class="dtbar">
-      <div class="tgrp">
-        <button class="tbtn active" id="tPen" onclick="setTool('pen')">✏️<span class="tl2">펜</span></button>
-        <button class="tbtn" id="tHighlight" onclick="setTool('highlight')">🖍<span class="tl2">형광</span></button>
-        <button class="tbtn" id="tEraser" onclick="setTool('eraser')">🧹<span class="tl2">지우개</span></button>
-        <button class="tbtn" id="tText" style="font-size:16px;font-weight:800;" onclick="setTool('text')">T<span class="tl2">텍스트</span></button>
-      </div>
-      <div class="tdiv"></div>
-      <div class="zoom-indicator" id="zoomIndicator">🤏 핀치로 확대/축소 중</div>
-      <div class="swrap">
-        <div class="sw active" style="background:#1B2E4B" onclick="setColor('#1B2E4B',this)"></div>
-        <div class="sw" style="background:#E8534A" onclick="setColor('#E8534A',this)"></div>
-        <div class="sw" style="background:#1A7F8E" onclick="setColor('#1A7F8E',this)"></div>
-        <div class="sw" style="background:#D4A853" onclick="setColor('#D4A853',this)"></div>
-        <div class="sw" style="background:#5B8DD9" onclick="setColor('#5B8DD9',this)"></div>
-        <div class="sw" style="background:#27AE60" onclick="setColor('#27AE60',this)"></div>
-        <div class="sw" style="background:#9B59B6" onclick="setColor('#9B59B6',this)"></div>
-        <input type="color" id="cc" value="#1B2E4B" style="width:29px;height:29px;border:3px solid var(--bdr);border-radius:50%;padding:0;cursor:pointer;flex-shrink:0;" oninput="setColorPicker(this.value)">
-      </div>
-      <div class="tdiv"></div>
-      <div class="scol">
-        <div class="srow"><span class="slbl">굵기</span><input type="range" id="sz" min="1" max="24" value="3" oninput="S.bs=+this.value;document.getElementById('szv').textContent=this.value"><span class="sval" id="szv">3</span></div>
-        <div class="srow"><span class="slbl">투명도</span><input type="range" id="op" min="10" max="100" value="100" oninput="S.op=this.value/100;document.getElementById('opv').textContent=this.value"><span class="sval" id="opv">100</span></div>
-      </div>
-      <button class="clr-btn" onclick="clearCanvas()">초기화</button>
-    </div>
-
-    <div class="page-nav" id="pageNav">
-      <button class="pnav-btn" id="prevPage" onclick="changePage(-1)">‹</button>
-      <span class="page-info" id="pageInfo">1 / 1</span>
-      <button class="pnav-btn" id="nextPage" onclick="changePage(1)">›</button>
-    </div>
-
-    <div class="carea" id="carea">
-      <div class="dhint" id="dhint">
-        <div class="dhi">🏥</div>
-        <h2>강의자료를 선택하세요</h2>
-        <p>이미지/PDF 업로드 후 탭하면 표시됩니다<br>✏️ 애플펜슬 필기 · 🤏 두 손가락 핀치 확대</p>
-      </div>
-      <div class="cvp" id="cvp">
-        <div class="cstage" id="cstage" style="display:none">
-          <div class="ccon" id="ccon">
-            <canvas id="bgCanvas"></canvas>
-            <canvas id="drawCanvas"></canvas>
-          </div>
-        </div>
-      </div>
-      <!-- Zoom HUD -->
-      <div class="zoom-hud" id="zoomHud">
-        🔍 <span id="zoomPct">100%</span>
-        <button class="zoom-reset-btn" onclick="resetZoom()">리셋</button>
-      </div>
-      <div class="loading" id="loadingEl"><div class="load-spin"></div><div class="load-txt">렌더링 중...</div></div>
-    </div>
+  <div class="left-panel" id="lp-sessions">
+    <div class="session-panel" id="sessionList"><div class="session-empty">📚 아직 세션이 없습니다<br><br>파일을 분석하면<br>세션이 자동 생성됩니다</div></div>
   </div>
-
-  <!-- RIGHT -->
-  <div class="right">
-    <div class="aitabs">
-      <div class="aitab active" onclick="switchTab('s',this)">📝 요약</div>
-      <div class="aitab" onclick="switchTab('q',this)">🧠 퀴즈</div>
-      <div class="aitab" onclick="switchTab('c',this)">💬 AI 채팅</div>
-      <div class="aitab" onclick="switchTab('m',this)">✏️ 메모</div>
+</div>
+<div class="center">
+  <div class="dtbar">
+    <div class="tgrp">
+      <button class="tbtn active" id="tPen" onclick="setTool('pen')">✏️<span class="tl2">펜</span></button>
+      <button class="tbtn" id="tHighlight" onclick="setTool('highlight')">🖍<span class="tl2">형광</span></button>
+      <button class="tbtn" id="tEraser" onclick="setTool('eraser')">🧹<span class="tl2">지우개</span></button>
+      <button class="tbtn" id="tText" style="font-size:15px;font-weight:800;" onclick="setTool('text')">T<span class="tl2">텍스트</span></button>
     </div>
-    <button class="abtn" id="abtn" onclick="analyze()">🔬 AI 분석 시작</button>
-    <div class="ascroll" id="ascroll">
-      <!-- Summary -->
-      <div id="ts"><div class="empty"><div class="ei">🔬</div><strong>이미지·PDF 선택 후<br>AI 분석을 시작하세요</strong><br><br>요약·핵심포인트·암기팁<br>임상 포인트 생성</div></div>
-      <!-- Quiz -->
-      <div id="tq" style="display:none"><div class="empty"><div class="ei">🧠</div><strong>AI 분석 후 퀴즈 생성</strong><br>카드를 탭하면 정답이 나타납니다</div></div>
-      <!-- Memo -->
-      <div id="tm" style="display:none"><div class="mhint">📌 메모는 자동 저장됩니다</div><textarea class="marea" id="ma" placeholder="강의 내용, 의문점, 학습 계획을 자유롭게 기록하세요..."></textarea></div>
+    <div class="tdiv"></div>
+    <div class="zoom-btns">
+      <button class="zbtn" onclick="zoomStep(0.25)" title="확대">＋</button>
+      <button class="zoom-pct-btn" id="zoomPctBtn" onclick="resetZoom(true)">100%</button>
+      <button class="zbtn" onclick="zoomStep(-0.25)" title="축소">－</button>
     </div>
-    <!-- Chat (outside ascroll, full height) -->
-    <div id="tc" style="display:none;flex:1;flex-direction:column;overflow:hidden;" class="chat-wrap">
-      <div class="chat-msgs" id="chatMsgs">
-        <div class="chat-empty"><div class="chat-empty-i">💬</div><strong>AI에게 질문하세요</strong><br><br>현재 보이는 강의 내용에 대해<br>무엇이든 물어보세요!<br><br><small style="color:var(--mut)">예시: "이 내용에서 가장 중요한 게 뭐야?", "좀 더 쉽게 설명해줘", "시험에 나올 것 같은 부분 알려줘"</small></div>
+    <div class="tdiv"></div>
+    <div class="swrap">
+      <div class="sw active" style="background:#1B2E4B" onclick="setColor('#1B2E4B',this)"></div>
+      <div class="sw" style="background:#E8534A" onclick="setColor('#E8534A',this)"></div>
+      <div class="sw" style="background:#1A7F8E" onclick="setColor('#1A7F8E',this)"></div>
+      <div class="sw" style="background:#D4A853" onclick="setColor('#D4A853',this)"></div>
+      <div class="sw" style="background:#5B8DD9" onclick="setColor('#5B8DD9',this)"></div>
+      <div class="sw" style="background:#27AE60" onclick="setColor('#27AE60',this)"></div>
+      <div class="sw" style="background:#9B59B6" onclick="setColor('#9B59B6',this)"></div>
+      <input type="color" id="cc" value="#1B2E4B" style="width:27px;height:27px;border:3px solid var(--bdr);border-radius:50%;padding:0;cursor:pointer;flex-shrink:0;" oninput="setColorPicker(this.value)">
+    </div>
+    <div class="tdiv"></div>
+    <div class="scol">
+      <div class="srow"><span class="slbl">굵기</span><input type="range" id="sz" min="1" max="24" value="3" oninput="S.bs=+this.value;document.getElementById('szv').textContent=this.value"><span class="sval" id="szv">3</span></div>
+      <div class="srow"><span class="slbl">투명도</span><input type="range" id="op" min="10" max="100" value="100" oninput="S.op=this.value/100;document.getElementById('opv').textContent=this.value"><span class="sval" id="opv">100</span></div>
+    </div>
+    <button class="clr-btn" onclick="clearCanvas()">초기화</button>
+  </div>
+  <div class="page-nav" id="pageNav">
+    <button class="pnav-btn" id="prevPage" onclick="changePage(-1)">‹</button>
+    <span class="page-info" id="pageInfo">1 / 1</span>
+    <button class="pnav-btn" id="nextPage" onclick="changePage(1)">›</button>
+  </div>
+  <div class="carea" id="carea">
+    <div class="dhint" id="dhint">
+      <div class="dhi">🏥</div>
+      <h2>강의자료를 선택하세요</h2>
+      <p>이미지/PDF 추가 후 탭하면 표시됩니다<br>🤏 두 손가락 핀치 확대 · ✏️ 애플펜슬 필기<br>⛶ 전체화면 버튼으로 몰입 학습!</p>
+    </div>
+    <div class="cvp" id="cvp">
+      <div class="cstage" id="cstage" style="display:none">
+        <div class="ccon"><canvas id="bgCanvas"></canvas><canvas id="drawCanvas"></canvas></div>
       </div>
-      <div class="chat-input-wrap">
-        <div class="chat-ctx-toggle">
-          <label><input type="checkbox" id="ctxCheck" checked> 현재 페이지 이미지를 AI에게 함께 전송</label>
-          <button class="chat-clear-btn" onclick="clearChat()">대화 초기화</button>
-        </div>
-        <div class="chat-row">
-          <textarea class="chat-textarea" id="chatInput" placeholder="질문을 입력하세요..." rows="1"
-            oninput="autoResize(this)"
-            onkeydown="if((event.key==='Enter')&&!event.shiftKey){event.preventDefault();sendChat();}"></textarea>
-          <button class="chat-send-btn" id="chatSendBtn" onclick="sendChat()">↑</button>
-        </div>
+    </div>
+    <!-- Fullscreen overlay controls -->
+    <div class="fs-controls">
+      <button class="fs-ctrl-btn" onclick="toggleFullscreen()">✕ 전체화면 종료</button>
+      <button class="fs-ctrl-btn" onclick="analyze()">🔬 분석</button>
+    </div>
+    <div class="fs-page-nav" id="fsPageNav">
+      <button class="fs-pnav-btn" id="fsPrev" onclick="changePage(-1)">‹</button>
+      <span class="fs-page-info" id="fsPageInfo">1 / 1</span>
+      <button class="fs-pnav-btn" id="fsNext" onclick="changePage(1)">›</button>
+    </div>
+    <!-- Zoom HUD (floating, always visible in fullscreen) -->
+    <div class="zoom-hud" id="zoomHud">
+      🔍 <span id="zoomPct">100%</span>
+      <div class="zoom-hud-btns">
+        <button class="zhb" onclick="zoomStep(0.25)">＋</button>
+        <button class="zhb" onclick="zoomStep(-0.25)">－</button>
+      </div>
+      <button class="zoom-reset-btn" onclick="resetZoom(true)">리셋</button>
+    </div>
+    <div class="loading" id="loadingEl"><div class="load-spin"></div><div class="load-txt">렌더링 중...</div></div>
+  </div>
+</div>
+<div class="right">
+  <div class="aitabs">
+    <div class="aitab active" onclick="switchTab('s',this)">📝 요약</div>
+    <div class="aitab" onclick="switchTab('q',this)">🧠 퀴즈</div>
+    <div class="aitab" onclick="switchTab('total',this)">📊 총분석</div>
+    <div class="aitab" onclick="switchTab('c',this)">💬 채팅</div>
+    <div class="aitab" onclick="switchTab('m',this)">✏️ 메모</div>
+  </div>
+  <button class="abtn" id="abtn" onclick="analyze()">🔬 AI 분석 시작</button>
+  <div class="batch-progress" id="batchProgress">
+    <div class="bp-title"><span id="bpTitle">일괄 분석 중...</span><button class="bp-cancel" onclick="cancelBatch()">중단</button></div>
+    <div class="bp-bar-wrap"><div class="bp-bar" id="bpBar"></div></div>
+    <div class="bp-status" id="bpStatus">준비 중...</div>
+  </div>
+  <div class="ascroll" id="ascroll">
+    <div id="ts"><div class="empty"><div class="ei">🔬</div><strong>파일 선택 후 AI 분석 시작</strong><br>요약·핵심포인트·암기팁·임상 포인트 생성</div></div>
+    <div id="tq" style="display:none"><div class="empty"><div class="ei">🧠</div><strong>AI 분석 후 퀴즈 생성</strong><br>카드를 탭하면 정답이 나타납니다</div></div>
+    <div id="tm" style="display:none"><div class="mhint">📌 메모는 세션 내 저장됩니다</div><textarea class="marea" id="ma" placeholder="강의 내용, 의문점, 학습 계획을 자유롭게 기록하세요..."></textarea></div>
+    <div id="ttotal" style="display:none"><div id="totalContent"><div class="ts-empty"><div class="ts-empty-i">📊</div><strong>총 분석 세션</strong><br><br>파일들을 AI 분석하면<br>여기에 전체 요약이 표시됩니다</div></div></div>
+  </div>
+  <div id="tc" style="display:none;flex:1;flex-direction:column;overflow:hidden;" class="chat-wrap">
+    <div class="chat-msgs" id="chatMsgs">
+      <div class="chat-empty">💬 <strong>AI에게 질문하세요</strong><br><br>강의 내용에 대해 무엇이든 물어보세요!</div>
+    </div>
+    <div class="chat-input-wrap">
+      <div class="chat-ctx-toggle">
+        <label><input type="checkbox" id="ctxCheck" checked> 현재 페이지 함께 전송</label>
+        <button class="chat-clear" onclick="clearChat()">초기화</button>
+      </div>
+      <div class="chat-row">
+        <textarea class="chat-ta" id="chatInput" placeholder="질문을 입력하세요..." rows="1"
+          oninput="autoResize(this)"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}"></textarea>
+        <button class="chat-send" id="chatSendBtn" onclick="sendChat()">↑</button>
       </div>
     </div>
   </div>
 </div>
 </div>
+</div>
 
-<!-- PRESSURE -->
 <div class="pbar" id="pbar">✏️ 압력 <div class="pf"><div class="pfi" id="pfi"></div></div><span id="pv">0%</span></div>
 
-<!-- ERROR LOG -->
+<div class="pwa-install-banner" id="pwaInstallBanner">
+  <div class="pwa-banner-icon">📱</div>
+  <div class="pwa-banner-text">
+    <div class="pwa-banner-title">홈 화면에 앱 추가</div>
+    <div class="pwa-banner-sub">오프라인에서도 NurseStudy AI 사용 가능</div>
+  </div>
+  <button class="pwa-install-btn" id="pwaInstallBtn" onclick="installPWA()">설치</button>
+  <button class="pwa-dismiss-btn" onclick="dismissInstall()">✕</button>
+</div>
+
 <div class="err-modal-bg" id="errModal">
   <div class="err-modal">
-    <div class="err-hdr">
-      <h2>🪲 오류 로그</h2>
-      <span class="err-cnt" id="errCount">0</span>
-      <button class="cpbtn" style="font-size:11.5px;" onclick="copyAllErrors()">전체 복사</button>
+    <div class="err-hdr"><h2>🪲 오류 로그</h2><span class="err-cnt" id="errCount">0</span>
+      <button class="cpbtn" style="font-size:11px;" onclick="copyAllErrors()">전체복사</button>
       <button class="ecb" onclick="clearErrors()">삭제</button>
       <button class="eclose" onclick="closeErrLog()">✕</button>
     </div>
     <div class="elist" id="errList"><div class="eempty">✅ 오류가 없습니다</div></div>
-    <textarea class="all-copy-box" id="allCopyBox" readonly onclick="this.select()" onfocus="this.select()" placeholder="전체 복사 텍스트가 여기에 표시됩니다..."></textarea>
   </div>
 </div>
 
-<!-- SETTINGS -->
 <div class="mbg" id="modal">
   <div class="modal">
-    <h2>⚙️ 설정</h2>
-    <label>Claude API Key</label>
-    <input type="password" id="ak" placeholder="sk-ant-...로 시작하는 키 입력" autocomplete="off">
-    <label>모델</label>
-    <input type="text" id="mk" value="claude-sonnet-4-6">
-    <div class="mrow">
-      <button class="bg2" onclick="closeSettings()">취소</button>
-      <button class="bp" onclick="saveSettings()">저장</button>
-    </div>
+    <h2>ℹ️ NurseStudy AI <small style="font-size:12px;color:var(--mut);">PWA 버전</small></h2>
+    <div class="info-box"><p>✅ <strong>API 키 불필요</strong><br>모델: <strong>claude-sonnet-4-20250514</strong><br>📱 홈 화면에 추가하면 앱처럼 사용 가능<br>⛶ 상단 전체화면 버튼으로 몰입 학습</p></div>
+    <p style="font-size:12px;color:var(--mut);line-height:1.7;margin-bottom:16px;">이미지 분석 · 요약 · 퀴즈 · AI 채팅 모두 지원<br>핀치 줌 + 버튼 줌인/아웃 지원</p>
+    <div class="mrow"><button class="bp2" onclick="closeSettings()">확인</button></div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+// ─── PWA: Service Worker & Manifest ───
+(function(){
+  const CACHE='nursestudy-v1';
+  const swCode=`
+self.addEventListener('install',e=>e.waitUntil(
+  caches.open('${CACHE}').then(c=>c.addAll(['./',location.href]))
+));
+self.addEventListener('fetch',e=>e.respondWith(
+  caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{
+    const rc=res.clone();
+    caches.open('${CACHE}').then(c=>c.put(e.request,rc));
+    return res;
+  }))
+));
+`;
+  if('serviceWorker' in navigator){
+    const blob=new Blob([swCode],{type:'application/javascript'});
+    const swUrl=URL.createObjectURL(blob);
+    navigator.serviceWorker.register(swUrl,{scope:'./'})
+      .then(r=>logInfo('SW 등록 완료','오프라인 캐싱 활성화'))
+      .catch(e=>logWarn('SW 등록 실패',e.message));
+  }
+  // Inject manifest
+  const manifest={name:'NurseStudy AI',short_name:'NurseStudy',description:'간호학과 AI 학습 도우미',start_url:'./',display:'standalone',background_color:'#1B2E4B',theme_color:'#1B2E4B',orientation:'any',icons:[{src:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="36" fill="%231B2E4B"/><text y="140" x="96" text-anchor="middle" font-size="120">🏥</text></svg>',sizes:'192x192',type:'image/svg+xml'},{src:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="%231B2E4B"/><text y="370" x="256" text-anchor="middle" font-size="320">🏥</text></svg>',sizes:'512x512',type:'image/svg+xml'}]};
+  const mBlob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
+  const mUrl=URL.createObjectURL(mBlob);
+  const link=document.createElement('link');
+  link.rel='manifest';link.href=mUrl;
+  document.head.appendChild(link);
+})();
 
-// ══════════════════════════════
-//  ERROR LOGGER
-// ══════════════════════════════
-const EL={logs:[]};
-function logError(msg,detail='',level='error'){
-  const t=new Date();
-  const time=t.getHours().toString().padStart(2,'0')+':'+t.getMinutes().toString().padStart(2,'0')+':'+t.getSeconds().toString().padStart(2,'0');
-  EL.logs.unshift({msg:String(msg),detail:String(detail),level,time,id:Date.now()});
-  updateErrBadge();renderErrList();
+// ─── PWA Install Prompt ───
+let _deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();_deferredPrompt=e;
+  setTimeout(()=>document.getElementById('pwaInstallBanner').classList.add('show'),2000);
+});
+window.addEventListener('appinstalled',()=>{
+  document.getElementById('pwaInstallBanner').classList.remove('show');
+  document.getElementById('pwaBadge').classList.add('show');
+  showToast('✅ 앱 설치 완료!');
+});
+if(window.matchMedia('(display-mode: standalone)').matches||navigator.standalone){
+  document.getElementById('pwaBadge').classList.add('show');
 }
-function logWarn(m,d=''){logError(m,d,'warn');}
-function logInfo(m,d=''){logError(m,d,'info');}
+function installPWA(){if(_deferredPrompt){_deferredPrompt.prompt();_deferredPrompt.userChoice.then(r=>{if(r.outcome==='accepted')showToast('🎉 앱 설치 중!');_deferredPrompt=null;document.getElementById('pwaInstallBanner').classList.remove('show');});}}
+function dismissInstall(){document.getElementById('pwaInstallBanner').classList.remove('show');}
+
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+const MODEL='claude-sonnet-4-20250514';
+const EL={logs:[]};
+function logError(msg,detail='',level='error'){const t=new Date(),time=t.getHours().toString().padStart(2,'0')+':'+t.getMinutes().toString().padStart(2,'0')+':'+t.getSeconds().toString().padStart(2,'0');EL.logs.unshift({msg:String(msg),detail:String(detail),level,time});updateErrBadge();if(document.getElementById('errModal').classList.contains('open'))renderErrList();}
+function logWarn(m,d=''){logError(m,d,'warn');}function logInfo(m,d=''){logError(m,d,'info');}
 const _ce=console.error.bind(console),_cw=console.warn.bind(console);
-console.error=(...a)=>{_ce(...a);logError(a.map(x=>typeof x==='object'?JSON.stringify(x,null,2):String(x)).join(' '));};
-console.warn=(...a)=>{_cw(...a);logWarn(a.map(x=>typeof x==='object'?JSON.stringify(x,null,2):String(x)).join(' '));};
+console.error=(...a)=>{_ce(...a);logError(a.map(x=>typeof x==='object'?JSON.stringify(x):String(x)).join(' '));};
+console.warn=(...a)=>{_cw(...a);logWarn(a.map(x=>typeof x==='object'?JSON.stringify(x):String(x)).join(' '));};
 window.addEventListener('error',e=>logError(e.message,`${e.filename}:${e.lineno}\n${e.error?.stack||''}`));
 window.addEventListener('unhandledrejection',e=>logError('Unhandled Promise',String(e.reason?.stack||e.reason||'')));
-function updateErrBadge(){
-  const c=EL.logs.filter(l=>l.level==='error').length;
-  const b=document.getElementById('errBadge'),ct=document.getElementById('errCount');
-  b.textContent=c>9?'9+':c; b.classList.toggle('show',c>0); if(ct)ct.textContent=EL.logs.length;
-}
-function renderErrList(){
-  const el=document.getElementById('errList');const ct=document.getElementById('errCount');
-  if(ct)ct.textContent=EL.logs.length;
-  if(!EL.logs.length){el.innerHTML='<div class="eempty">✅ 오류가 없습니다</div>';return;}
-  el.innerHTML=EL.logs.map((log,idx)=>{
-    const lc=log.level==='warn'?'warn':log.level==='info'?'info':'';
-    const tag=log.level==='warn'?'WARN':log.level==='info'?'INFO':'ERROR';
-    const full=`[${tag}] ${log.time}\n${log.msg}${log.detail?'\n\n'+log.detail:''}`;
-    return`
-    <div class="eitem ${lc}">
-      <div class="etop">
-        <span class="etag ${lc}">${tag}</span>
-        <span class="etime">${log.time}</span>
-      </div>
-      <div class="emsg">${eh(log.msg)}</div>
-      ${log.detail?`<div class="edetail">${eh(log.detail)}</div>`:''}
-      <div class="eact">
-        <button class="cpbtn" onclick="showCopyBox(${idx})">📋 복사용 텍스트 보기</button>
-      </div>
-      <div class="copy-box" id="cbox_${idx}" style="display:none">
-        <div class="copy-box-hint">👆 텍스트를 길게 눌러 전체선택 → 복사하세요</div>
-        <textarea class="copy-textarea" readonly onclick="this.select()" onfocus="this.select()">${full}</textarea>
-      </div>
-    </div>`;
-  }).join('');
-}
-function showCopyBox(idx){
-  const box=document.getElementById('cbox_'+idx);
-  if(!box)return;
-  const isOpen=box.style.display!=='none';
-  box.style.display=isOpen?'none':'block';
-  if(!isOpen){
-    const ta=box.querySelector('textarea');
-    if(ta){
-      setTimeout(()=>{ta.focus();ta.select();},100);
-      // Try clipboard API first
-      navigator.clipboard.writeText(ta.value).then(()=>{
-        showToast('✅ 클립보드에 복사됨!');
-      }).catch(()=>{
-        // iOS fallback — show textarea for manual copy
-        showToast('👆 텍스트 길게 눌러 복사하세요');
-      });
-    }
-  }
-}
+function updateErrBadge(){const c=EL.logs.filter(l=>l.level==='error').length;const b=document.getElementById('errBadge'),ct=document.getElementById('errCount');b.textContent=c>9?'9+':c;b.classList.toggle('show',c>0);if(ct)ct.textContent=EL.logs.length;}
+function renderErrList(){const el=document.getElementById('errList');if(!EL.logs.length){el.innerHTML='<div class="eempty">✅ 오류가 없습니다</div>';return;}el.innerHTML=EL.logs.map((log,idx)=>{const lc=log.level==='warn'?'warn':log.level==='info'?'info':'';const tag=log.level==='warn'?'WARN':log.level==='info'?'INFO':'ERROR';const full=`[${tag}] ${log.time}\n${log.msg}${log.detail?'\n\n'+log.detail:''}`;return`<div class="eitem ${lc}"><div class="etop"><span class="etag ${lc}">${tag}</span><span class="etime">${log.time}</span></div><div class="emsg">${eh(log.msg)}</div>${log.detail?`<div class="edetail">${eh(log.detail)}</div>`:''}<div class="eact"><button class="cpbtn" onclick="showCopyBox(${idx})">📋 복사</button></div><div class="copy-box" id="cbox_${idx}" style="display:none"><div class="copy-box-hint">👆 탭 → 복사</div><textarea class="copy-textarea" readonly onclick="this.select()" onfocus="this.select()">${full}</textarea></div></div>`;}).join('');}
+function showCopyBox(idx){const box=document.getElementById('cbox_'+idx);if(!box)return;const isOpen=box.style.display!=='none';box.style.display=isOpen?'none':'block';if(!isOpen){const ta=box.querySelector('textarea');if(ta){setTimeout(()=>{ta.focus();ta.select();},100);navigator.clipboard.writeText(ta.value).then(()=>showToast('✅ 복사됨!')).catch(()=>{});}}}
 function eh(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function copyAllErrors(){
-  const text=EL.logs.map(l=>`[${l.level.toUpperCase()}] ${l.time}\n${l.msg}${l.detail?'\n'+l.detail:''}`).join('\n\n---\n\n');
-  navigator.clipboard.writeText(text).then(()=>showToast('📋 전체 복사 완료!')).catch(()=>{
-    // Show a popup textarea for manual copy
-    const box=document.getElementById('allCopyBox');
-    box.value=text;box.style.display='block';
-    box.focus();box.select();
-    showToast('👆 아래 텍스트 전체 선택 후 복사하세요');
-  });
-}
+function copyAllErrors(){const text=EL.logs.map(l=>`[${l.level.toUpperCase()}] ${l.time}\n${l.msg}${l.detail?'\n'+l.detail:''}`).join('\n\n---\n\n');navigator.clipboard.writeText(text).then(()=>showToast('📋 전체 복사 완료!'));}
 function clearErrors(){EL.logs=[];updateErrBadge();renderErrList();}
 function openErrLog(){document.getElementById('errModal').classList.add('open');renderErrList();}
-function closeErrLog(){document.getElementById('errModal').classList.remove('open');document.getElementById('allCopyBox').style.display='none';}
+function closeErrLog(){document.getElementById('errModal').classList.remove('open');}
 document.getElementById('errModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeErrLog();});
 
-// ══════════════════════════════
-//  STATE
-// ══════════════════════════════
-const S={
-  files:[],activeId:null,curPage:1,
-  tool:'pen',color:'#1B2E4B',bs:3,op:1,
-  palmOnly:false,isDrawing:false,
-  apiKey:localStorage.getItem('ns_key')||'',
-  model:localStorage.getItem('ns_model')||'claude-sonnet-4-6',
-  ann:{},memos:{},ai:{},
-  chat:[],   // {role:'user'|'model', text, pageDataUrl?}
-  // zoom/pan
-  zoom:1, panX:0, panY:0,
-  isPinching:false, isGesturing:false,
-};
+const S={files:[],activeId:null,curPage:1,checked:new Set(),tool:'pen',color:'#1B2E4B',bs:3,op:1,palmOnly:false,isDrawing:false,ann:{},memos:{},ai:{},chat:[],zoom:1,panX:0,panY:0,isPinching:false,isGesturing:false,batchCancel:false,pagesOpen:{},isFullscreen:false};
 let bgCtx,dwCtx,curImg=null;
 
-// ══════════════════════════════
-//  INIT
-// ══════════════════════════════
+// ─── FULLSCREEN ───
+function toggleFullscreen(){
+  const carea=document.getElementById('carea');
+  S.isFullscreen=!S.isFullscreen;
+  carea.classList.toggle('fullscreen-mode',S.isFullscreen);
+  document.getElementById('fsBtn').textContent=S.isFullscreen?'✕':'⛶';
+  if(S.isFullscreen){
+    // Try native fullscreen API
+    const el=document.documentElement;
+    if(el.requestFullscreen)el.requestFullscreen().catch(()=>{});
+    else if(el.webkitRequestFullscreen)el.webkitRequestFullscreen();
+    showToast('⛶ 전체화면 모드 — 핀치/버튼으로 줌');
+    updateFsPageNav();
+  } else {
+    if(document.exitFullscreen)document.exitFullscreen().catch(()=>{});
+    else if(document.webkitExitFullscreen)document.webkitExitFullscreen();
+  }
+  // Show zoom HUD always in fullscreen
+  document.getElementById('zoomHud').classList.toggle('show',S.isFullscreen);
+}
+document.addEventListener('fullscreenchange',()=>{
+  if(!document.fullscreenElement&&S.isFullscreen){
+    S.isFullscreen=false;
+    document.getElementById('carea').classList.remove('fullscreen-mode');
+    document.getElementById('fsBtn').textContent='⛶';
+    document.getElementById('zoomHud').classList.remove('show');
+  }
+});
+function updateFsPageNav(){
+  const f=S.files.find(x=>x.id===S.activeId);
+  if(!f||f.type!=='pdf'){document.getElementById('fsPageNav').style.display='none';return;}
+  document.getElementById('fsPageInfo').textContent=`${S.curPage} / ${f.pageCount}`;
+  document.getElementById('fsPrev').disabled=S.curPage<=1;
+  document.getElementById('fsNext').disabled=S.curPage>=f.pageCount;
+}
+
+// ─── ZOOM ───
+function zoomStep(delta){
+  S.zoom=Math.min(6,Math.max(0.3,S.zoom+delta));
+  applyTF(true);
+  updateZoomUI();
+}
+function updateZoomUI(){
+  const pct=Math.round(S.zoom*100)+'%';
+  document.getElementById('zoomPct').textContent=pct;
+  document.getElementById('zoomPctBtn').textContent=pct;
+  document.getElementById('zoomHud').classList.toggle('show',S.zoom!==1||S.panX!==0||S.panY!==0||S.isFullscreen);
+}
+function applyTF(anim=false){
+  const st=document.getElementById('cstage');
+  st.style.transition=anim?'transform .15s ease-out':'none';
+  st.style.transform=`translate(${S.panX}px,${S.panY}px) scale(${S.zoom})`;
+  updateZoomUI();
+}
+function resetZoom(anim=true){
+  S.zoom=1;S.panX=0;S.panY=0;
+  const st=document.getElementById('cstage');
+  st.style.transition=anim?'transform .25s ease-out':'none';
+  st.style.transform='translate(0px,0px) scale(1)';
+  if(!S.isFullscreen)document.getElementById('zoomHud').classList.remove('show');
+  updateZoomUI();
+  setTimeout(()=>st.style.transition='none',300);
+}
+
+function setupPinchZoom(){
+  const cvp=document.getElementById('cvp');
+  let pts=new Map(),startDist=0,startZoom=1,startPanX=0,startPanY=0,startMidX=0,startMidY=0;
+  const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+  const mid=(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2});
+  cvp.addEventListener('pointerdown',e=>{pts.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pts.size===2){S.isPinching=true;S.isGesturing=true;S.isDrawing=false;const[a,b]=[...pts.values()];startDist=dist(a,b);startZoom=S.zoom;startPanX=S.panX;startPanY=S.panY;const m=mid(a,b);startMidX=m.x;startMidY=m.y;}},{passive:true});
+  cvp.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pts.size===2&&S.isPinching){const[a,b]=[...pts.values()];S.zoom=Math.min(6,Math.max(0.3,startZoom*(dist(a,b)/startDist)));const m=mid(a,b);S.panX=startPanX+(m.x-startMidX);S.panY=startPanY+(m.y-startMidY);applyTF();}},{passive:true});
+  function endPinch(e){pts.delete(e.pointerId);if(pts.size<2&&S.isPinching){S.isPinching=false;setTimeout(()=>{S.isGesturing=false;},200);}}
+  cvp.addEventListener('pointerup',endPinch,{passive:true});
+  cvp.addEventListener('pointercancel',endPinch,{passive:true});
+  // Double-tap to reset
+  let lastTap=0;
+  cvp.addEventListener('touchend',e=>{if(e.touches.length===0&&e.changedTouches.length===1){const now=Date.now();if(now-lastTap<300)resetZoom(true);lastTap=now;}},{passive:true});
+  // Mouse wheel zoom
+  cvp.addEventListener('wheel',e=>{e.preventDefault();const delta=e.deltaY>0?-0.15:0.15;zoomStep(delta);},{passive:false});
+}
+
 window.addEventListener('load',()=>{
   bgCtx=document.getElementById('bgCanvas').getContext('2d');
   dwCtx=document.getElementById('drawCanvas').getContext('2d');
-  setupDrawCanvas();
-  setupPinchZoom();
+  setupDrawCanvas();setupPinchZoom();
   document.getElementById('fi').addEventListener('change',e=>handleFiles(e.target.files));
   document.getElementById('ma').addEventListener('input',()=>{if(S.activeId)S.memos[S.activeId]=document.getElementById('ma').value;});
   document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeSettings();});
-  if(!S.apiKey)setTimeout(openSettings,700);
-  logInfo('앱 시작',`모델:${S.model} / API키:${S.apiKey?'설정됨':'미설정'}`);
+  logInfo('앱 시작 (PWA)',`모델:${MODEL}`);
 });
 
-// ══════════════════════════════
-//  PINCH ZOOM & PAN
-// ══════════════════════════════
-function setupPinchZoom(){
-  const cvp=document.getElementById('cvp');
-  let pts=new Map(); // pointerId -> {x,y}
-  let startDist=0,startZoom=1,startPanX=0,startPanY=0,startMidX=0,startMidY=0;
-
-  function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
-  function mid(a,b){return{x:(a.x+b.x)/2,y:(a.y+b.y)/2};}
-  function applyTransform(animated=false){
-    const stage=document.getElementById('cstage');
-    if(animated)stage.style.transition='transform .15s ease-out';
-    else stage.style.transition='none';
-    stage.style.transform=`translate(${S.panX}px,${S.panY}px) scale(${S.zoom})`;
-    const pct=Math.round(S.zoom*100);
-    document.getElementById('zoomPct').textContent=pct+'%';
-    document.getElementById('zoomHud').classList.toggle('show',S.zoom!==1||S.panX!==0||S.panY!==0);
-  }
-
-  cvp.addEventListener('pointerdown',e=>{
-    pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
-    if(pts.size===2){
-      // Start pinch
-      S.isPinching=true;S.isGesturing=true;S.isDrawing=false;
-      const [a,b]=[...pts.values()];
-      startDist=dist(a,b);startZoom=S.zoom;
-      startPanX=S.panX;startPanY=S.panY;
-      const m=mid(a,b);startMidX=m.x;startMidY=m.y;
-      document.getElementById('zoomIndicator').classList.add('show');
-    }
-  },{passive:true});
-
-  cvp.addEventListener('pointermove',e=>{
-    if(!pts.has(e.pointerId))return;
-    pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
-    if(pts.size===2&&S.isPinching){
-      const [a,b]=[...pts.values()];
-      const newDist=dist(a,b);
-      const newZoom=Math.min(6,Math.max(0.3,startZoom*(newDist/startDist)));
-      const m=mid(a,b);
-      // Pan delta from mid movement
-      S.panX=startPanX+(m.x-startMidX);
-      S.panY=startPanY+(m.y-startMidY);
-      S.zoom=newZoom;
-      applyTransform();
-    }
-  },{passive:true});
-
-  function endPinch(e){
-    pts.delete(e.pointerId);
-    if(pts.size<2){
-      if(S.isPinching){
-        S.isPinching=false;
-        setTimeout(()=>{S.isGesturing=false;document.getElementById('zoomIndicator').classList.remove('show');},200);
-      }
-    }
-  }
-  cvp.addEventListener('pointerup',endPinch,{passive:true});
-  cvp.addEventListener('pointercancel',endPinch,{passive:true});
-
-  // Double-tap to reset zoom
-  let lastTap=0;
-  cvp.addEventListener('touchend',e=>{
-    if(e.touches.length===0&&e.changedTouches.length===1){
-      const now=Date.now();
-      if(now-lastTap<300){resetZoom(true);}
-      lastTap=now;
-    }
-  },{passive:true});
-}
-
-function resetZoom(animated=true){
-  S.zoom=1;S.panX=0;S.panY=0;
-  const stage=document.getElementById('cstage');
-  if(animated)stage.style.transition='transform .25s ease-out';
-  else stage.style.transition='none';
-  stage.style.transform='translate(0px,0px) scale(1)';
-  document.getElementById('zoomHud').classList.remove('show');
-  setTimeout(()=>stage.style.transition='none',300);
-}
-
-// ══════════════════════════════
-//  FILE HANDLING
-// ══════════════════════════════
-async function handleFiles(fl){
-  for(const f of Array.from(fl)){
-    const id='f'+Date.now()+Math.random().toString(36).slice(2);
-    if(f.type==='application/pdf'||f.name.toLowerCase().endsWith('.pdf'))await loadPDFFile(f,id);
-    else if(f.type.startsWith('image/'))await loadImgFile(f,id);
-    else logWarn('지원하지 않는 파일 형식',`파일명:${f.name} 타입:${f.type}`);
-  }
-}
-function loadImgFile(file,id){
-  return new Promise(res=>{
-    const r=new FileReader();
-    r.onload=e=>{S.files.push({id,name:file.name,type:'img',dataUrl:e.target.result,pageCount:1,thumbUrl:e.target.result});renderList();selectFile(id);res();};
-    r.onerror=e=>{logError('이미지 읽기 실패',`${file.name}\n${e}`);res();};
-    r.readAsDataURL(file);
-  });
-}
-async function loadPDFFile(file,id){
-  showLoading('PDF 로딩 중...');
-  logInfo('PDF 로딩',`${file.name} / ${(file.size/1024).toFixed(1)}KB`);
-  try{
-    const ab=await file.arrayBuffer();
-    const pdfDoc=await pdfjsLib.getDocument({data:ab}).promise;
-    const pageCount=pdfDoc.numPages;
-    const thumbUrl=await renderPDFThumb(pdfDoc,1,80);
-    S.files.push({id,name:file.name,type:'pdf',pdfDoc,pageCount,thumbUrl});
-    logInfo('PDF 로딩 완료',`${file.name} / ${pageCount}페이지`);
-    renderList();selectFile(id);
-  }catch(e){
-    logError('PDF 로드 실패',`${file.name}\n${e.message}\n${e.stack||''}`);
-    showToast('❌ PDF 로드 실패 — 🪲 확인');
-  }finally{hideLoading();}
-}
-async function renderPDFThumb(pdfDoc,n,w){
-  const page=await pdfDoc.getPage(n);
-  const vp=page.getViewport({scale:w/page.getViewport({scale:1}).width});
-  const oc=document.createElement('canvas');oc.width=vp.width;oc.height=vp.height;
-  await page.render({canvasContext:oc.getContext('2d'),viewport:vp}).promise;
-  return oc.toDataURL();
-}
-function renderList(){
-  const el=document.getElementById('flist');
-  document.getElementById('fc2').textContent=S.files.length;
-  if(!S.files.length){el.innerHTML='<div class="no-f"><div class="no-fi">📋</div>이미지 또는 PDF를<br>추가해보세요</div>';return;}
-  el.innerHTML=S.files.map(f=>{
-    const analyzed=!!S.ai[f.id+'_1'];
-    const isActive=f.id===S.activeId;
-    const th=f.type==='pdf'?`<div class="pdft fthumb">📄</div>`:`<img class="fthumb" src="${f.thumbUrl}">`;
-    const pagesOpen=S.pagesOpen&&S.pagesOpen[f.id];
-    let pagesHtml='';
-    if(f.type==='pdf'){
-      const thumbs=f.pageThumbs||[];
-      pagesHtml=`
-        <button class="pdf-toggle" onclick="event.stopPropagation();togglePages('${f.id}')">
-          ${pagesOpen?'▾':'▸'} 페이지 미리보기 (${f.pageCount}p)
-        </button>
-        <div class="pdf-pages ${pagesOpen?'open':''}">
-          ${thumbs.length===0
-            ?'<div class="pdf-thumb-loading">⏳ 생성 중...</div>'
-            :`<div class="pdf-pages-inner">${thumbs.map((url,i)=>`
-              <div class="pthumb-wrap ${isActive&&S.curPage===i+1?'active':''}" onclick="event.stopPropagation();jumpToPage('${f.id}',${i+1})">
-                <img class="pthumb-img" src="${url}" loading="lazy">
-                <span class="pthumb-num">${i+1}p</span>
-              </div>`).join('')}</div>`}
-        </div>`;
-    }
-    return`<div>
-      <div class="fitem ${isActive&&f.type!=='pdf'?'active':isActive?'active':''}" onclick="selectFile('${f.id}')">
-        ${th}
-        <div class="finfo">
-          <div class="fname">${f.name}</div>
-          <div class="fbadge ${analyzed?'':'p'}">${f.type==='pdf'?`📄${f.pageCount}p `:''}${analyzed?'✅ 분석완료':'미분석'}</div>
-        </div>
-        <button class="fdel" onclick="event.stopPropagation();delFile('${f.id}')">✕</button>
-      </div>
-      ${pagesHtml}
-    </div>`;
-  }).join('');
-}
-
-function togglePages(id){
-  if(!S.pagesOpen)S.pagesOpen={};
-  S.pagesOpen[id]=!S.pagesOpen[id];
-  // Start generating thumbs if not done yet
-  const f=S.files.find(x=>x.id===id);
-  if(f&&f.type==='pdf'&&(!f.pageThumbs||f.pageThumbs.length===0)){
-    generateAllThumbs(f);
-  }
-  renderList();
-}
-
-async function generateAllThumbs(f){
-  if(f._thumbGenRunning)return;
-  f._thumbGenRunning=true;
-  f.pageThumbs=[];
-  for(let i=1;i<=f.pageCount;i++){
-    try{
-      const url=await renderPDFThumb(f.pdfDoc,i,160);
-      f.pageThumbs.push(url);
-      // Re-render list every 3 pages for progressive display
-      if(i%3===0||i===f.pageCount)renderList();
-    }catch(e){
-      f.pageThumbs.push('');
-    }
-  }
-  f._thumbGenRunning=false;
-  renderList();
-}
-
-async function jumpToPage(id,n){
-  if(S.activeId!==id){
-    // select file first
-    if(S.activeId){saveAnn();S.memos[S.activeId]=document.getElementById('ma').value;}
-    S.activeId=id;
-    document.getElementById('ma').value=S.memos[id]||'';
-    resetZoom(false);
-  }else{
-    saveAnn();
-  }
-  S.curPage=n;
-  const f=S.files.find(x=>x.id===id);if(!f)return;
-  renderList();
-  await loadPage(f,n);
-  restoreAIForPage();
-}
-
-async function selectFile(id){
-  if(S.activeId){saveAnn();S.memos[S.activeId]=document.getElementById('ma').value;}
-  S.activeId=id;S.curPage=1;
-  const f=S.files.find(x=>x.id===id);if(!f)return;
-  // Auto-open pages panel for PDF
-  if(f.type==='pdf'){
-    if(!S.pagesOpen)S.pagesOpen={};
-    S.pagesOpen[id]=true;
-    if(!f.pageThumbs||f.pageThumbs.length===0)generateAllThumbs(f);
-  }
-  renderList();
-  document.getElementById('ma').value=S.memos[id]||'';
-  resetZoom(false);
-  await loadPage(f,1);
-  restoreAIForPage();
-}
-async function loadPage(f,n){
-  showLoading('렌더링 중...');
-  document.getElementById('dhint').style.display='none';
-  document.getElementById('cstage').style.display='inline-flex';
-  const area=document.getElementById('carea');
-  const maxW=area.clientWidth-30,maxH=area.clientHeight-30;
-  try{
-    if(f.type==='img'){
-      document.getElementById('pageNav').classList.remove('show');
-      const img=new Image();
-      await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=f.dataUrl;});
-      const sc=Math.min(maxW/img.width,maxH/img.height,2);
-      const W=Math.round(img.width*sc),H=Math.round(img.height*sc);
-      setCS(W,H);bgCtx.drawImage(img,0,0,W,H);curImg=img;
-    }else{
-      document.getElementById('pageNav').classList.add('show');
-      document.getElementById('pageInfo').textContent=`${n} / ${f.pageCount}`;
-      document.getElementById('prevPage').disabled=n<=1;
-      document.getElementById('nextPage').disabled=n>=f.pageCount;
-      const page=await f.pdfDoc.getPage(n);
-      const baseVp=page.getViewport({scale:1});
-      const sc=Math.min(maxW/baseVp.width,maxH/baseVp.height,2);
-      const vp=page.getViewport({scale:sc});
-      setCS(Math.round(vp.width),Math.round(vp.height));
-      await page.render({canvasContext:bgCtx,viewport:vp}).promise;
-      curImg=true;
-      f._lastPageDataUrl=document.getElementById('bgCanvas').toDataURL('image/jpeg',0.85);
-    }
-    const ak=S.activeId+'_'+n;
-    dwCtx.clearRect(0,0,document.getElementById('drawCanvas').width,document.getElementById('drawCanvas').height);
-    if(S.ann[ak]){const a=new Image();a.onload=()=>dwCtx.drawImage(a,0,0);a.src=S.ann[ak];}
-  }catch(e){
-    logError('페이지 렌더 실패',`${f.name} p${n}\n${e.message}\n${e.stack||''}`);
-    showToast('❌ 렌더링 실패 — 🪲 확인');
-  }finally{hideLoading();}
-}
-function setCS(W,H){
-  const bg=document.getElementById('bgCanvas'),dw=document.getElementById('drawCanvas');
-  bg.width=dw.width=W;bg.height=dw.height=H;
-  bgCtx.clearRect(0,0,W,H);dwCtx.clearRect(0,0,W,H);
-}
-async function changePage(d){
-  if(!S.activeId)return;
-  const f=S.files.find(x=>x.id===S.activeId);
-  if(!f||f.type!=='pdf')return;
-  saveAnn();
-  const n=S.curPage+d;
-  if(n<1||n>f.pageCount)return;
-  S.curPage=n;resetZoom(false);
-  renderList();
-  await loadPage(f,n);restoreAIForPage();
-  setTimeout(()=>{const el=document.querySelector('.pthumb-wrap.active');if(el)el.scrollIntoView({behavior:'smooth',block:'nearest'});},150);
-}
+function switchLeftTab(tab,el){document.querySelectorAll('.ltab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('lp-files').classList.toggle('show',tab==='files');document.getElementById('lp-sessions').classList.toggle('show',tab==='sessions');}
+async function handleFiles(fl){for(const f of Array.from(fl)){const id='f'+Date.now()+Math.random().toString(36).slice(2);if(f.type==='application/pdf'||f.name.toLowerCase().endsWith('.pdf'))await loadPDFFile(f,id);else if(f.type.startsWith('image/'))await loadImgFile(f,id);else logWarn('지원하지 않는 파일',f.name);}}
+function loadImgFile(file,id){return new Promise(res=>{const r=new FileReader();r.onload=e=>{S.files.push({id,name:file.name,type:'img',dataUrl:e.target.result,pageCount:1,thumbUrl:e.target.result});renderList();selectFile(id);res();};r.onerror=()=>{logError('이미지 읽기 실패',file.name);res();};r.readAsDataURL(file);});}
+async function loadPDFFile(file,id){showLoading('PDF 로딩 중...');try{const ab=await file.arrayBuffer();const pdfDoc=await pdfjsLib.getDocument({data:ab}).promise;const pageCount=pdfDoc.numPages;const thumbUrl=await renderPDFThumb(pdfDoc,1,80);S.files.push({id,name:file.name,type:'pdf',pdfDoc,pageCount,thumbUrl});renderList();selectFile(id);}catch(e){logError('PDF 로드 실패',`${file.name}\n${e.message}`);showToast('❌ PDF 로드 실패');}finally{hideLoading();}}
+async function renderPDFThumb(pdfDoc,n,w){const page=await pdfDoc.getPage(n);const vp=page.getViewport({scale:w/page.getViewport({scale:1}).width});const oc=document.createElement('canvas');oc.width=vp.width;oc.height=vp.height;await page.render({canvasContext:oc.getContext('2d'),viewport:vp}).promise;return oc.toDataURL();}
+function renderList(){const el=document.getElementById('flist');if(!S.files.length){el.innerHTML='<div class="no-f"><div style="font-size:28px;opacity:.4;margin-bottom:8px;">📋</div>이미지 또는 PDF를<br>추가해보세요</div>';return;}el.innerHTML=S.files.map(f=>{const analyzed=!!S.ai[f.id+'_1'],isActive=f.id===S.activeId,isChecked=S.checked.has(f.id);const th=f.type==='pdf'?`<div class="pdft fthumb">📄</div>`:`<img class="fthumb" src="${f.thumbUrl}">`;const pOpen=S.pagesOpen[f.id];const thumbs=f.pageThumbs||[];let pH='';if(f.type==='pdf'){pH=`<button class="pdf-toggle" onclick="event.stopPropagation();togglePages('${f.id}')">${pOpen?'▾':'▸'} 미리보기 (${f.pageCount}p)</button><div class="pdf-pages ${pOpen?'open':''}">${thumbs.length===0?'<div style="font-size:10px;color:var(--mut);padding:6px;">⏳ 생성 중...</div>':`<div class="pdf-pages-inner">${thumbs.map((url,i)=>`<div class="pthumb-wrap ${isActive&&S.curPage===i+1?'active':''}" onclick="event.stopPropagation();jumpToPage('${f.id}',${i+1})"><img class="pthumb-img" src="${url}" loading="lazy"><span class="pthumb-num">${i+1}p${S.ai[f.id+'_'+(i+1)]?'✅':''}</span></div>`).join('')}</div>`}</div>`;}return`<div><div class="fitem ${isActive?'active':''} ${isChecked?'checked':''}"><div class="fcheck ${isChecked?'on':''}" onclick="event.stopPropagation();toggleCheck('${f.id}')">${isChecked?'✓':''}</div><div style="flex:1;display:flex;align-items:center;gap:6px;min-width:0;" onclick="selectFile('${f.id}')">${th}<div class="finfo"><div class="fname">${f.name}</div><div class="fbadge ${analyzed?'':'p'}">${f.type==='pdf'?`📄${f.pageCount}p `:''}${analyzed?'✅ 완료':'미분석'}</div></div></div><button class="fdel" onclick="event.stopPropagation();delFile('${f.id}')">✕</button></div>${pH}</div>`;}).join('');}
+function toggleCheck(id){if(S.checked.has(id))S.checked.delete(id);else S.checked.add(id);renderList();document.getElementById('selAllBtn').textContent=S.checked.size===S.files.length?'전체해제':'전체선택';}
+function toggleSelectAll(){if(S.checked.size===S.files.length)S.checked.clear();else S.files.forEach(f=>S.checked.add(f.id));renderList();document.getElementById('selAllBtn').textContent=S.checked.size===S.files.length?'전체해제':'전체선택';}
+function togglePages(id){S.pagesOpen[id]=!S.pagesOpen[id];const f=S.files.find(x=>x.id===id);if(f&&f.type==='pdf'&&(!f.pageThumbs||f.pageThumbs.length===0))generateAllThumbs(f);renderList();}
+async function generateAllThumbs(f){if(f._thumbGenRunning)return;f._thumbGenRunning=true;f.pageThumbs=[];for(let i=1;i<=f.pageCount;i++){try{f.pageThumbs.push(await renderPDFThumb(f.pdfDoc,i,160));}catch{f.pageThumbs.push('');}if(i%3===0||i===f.pageCount)renderList();}f._thumbGenRunning=false;renderList();}
+async function selectFile(id){if(S.activeId){saveAnn();S.memos[S.activeId]=document.getElementById('ma').value;}S.activeId=id;S.curPage=1;const f=S.files.find(x=>x.id===id);if(!f)return;if(f.type==='pdf'){S.pagesOpen[id]=true;if(!f.pageThumbs||f.pageThumbs.length===0)generateAllThumbs(f);}renderList();document.getElementById('ma').value=S.memos[id]||'';resetZoom(false);await loadPage(f,1);restoreAIForPage();}
+async function jumpToPage(id,n){if(S.activeId!==id){if(S.activeId){saveAnn();S.memos[S.activeId]=document.getElementById('ma').value;}S.activeId=id;document.getElementById('ma').value=S.memos[id]||'';resetZoom(false);}else saveAnn();S.curPage=n;const f=S.files.find(x=>x.id===id);if(!f)return;renderList();await loadPage(f,n);restoreAIForPage();setTimeout(()=>{const el=document.querySelector('.pthumb-wrap.active');if(el)el.scrollIntoView({behavior:'smooth',block:'nearest'});},150);}
+async function loadPage(f,n){showLoading('렌더링 중...');document.getElementById('dhint').style.display='none';document.getElementById('cstage').style.display='inline-flex';const area=document.getElementById('carea');const maxW=area.clientWidth-28,maxH=area.clientHeight-28;try{if(f.type==='img'){document.getElementById('pageNav').classList.remove('show');const img=new Image();await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=f.dataUrl;});const sc=Math.min(maxW/img.width,maxH/img.height,2);setCS(Math.round(img.width*sc),Math.round(img.height*sc));bgCtx.drawImage(img,0,0,Math.round(img.width*sc),Math.round(img.height*sc));curImg=img;}else{document.getElementById('pageNav').classList.add('show');document.getElementById('pageInfo').textContent=`${n} / ${f.pageCount}`;document.getElementById('prevPage').disabled=n<=1;document.getElementById('nextPage').disabled=n>=f.pageCount;const page=await f.pdfDoc.getPage(n);const baseVp=page.getViewport({scale:1});const sc=Math.min(maxW/baseVp.width,maxH/baseVp.height,2);const vp=page.getViewport({scale:sc});setCS(Math.round(vp.width),Math.round(vp.height));await page.render({canvasContext:bgCtx,viewport:vp}).promise;curImg=true;f._lastPageDataUrl=document.getElementById('bgCanvas').toDataURL('image/jpeg',0.85);}const ak=S.activeId+'_'+n;dwCtx.clearRect(0,0,document.getElementById('drawCanvas').width,document.getElementById('drawCanvas').height);if(S.ann[ak]){const a=new Image();a.onload=()=>dwCtx.drawImage(a,0,0);a.src=S.ann[ak];}updateFsPageNav();}catch(e){logError('페이지 렌더 실패',`${f.name} p${n}\n${e.message}`);}finally{hideLoading();}}
+function setCS(W,H){const bg=document.getElementById('bgCanvas'),dw=document.getElementById('drawCanvas');bg.width=dw.width=W;bg.height=dw.height=H;bgCtx.clearRect(0,0,W,H);dwCtx.clearRect(0,0,W,H);}
+async function changePage(d){if(!S.activeId)return;const f=S.files.find(x=>x.id===S.activeId);if(!f||f.type!=='pdf')return;saveAnn();const n=S.curPage+d;if(n<1||n>f.pageCount)return;S.curPage=n;resetZoom(false);renderList();await loadPage(f,n);restoreAIForPage();}
 function saveAnn(){if(S.activeId)S.ann[S.activeId+'_'+S.curPage]=document.getElementById('drawCanvas').toDataURL();}
 function showHint(){document.getElementById('dhint').style.display='flex';document.getElementById('cstage').style.display='none';document.getElementById('pageNav').classList.remove('show');curImg=null;}
-function delFile(id){
-  if(!confirm('삭제할까요?'))return;
-  S.files=S.files.filter(f=>f.id!==id);
-  Object.keys(S.ann).forEach(k=>{if(k.startsWith(id))delete S.ann[k];});
-  Object.keys(S.ai).forEach(k=>{if(k.startsWith(id))delete S.ai[k];});
-  delete S.memos[id];
-  if(S.activeId===id){S.activeId=null;showHint();}
-  renderList();
-}
-
-// ══════════════════════════════
-//  DRAWING (Apple Pencil + touch)
-// ══════════════════════════════
-function setupDrawCanvas(){
-  const cv=document.getElementById('drawCanvas');
-  cv.addEventListener('pointerdown',onDown,{passive:false});
-  cv.addEventListener('pointermove',onMove,{passive:false});
-  cv.addEventListener('pointerup',onUp,{passive:false});
-  cv.addEventListener('pointercancel',onUp,{passive:false});
-  cv.addEventListener('pointerleave',onUp,{passive:false});
-  cv.addEventListener('touchstart',e=>e.preventDefault(),{passive:false});
-  cv.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});
-}
+function delFile(id){if(!confirm('삭제할까요?'))return;S.files=S.files.filter(f=>f.id!==id);S.checked.delete(id);Object.keys(S.ann).forEach(k=>{if(k.startsWith(id))delete S.ann[k];});Object.keys(S.ai).forEach(k=>{if(k.startsWith(id))delete S.ai[k];});delete S.memos[id];delete S.pagesOpen[id];if(S.activeId===id){S.activeId=null;showHint();}renderList();}
+function setupDrawCanvas(){const cv=document.getElementById('drawCanvas');cv.addEventListener('pointerdown',onDown,{passive:false});cv.addEventListener('pointermove',onMove,{passive:false});cv.addEventListener('pointerup',onUp,{passive:false});cv.addEventListener('pointercancel',onUp,{passive:false});cv.addEventListener('pointerleave',onUp,{passive:false});cv.addEventListener('touchstart',e=>e.preventDefault(),{passive:false});cv.addEventListener('touchmove',e=>e.preventDefault(),{passive:false});}
 let _pt;
-function onDown(e){
-  e.preventDefault();
-  if(!S.activeId||!curImg)return;
-  if(S.isGesturing||S.isPinching)return; // don't draw during pinch
-  if(S.palmOnly&&e.pointerType!=='pen')return;
-  if(S.tool==='text'){addText(xy(e));return;}
-  S.isDrawing=true;
-  document.getElementById('drawCanvas').setPointerCapture(e.pointerId);
-  const{x,y}=xy(e);const p=e.pressure>0?e.pressure:.5;
-  showP(p);applyStyle(p);
-  dwCtx.beginPath();dwCtx.arc(x,y,lw(p)/2,0,Math.PI*2);dwCtx.fill();
-  dwCtx.beginPath();dwCtx.moveTo(x,y);
-}
-function onMove(e){
-  e.preventDefault();
-  if(!S.isDrawing||S.isGesturing)return;
-  if(S.palmOnly&&e.pointerType!=='pen')return;
-  const{x,y}=xy(e);const p=e.pressure>0?e.pressure:.5;
-  showP(p);applyStyle(p);
-  dwCtx.lineTo(x,y);dwCtx.stroke();
-  dwCtx.beginPath();dwCtx.moveTo(x,y);
-}
-function onUp(e){
-  e.preventDefault();S.isDrawing=false;
-  dwCtx.globalAlpha=1;dwCtx.globalCompositeOperation='source-over';
-  clearTimeout(_pt);_pt=setTimeout(hideP,900);
-}
-function xy(e){
-  // Account for zoom/pan transform when mapping to canvas coords
-  const cv=document.getElementById('drawCanvas');
-  const r=cv.getBoundingClientRect();
-  return{x:(e.clientX-r.left)/S.zoom,y:(e.clientY-r.top)/S.zoom};
-}
-function lw(p){
-  if(S.tool==='eraser')return S.bs*4;
-  if(S.tool==='highlight')return S.bs*5;
-  return Math.max(1,S.bs*(0.4+p*1.6));
-}
-function applyStyle(p){
-  dwCtx.lineWidth=lw(p);dwCtx.lineCap='round';dwCtx.lineJoin='round';
-  if(S.tool==='eraser'){dwCtx.globalCompositeOperation='destination-out';dwCtx.globalAlpha=1;dwCtx.strokeStyle='rgba(0,0,0,1)';dwCtx.fillStyle='rgba(0,0,0,1)';}
-  else if(S.tool==='highlight'){dwCtx.globalCompositeOperation='source-over';dwCtx.globalAlpha=.3*S.op;dwCtx.strokeStyle=S.color;dwCtx.fillStyle=S.color;}
-  else{dwCtx.globalCompositeOperation='source-over';dwCtx.globalAlpha=S.op;dwCtx.strokeStyle=S.color;dwCtx.fillStyle=S.color;}
-}
-function addText(pos){
-  const t=prompt('텍스트 입력:');if(!t)return;
-  dwCtx.globalAlpha=S.op;dwCtx.globalCompositeOperation='source-over';
-  dwCtx.font=`${S.bs*6+10}px 'Noto Sans KR',sans-serif`;
-  dwCtx.fillStyle=S.color;dwCtx.fillText(t,pos.x,pos.y);
-}
-function showP(p){
-  const bar=document.getElementById('pbar'),fi=document.getElementById('pfi'),pv=document.getElementById('pv');
-  bar.classList.add('show');const pct=Math.round(p*100);fi.style.width=pct+'%';pv.textContent=pct+'%';
-}
+function onDown(e){e.preventDefault();if(!S.activeId||!curImg)return;if(S.isGesturing||S.isPinching)return;if(S.palmOnly&&e.pointerType!=='pen')return;if(S.tool==='text'){addText(xy(e));return;}S.isDrawing=true;document.getElementById('drawCanvas').setPointerCapture(e.pointerId);const{x,y}=xy(e);const p=e.pressure>0?e.pressure:.5;showP(p);applyStyle(p);dwCtx.beginPath();dwCtx.arc(x,y,lw(p)/2,0,Math.PI*2);dwCtx.fill();dwCtx.beginPath();dwCtx.moveTo(x,y);}
+function onMove(e){e.preventDefault();if(!S.isDrawing||S.isGesturing)return;if(S.palmOnly&&e.pointerType!=='pen')return;const{x,y}=xy(e);const p=e.pressure>0?e.pressure:.5;showP(p);applyStyle(p);dwCtx.lineTo(x,y);dwCtx.stroke();dwCtx.beginPath();dwCtx.moveTo(x,y);}
+function onUp(e){e.preventDefault();S.isDrawing=false;dwCtx.globalAlpha=1;dwCtx.globalCompositeOperation='source-over';clearTimeout(_pt);_pt=setTimeout(hideP,900);}
+function xy(e){const r=document.getElementById('drawCanvas').getBoundingClientRect();return{x:(e.clientX-r.left)/S.zoom,y:(e.clientY-r.top)/S.zoom};}
+function lw(p){if(S.tool==='eraser')return S.bs*4;if(S.tool==='highlight')return S.bs*5;return Math.max(1,S.bs*(0.4+p*1.6));}
+function applyStyle(p){dwCtx.lineWidth=lw(p);dwCtx.lineCap='round';dwCtx.lineJoin='round';if(S.tool==='eraser'){dwCtx.globalCompositeOperation='destination-out';dwCtx.globalAlpha=1;dwCtx.strokeStyle='rgba(0,0,0,1)';dwCtx.fillStyle='rgba(0,0,0,1)';}else if(S.tool==='highlight'){dwCtx.globalCompositeOperation='source-over';dwCtx.globalAlpha=.3*S.op;dwCtx.strokeStyle=S.color;dwCtx.fillStyle=S.color;}else{dwCtx.globalCompositeOperation='source-over';dwCtx.globalAlpha=S.op;dwCtx.strokeStyle=S.color;dwCtx.fillStyle=S.color;}}
+function addText(pos){const t=prompt('텍스트 입력:');if(!t)return;dwCtx.globalAlpha=S.op;dwCtx.globalCompositeOperation='source-over';dwCtx.font=`${S.bs*6+10}px -apple-system,sans-serif`;dwCtx.fillStyle=S.color;dwCtx.fillText(t,pos.x,pos.y);}
+function showP(p){const bar=document.getElementById('pbar'),fi=document.getElementById('pfi'),pv=document.getElementById('pv');bar.classList.add('show');const pct=Math.round(p*100);fi.style.width=pct+'%';pv.textContent=pct+'%';}
 function hideP(){document.getElementById('pbar').classList.remove('show');}
-
-// TOOL CONTROLS
 function setTool(t){S.tool=t;['Pen','Highlight','Eraser','Text'].forEach(n=>document.getElementById('t'+n).classList.toggle('active',n.toLowerCase()===t));}
 function setColor(c,el){S.color=c;document.querySelectorAll('.sw').forEach(s=>s.classList.remove('active'));el.classList.add('active');document.getElementById('cc').value=c;if(S.tool==='eraser')setTool('pen');}
 function setColorPicker(c){S.color=c;document.querySelectorAll('.sw').forEach(s=>s.classList.remove('active'));if(S.tool==='eraser')setTool('pen');}
 function clearCanvas(){if(!confirm('이 페이지 필기를 지울까요?'))return;const dw=document.getElementById('drawCanvas');dwCtx.clearRect(0,0,dw.width,dw.height);delete S.ann[S.activeId+'_'+S.curPage];}
 function togglePalm(){S.palmOnly=!S.palmOnly;const b=document.getElementById('palmBtn');b.textContent=S.palmOnly?'✏️ 팜리젝션 ON':'✏️ 팜리젝션 OFF';b.classList.toggle('on',S.palmOnly);showToast(S.palmOnly?'🍎 애플펜슬만 인식':'✋ 터치+펜슬 모두 인식');}
-async function saveDrawing(){
-  if(!curImg||!S.activeId){showToast('저장할 이미지가 없습니다');return;}
-  saveAnn();
-  const off=document.createElement('canvas'),bg=document.getElementById('bgCanvas');
-  off.width=bg.width;off.height=bg.height;
-  const c=off.getContext('2d');c.drawImage(bg,0,0);c.drawImage(document.getElementById('drawCanvas'),0,0);
-  const a=document.createElement('a');
-  a.download=`NurseStudy_${S.files.find(f=>f.id===S.activeId)?.name||'note'}_p${S.curPage}.png`;
-  a.href=off.toDataURL();a.click();showToast('💾 저장 완료!');
-}
-
-// ══════════════════════════════
-//  TABS
-// ══════════════════════════════
-function switchTab(tab,el){
-  document.querySelectorAll('.aitab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
-  const asc=document.getElementById('ascroll'),abtn=document.getElementById('abtn'),tc=document.getElementById('tc');
-  if(tab==='c'){
-    asc.style.display='none';abtn.style.display='none';tc.style.display='flex';
-  }else{
-    asc.style.display='';abtn.style.display='';tc.style.display='none';
-    ['s','q','m'].forEach(t=>document.getElementById('t'+t).style.display=t===tab?'block':'none');
-  }
-}
+async function saveDrawing(){if(!curImg||!S.activeId){showToast('저장할 이미지가 없습니다');return;}saveAnn();const off=document.createElement('canvas'),bg=document.getElementById('bgCanvas');off.width=bg.width;off.height=bg.height;const c=off.getContext('2d');c.drawImage(bg,0,0);c.drawImage(document.getElementById('drawCanvas'),0,0);const a=document.createElement('a');a.download=`NurseStudy_${S.files.find(f=>f.id===S.activeId)?.name||'note'}_p${S.curPage}.png`;a.href=off.toDataURL();a.click();showToast('💾 저장 완료!');}
+function switchTab(tab,el){document.querySelectorAll('.aitab').forEach(t=>t.classList.remove('active'));el.classList.add('active');const asc=document.getElementById('ascroll'),abtn=document.getElementById('abtn'),tc=document.getElementById('tc');if(tab==='c'){asc.style.display='none';abtn.style.display='none';tc.style.display='flex';}else{asc.style.display='';abtn.style.display='';tc.style.display='none';['s','q','m','total'].forEach(t=>document.getElementById('t'+t).style.display=t===tab?'block':'none');}}
 function restoreAIForPage(){const k=S.activeId+'_'+S.curPage;if(S.ai[k])renderAI(S.ai[k]);else resetPanel();}
-
-// ══════════════════════════════
-//  CLAUDE API ANALYSIS
-// ══════════════════════════════
-async function getPageDataUrl(){
-  const f=S.files.find(x=>x.id===S.activeId);
-  if(!f)return null;
-  if(f.type==='img')return f.dataUrl;
-  return f._lastPageDataUrl||document.getElementById('bgCanvas').toDataURL('image/jpeg',0.85);
-}
-async function analyze(){
-  if(!S.activeId){showToast('⚠️ 파일을 선택하세요');return;}
-  if(!S.apiKey){openSettings();showToast('⚠️ API 키를 입력하세요');return;}
-  const f=S.files.find(x=>x.id===S.activeId);
-  const btn=document.getElementById('abtn');
-  btn.disabled=true;btn.innerHTML='<div class="spin2"></div> 분석 중...';
-  let dataUrl;
-  try{
-    dataUrl=await getPageDataUrl();
-    if(!dataUrl)throw new Error('이미지 데이터 없음');
-  }catch(e){logError('이미지 변환 실패',e.message);showToast('❌ 이미지 변환 실패');btn.disabled=false;btn.innerHTML='🔬 AI 분석 시작';return;}
-
-  const b64=dataUrl.split(',')[1];
-  const mime=dataUrl.match(/data:([^;]+);/)[1];
-  const pl=f.type==='pdf'?` (${S.curPage}/${f.pageCount}페이지)`:'';
-  const prompt=`당신은 간호학과 교수이자 의료 교육 전문가입니다. 이 강의 자료${pl}를 분석하여 아래 JSON 형식으로만 응답하세요. 마크다운 없이 순수 JSON만:
-{"topic":"주요주제(20자이내)","summary":"전체요약(200자이내,간호학생관점)","keyPoints":["핵심1","핵심2","핵심3","핵심4","핵심5"],"mnemonic":"암기팁/두문자어(있으면)","clinicalNote":"임상적용또는시험출제포인트","quiz":[{"q":"질문1","a":"정답1"},{"q":"질문2","a":"정답2"},{"q":"질문3","a":"정답3"},{"q":"질문4","a":"정답4"},{"q":"질문5","a":"정답5"}]}`;
-
-  logInfo('AI 분석 요청',`모델:${S.model} / ${f.name}${pl}`);
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':S.apiKey,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({
-        model:S.model,
-        max_tokens:2048,
-        messages:[{
-          role:'user',
-          content:[
-            {type:'image',source:{type:'base64',media_type:mime,data:b64}},
-            {type:'text',text:prompt}
-          ]
-        }]
-      })
-    });
-    const raw=await res.text();
-    logInfo('API 응답',`HTTP:${res.status} / 길이:${raw.length}자`);
-    if(!res.ok){
-      let em=raw;try{const j=JSON.parse(raw);em=j.error?.message||raw;}catch(_){}
-      logError(`API 오류 (${res.status})`,`HTTP:${res.status}\n모델:${S.model}\nAPI키 앞8자:${S.apiKey.slice(0,8)}...\n\n${em}`);
-      showToast(`❌ API 오류 ${res.status} — 🪲 확인`);openErrLog();return;
-    }
-    const data=JSON.parse(raw);
-    const text=data.content?.[0]?.text||'';
-    if(!text){logError('AI 응답 비어있음',JSON.stringify(data,null,2));showToast('❌ AI 응답 없음 — 🪲 확인');return;}
-    let result;
-    try{result=JSON.parse(text.replace(/```json|```/g,'').trim());}
-    catch(e){logError('AI 결과 파싱 실패',`오류:${e.message}\n\n원본:\n${text}`);showToast('❌ 결과 파싱 실패 — 🪲 확인');return;}
-    const k=S.activeId+'_'+S.curPage;S.ai[k]=result;
-    renderAI(result);renderList();logInfo('AI 분석 완료',`주제:${result.topic}`);showToast('✅ 분석 완료!');
-    document.querySelector('.aitab').click();
-  }catch(e){
-    logError('네트워크/예외',`${e.name}: ${e.message}\n${e.stack||''}\n모델:${S.model}`);
-    showToast('❌ 네트워크 오류 — 🪲 확인');openErrLog();
-  }finally{btn.disabled=false;btn.innerHTML='🔄 AI 재분석';}
-}
-function renderAI(r){
-  document.getElementById('ts').innerHTML=`
-    <div class="sec"><div class="shdr">📌 주제</div><div class="card">${r.topic}</div></div>
-    <div class="sec"><div class="shdr">📝 전체 요약</div><div class="card">${r.summary}</div></div>
-    <div class="sec"><div class="shdr">⭐ 핵심 포인트</div>${(r.keyPoints||[]).map((p,i)=>`<div class="kp"><div class="kpn">${i+1}</div><div>${p}</div></div>`).join('')}</div>
-    ${r.mnemonic?`<div class="sec"><div class="shdr">💡 암기 팁</div><div class="card g">${r.mnemonic}</div></div>`:''}
-    ${r.clinicalNote?`<div class="sec"><div class="shdr">🏥 임상/시험 포인트</div><div class="card r">${r.clinicalNote}</div></div>`:''}`;
-  document.getElementById('tq').innerHTML=`<div style="font-size:12px;color:var(--mut);margin-bottom:11px;">💡 카드를 탭하면 정답이 나타납니다</div>
-    ${(r.quiz||[]).map((q,i)=>`<div class="fc" onclick="this.classList.toggle('open')"><div class="fcq">Q${i+1}. ${q.q}</div><div class="fch">탭하여 정답 보기 ▾</div><div class="fca">💬 ${q.a}</div></div>`).join('')}`;
-}
-function resetPanel(){
-  document.getElementById('ts').innerHTML='<div class="empty"><div class="ei">🔬</div><strong>AI 분석 시작을 눌러주세요</strong></div>';
-  document.getElementById('tq').innerHTML='<div class="empty"><div class="ei">🧠</div><strong>AI 분석 후 퀴즈 생성</strong></div>';
-  document.getElementById('abtn').innerHTML='🔬 AI 분석 시작';
-}
-
-// ══════════════════════════════
-//  AI CHAT
-// ══════════════════════════════
-function autoResize(ta){ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,100)+'px';}
-
-async function sendChat(){
-  const inp=document.getElementById('chatInput');
-  const text=inp.value.trim();if(!text)return;
-  if(!S.apiKey){openSettings();showToast('⚠️ API 키를 입력하세요');return;}
-  inp.value='';inp.style.height='auto';
-  document.getElementById('chatSendBtn').disabled=true;
-
-  const withImg=document.getElementById('ctxCheck').checked&&!!S.activeId&&!!curImg;
-  let pageDataUrl=null;
-  if(withImg)pageDataUrl=await getPageDataUrl();
-
-  appendChatMsg('user',text,null,pageDataUrl?'📎 현재 페이지 포함':null);
-  S.chat.push({role:'user',text,pageDataUrl});
-
-  const typingId='typing_'+Date.now();
-  appendTyping(typingId);scrollChat();
-
-  // Build Claude messages
-  const messages=[];
-  const history=S.chat.slice(-7,-1);
-  for(const h of history){
-    if(h.role==='user'){
-      const content=[];
-      if(h.pageDataUrl){
-        const b=h.pageDataUrl.split(',')[1],m=h.pageDataUrl.match(/data:([^;]+);/)[1];
-        content.push({type:'image',source:{type:'base64',media_type:m,data:b}});
-      }
-      content.push({type:'text',text:h.text});
-      messages.push({role:'user',content});
-    }else{
-      messages.push({role:'assistant',content:h.text});
-    }
-  }
-  // Current message
-  const curContent=[];
-  if(pageDataUrl){
-    const b=pageDataUrl.split(',')[1],m=pageDataUrl.match(/data:([^;]+);/)[1];
-    curContent.push({type:'image',source:{type:'base64',media_type:m,data:b}});
-  }
-  curContent.push({type:'text',text});
-  messages.push({role:'user',content:curContent});
-
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':S.apiKey,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({
-        model:S.model,
-        max_tokens:1500,
-        system:'당신은 간호학과 학생을 돕는 의료 교육 AI 튜터입니다. 친절하고 명확하게 한국어로 답변하세요. 강의 내용에 대한 질문에 상세히 답하고, 임상 적용, 시험 포인트, 암기 팁도 함께 제공하세요.',
-        messages
-      })
-    });
-    const raw=await res.text();
-    if(!res.ok){
-      let em=raw;try{const j=JSON.parse(raw);em=j.error?.message||raw;}catch(_){}
-      logError(`채팅 API 오류 (${res.status})`,`HTTP:${res.status}\n${em}`);
-      removeTyping(typingId);
-      appendChatMsg('ai','❌ API 오류가 발생했습니다. 🪲 오류 로그를 확인해주세요.');
-      return;
-    }
-    const data=JSON.parse(raw);
-    const reply=data.content?.[0]?.text||'응답을 받지 못했습니다.';
-    S.chat.push({role:'assistant',text:reply});
-    removeTyping(typingId);
-    appendChatMsg('ai',reply);scrollChat();
-  }catch(e){
-    logError('채팅 네트워크 오류',`${e.message}\n${e.stack||''}`);
-    removeTyping(typingId);
-    appendChatMsg('ai','❌ 네트워크 오류가 발생했습니다.');
-  }finally{
-    document.getElementById('chatSendBtn').disabled=false;
-    document.getElementById('chatInput').focus();
-  }
-}
-
-function appendChatMsg(role,text,id,ctx){
-  const msgs=document.getElementById('chatMsgs');
-  // Remove empty state
-  const em=msgs.querySelector('.chat-empty');if(em)em.remove();
-  const now=new Date();
-  const time=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
-  const div=document.createElement('div');
-  div.className=`chat-msg ${role}`;
-  if(id)div.id=id;
-  const bubbleText=text.replace(/\n/g,'<br>');
-  div.innerHTML=`
-    ${ctx?`<div class="chat-ctx">📎 ${ctx}</div>`:''}
-    <div class="chat-bubble">${bubbleText}</div>
-    <div class="chat-time">${time}</div>`;
-  msgs.appendChild(div);
-  scrollChat();
-}
-
-function appendTyping(id){
-  const msgs=document.getElementById('chatMsgs');
-  const div=document.createElement('div');
-  div.className='chat-msg ai';div.id=id;
-  div.innerHTML='<div class="chat-bubble typing"><div class="typing-dots"><span></span><span></span><span></span></div></div>';
-  msgs.appendChild(div);
-  scrollChat();
-}
+async function getPageDataUrl(){const f=S.files.find(x=>x.id===S.activeId);if(!f)return null;if(f.type==='img')return f.dataUrl;return f._lastPageDataUrl||document.getElementById('bgCanvas').toDataURL('image/jpeg',0.85);}
+async function getFilePageDataUrl(fileId,pageNum){const f=S.files.find(x=>x.id===fileId);if(!f)return null;if(f.type==='img')return f.dataUrl;try{const page=await f.pdfDoc.getPage(pageNum);const vp=page.getViewport({scale:1.5});const oc=document.createElement('canvas');oc.width=vp.width;oc.height=vp.height;await page.render({canvasContext:oc.getContext('2d'),viewport:vp}).promise;return oc.toDataURL('image/jpeg',0.85);}catch{return null;}}
+async function callClaude(dataUrl,prompt,maxTokens=2048){const b64=dataUrl.split(',')[1];const mime=dataUrl.match(/data:([^;]+);/)[1];const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MODEL,max_tokens:maxTokens,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:mime,data:b64}},{type:'text',text:prompt}]}]})});const raw=await res.text();if(!res.ok){let em=raw;try{const j=JSON.parse(raw);em=j.error?.message||raw;}catch(_){}throw new Error(`HTTP ${res.status}: ${em}`);}const data=JSON.parse(raw);return data.content?.[0]?.text||'';}
+const APROMPT=`당신은 간호학과 교수이자 의료 교육 전문가입니다. 이 강의 자료를 분석하여 아래 JSON 형식으로만 응답하세요. 마크다운 없이 순수 JSON만:\n{"topic":"주요주제(20자이내)","summary":"전체요약(200자이내,간호학생관점)","keyPoints":["핵심1","핵심2","핵심3","핵심4","핵심5"],"mnemonic":"암기팁/두문자어(있으면)","clinicalNote":"임상적용또는시험출제포인트","quiz":[{"q":"질문1","a":"정답1"},{"q":"질문2","a":"정답2"},{"q":"질문3","a":"정답3"},{"q":"질문4","a":"정답4"},{"q":"질문5","a":"정답5"}]}`;
+async function analyze(){if(!S.activeId){showToast('⚠️ 파일을 선택하세요');return;}const f=S.files.find(x=>x.id===S.activeId);const btn=document.getElementById('abtn');btn.disabled=true;btn.innerHTML='<div class="spin2"></div> 분석 중...';let dataUrl;try{dataUrl=await getPageDataUrl();if(!dataUrl)throw new Error('이미지 데이터 없음');}catch(e){logError('이미지 변환 실패',e.message);showToast('❌ 이미지 변환 실패');btn.disabled=false;btn.innerHTML='🔬 AI 분석 시작';return;}const pl=f.type==='pdf'?` (${S.curPage}/${f.pageCount}페이지)`:'';try{const text=await callClaude(dataUrl,APROMPT+pl);let result;try{result=JSON.parse(text.replace(/```json|```/g,'').trim());}catch(e){logError('파싱 실패',`${e.message}\n${text}`);showToast('❌ 결과 파싱 실패');return;}const k=S.activeId+'_'+S.curPage;S.ai[k]=result;renderAI(result);renderList();logInfo('분석 완료',`주제:${result.topic}`);showToast('✅ 분석 완료!');document.querySelector('.aitab').click();updateTotalSession();}catch(e){logError('API 오류',`${e.message}`);showToast('❌ API 오류 — 🪲 확인');openErrLog();}finally{btn.disabled=false;btn.innerHTML='🔄 AI 재분석';}}
+async function batchAnalyze(){const ids=[...S.checked];if(!ids.length){showToast('⚠️ 파일을 체크하세요');return;}await runBatch(ids);}
+async function batchAnalyzeAll(){if(!S.files.length){showToast('⚠️ 파일이 없습니다');return;}await runBatch(S.files.map(f=>f.id));}
+async function runBatch(ids){S.batchCancel=false;const bp=document.getElementById('batchProgress');bp.classList.add('show');document.getElementById('abtn').disabled=true;const tasks=[];for(const id of ids){const f=S.files.find(x=>x.id===id);if(!f)continue;if(f.type==='img')tasks.push({fileId:id,page:1});else for(let p=1;p<=f.pageCount;p++)tasks.push({fileId:id,page:p});}const total=tasks.length;let done=0,failed=0;for(const task of tasks){if(S.batchCancel)break;const f=S.files.find(x=>x.id===task.fileId);if(!f)continue;document.getElementById('bpTitle').textContent=`일괄 분석 중... (${done+1}/${total})`;document.getElementById('bpStatus').textContent=`${f.name} ${f.type==='pdf'?`${task.page}p`:''}`;document.getElementById('bpBar').style.width=`${(done/total)*100}%`;try{const dataUrl=await getFilePageDataUrl(task.fileId,task.page);if(!dataUrl)throw new Error('이미지 없음');const text=await callClaude(dataUrl,APROMPT);const result=JSON.parse(text.replace(/```json|```/g,'').trim());S.ai[task.fileId+'_'+task.page]=result;renderList();}catch(e){failed++;logError(`일괄분석 실패 - ${f.name} p${task.page}`,e.message);}done++;await new Promise(r=>setTimeout(r,300));}document.getElementById('bpBar').style.width='100%';document.getElementById('bpStatus').textContent=`완료! ${done-failed}/${total} 성공 ${failed>0?`(${failed}개 실패)`:''}`;setTimeout(()=>bp.classList.remove('show'),3000);document.getElementById('abtn').disabled=false;updateTotalSession();if(!S.batchCancel)showToast(`✅ 일괄 분석 완료! ${done-failed}/${total}`);}
+function cancelBatch(){S.batchCancel=true;showToast('⏹ 분석 중단됨');}
+function updateTotalSession(){const analyzed=S.files.filter(f=>S.ai[f.id+'_1']);const totalPages=Object.keys(S.ai).length;const el=document.getElementById('totalContent');if(!analyzed.length){el.innerHTML='<div class="ts-empty"><div class="ts-empty-i">📊</div><strong>총 분석 세션</strong><br><br>파일들을 AI 분석하면<br>여기에 전체 요약이 표시됩니다</div>';return;}const allSummaries=[];S.files.forEach(f=>{const count=f.type==='pdf'?f.pageCount:1;for(let p=1;p<=count;p++){const r=S.ai[f.id+'_'+p];if(r)allSummaries.push({file:f.name,fileId:f.id,page:p,result:r});}});const allKeyPoints=allSummaries.flatMap(s=>s.result.keyPoints||[]);const allTopics=allSummaries.map(s=>s.result.topic).filter(Boolean);el.innerHTML=`<div class="ts-header"><div class="ts-title">📊 전체 강의 분석 세션</div><div class="ts-meta">총 ${analyzed.length}개 파일 · ${totalPages}페이지 분석 완료</div></div><div class="ts-stat-row"><div class="ts-stat"><div class="ts-stat-num">${analyzed.length}</div><div class="ts-stat-lbl">분석된 파일</div></div><div class="ts-stat"><div class="ts-stat-num">${totalPages}</div><div class="ts-stat-lbl">분석된 페이지</div></div><div class="ts-stat"><div class="ts-stat-num">${allKeyPoints.length}</div><div class="ts-stat-lbl">총 핵심 포인트</div></div><div class="ts-stat"><div class="ts-stat-num">${allSummaries.reduce((a,s)=>(s.result.quiz||[]).length+a,0)}</div><div class="ts-stat-lbl">총 퀴즈 문항</div></div></div><div class="sec"><div class="shdr">📌 전체 주제</div><div class="card p">${allTopics.map(t=>`<span style="display:inline-block;background:rgba(123,97,255,.12);border-radius:6px;padding:2px 8px;margin:2px;font-size:11.5px;">${t}</span>`).join('')}</div></div><div class="sec"><div class="shdr">⭐ 전체 핵심 포인트 (${allKeyPoints.length}개)</div>${allKeyPoints.slice(0,20).map((p,i)=>`<div class="kp"><div class="kpn">${i+1}</div><div style="font-size:12px;">${p}</div></div>`).join('')}${allKeyPoints.length>20?`<div style="font-size:11px;color:var(--mut);text-align:center;padding:6px;">...외 ${allKeyPoints.length-20}개</div>`:''}</div><div class="sec"><div class="shdr">📄 파일별 요약</div>${allSummaries.map(s=>`<div class="ts-file-item" onclick="jumpToFile('${s.fileId}',${s.page})"><span class="ts-file-icon">${s.file.endsWith('.pdf')?'📄':'🖼'}</span><div class="ts-file-info"><div class="ts-file-name">${s.file}${s.page>1?` p.${s.page}`:''}</div><div class="ts-file-sum">${s.result.summary||''}</div></div></div>`).join('')}</div>`;renderSessions();}
+function renderSessions(){const el=document.getElementById('sessionList');const analyzed=S.files.filter(f=>S.ai[f.id+'_1']);if(!analyzed.length){el.innerHTML='<div class="session-empty">📚 아직 세션이 없습니다<br><br>파일을 분석하면<br>세션이 자동 생성됩니다</div>';return;}el.innerHTML=analyzed.map(f=>{const r=S.ai[f.id+'_1'];const pages=Object.keys(S.ai).filter(k=>k.startsWith(f.id)).length;return`<div class="session-card" onclick="selectFile('${f.id}')"><div class="session-title">${f.type==='pdf'?'📄':'🖼'} ${f.name}</div><div class="session-meta">${pages}페이지 분석 · ${r?.topic||''}</div></div>`;}).join('');}
+async function jumpToFile(id,page){if(!id)return;await selectFile(id);if(page>1){const f=S.files.find(x=>x.id===id);if(f)await jumpToPage(id,page);}document.querySelector('.aitab').click();}
+function renderAI(r){document.getElementById('ts').innerHTML=`<div class="sec"><div class="shdr">📌 주제</div><div class="card">${r.topic}</div></div><div class="sec"><div class="shdr">📝 전체 요약</div><div class="card">${r.summary}</div></div><div class="sec"><div class="shdr">⭐ 핵심 포인트</div>${(r.keyPoints||[]).map((p,i)=>`<div class="kp"><div class="kpn">${i+1}</div><div>${p}</div></div>`).join('')}</div>${r.mnemonic?`<div class="sec"><div class="shdr">💡 암기 팁</div><div class="card g">${r.mnemonic}</div></div>`:''}${r.clinicalNote?`<div class="sec"><div class="shdr">🏥 임상/시험 포인트</div><div class="card r">${r.clinicalNote}</div></div>`:''}`; document.getElementById('tq').innerHTML=`<div style="font-size:11px;color:var(--mut);margin-bottom:10px;">💡 카드를 탭하면 정답이 나타납니다</div>${(r.quiz||[]).map((q,i)=>`<div class="fc" onclick="this.classList.toggle('open')"><div class="fcq">Q${i+1}. ${q.q}</div><div class="fch">탭하여 정답 보기 ▾</div><div class="fca">💬 ${q.a}</div></div>`).join('')}`;}
+function resetPanel(){document.getElementById('ts').innerHTML='<div class="empty"><div class="ei">🔬</div><strong>AI 분석 시작을 눌러주세요</strong></div>';document.getElementById('tq').innerHTML='<div class="empty"><div class="ei">🧠</div><strong>AI 분석 후 퀴즈 생성</strong></div>';document.getElementById('abtn').innerHTML='🔬 AI 분석 시작';}
+function autoResize(ta){ta.style.height='auto';ta.style.height=Math.min(ta.scrollHeight,90)+'px';}
+async function sendChat(){const inp=document.getElementById('chatInput');const text=inp.value.trim();if(!text)return;inp.value='';inp.style.height='auto';document.getElementById('chatSendBtn').disabled=true;const withImg=document.getElementById('ctxCheck').checked&&!!S.activeId&&!!curImg;let pageDataUrl=null;if(withImg)pageDataUrl=await getPageDataUrl();appendChatMsg('user',text,pageDataUrl?'📎 현재 페이지 포함':null);S.chat.push({role:'user',text,pageDataUrl});const typingId='typing_'+Date.now();appendTyping(typingId);scrollChat();const messages=[];for(const h of S.chat.slice(-7,-1)){if(h.role==='user'){const content=[];if(h.pageDataUrl){const b=h.pageDataUrl.split(',')[1],m=h.pageDataUrl.match(/data:([^;]+);/)[1];content.push({type:'image',source:{type:'base64',media_type:m,data:b}});}content.push({type:'text',text:h.text});messages.push({role:'user',content});}else messages.push({role:'assistant',content:h.text});}const curContent=[];if(pageDataUrl){const b=pageDataUrl.split(',')[1],m=pageDataUrl.match(/data:([^;]+);/)[1];curContent.push({type:'image',source:{type:'base64',media_type:m,data:b}});}curContent.push({type:'text',text});messages.push({role:'user',content:curContent});try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MODEL,max_tokens:1500,system:'당신은 간호학과 학생을 돕는 의료 교육 AI 튜터입니다. 친절하고 명확하게 한국어로 답변하세요. 강의 내용에 대한 질문에 상세히 답하고, 임상 적용, 시험 포인트, 암기 팁도 함께 제공하세요.',messages})});const data=await res.json();if(!res.ok)throw new Error(data.error?.message||`HTTP ${res.status}`);const reply=data.content?.[0]?.text||'응답을 받지 못했습니다.';S.chat.push({role:'assistant',text:reply});removeTyping(typingId);appendChatMsg('ai',reply);scrollChat();}catch(e){logError('채팅 오류',e.message);removeTyping(typingId);appendChatMsg('ai','❌ 오류가 발생했습니다.');}finally{document.getElementById('chatSendBtn').disabled=false;}}
+function appendChatMsg(role,text,ctx){const msgs=document.getElementById('chatMsgs');const em=msgs.querySelector('.chat-empty');if(em)em.remove();const now=new Date();const time=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');const div=document.createElement('div');div.className=`chat-msg ${role}`;div.innerHTML=`${ctx?`<div class="chat-ctx">${ctx}</div>`:''}<div class="chat-bubble">${text.replace(/\n/g,'<br>')}</div><div class="chat-time">${time}</div>`;msgs.appendChild(div);scrollChat();}
+function appendTyping(id){const msgs=document.getElementById('chatMsgs');const div=document.createElement('div');div.className='chat-msg ai';div.id=id;div.innerHTML='<div class="chat-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>';msgs.appendChild(div);scrollChat();}
 function removeTyping(id){const el=document.getElementById(id);if(el)el.remove();}
 function scrollChat(){const m=document.getElementById('chatMsgs');m.scrollTop=m.scrollHeight;}
-function clearChat(){if(!confirm('대화 기록을 초기화할까요?'))return;S.chat=[];document.getElementById('chatMsgs').innerHTML='<div class="chat-empty"><div class="chat-empty-i">💬</div><strong>AI에게 질문하세요</strong><br><br>현재 보이는 강의 내용에 대해<br>무엇이든 물어보세요!</div>';}
-
-// ══════════════════════════════
-//  SETTINGS
-// ══════════════════════════════
-function openSettings(){document.getElementById('ak').value=S.apiKey;document.getElementById('mk').value=S.model;document.getElementById('modal').classList.add('open');}
+function clearChat(){if(!confirm('대화 기록을 초기화할까요?'))return;S.chat=[];document.getElementById('chatMsgs').innerHTML='<div class="chat-empty">💬 <strong>AI에게 질문하세요</strong><br><br>강의 내용에 대해 무엇이든 물어보세요!</div>';}
+function openSettings(){document.getElementById('modal').classList.add('open');}
 function closeSettings(){document.getElementById('modal').classList.remove('open');}
-function saveSettings(){
-  S.apiKey=document.getElementById('ak').value.trim();S.model=document.getElementById('mk').value.trim()||'claude-sonnet-4-6';
-  localStorage.setItem('ns_key',S.apiKey);localStorage.setItem('ns_model',S.model);
-  closeSettings();showToast('✅ 저장 완료');
-  logInfo('설정 저장',`모델:${S.model}`);
-}
-
-// LOADING / TOAST
 function showLoading(m){const e=document.getElementById('loadingEl');e.querySelector('.load-txt').textContent=m||'로딩 중...';e.classList.add('show');}
 function hideLoading(){document.getElementById('loadingEl').classList.remove('show');}
 let _tt;
 function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),2800);}
-
-// PWA
-const _pm={name:'NurseStudy AI',short_name:'NurseStudy',start_url:'.',display:'standalone',background_color:'#1B2E4B',theme_color:'#1B2E4B',icons:[{src:'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231B2E4B'/><text x='50' y='68' font-size='54' text-anchor='middle'>🏥</text></svg>`),sizes:'512x512',type:'image/svg+xml'}]};
-const _pl=document.createElement('link');_pl.rel='manifest';_pl.href=URL.createObjectURL(new Blob([JSON.stringify(_pm)],{type:'application/json'}));document.head.appendChild(_pl);
 </script>
 </body>
 </html>
